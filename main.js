@@ -260,7 +260,13 @@ var plataformas = [
 		mision: -1,
 		libre: true,
 		estado: 0
-	}
+	},
+	{
+		nombreJuego: "Modo desarrollo",
+		mision: 1,
+		libre: false,
+		estado: 0
+	}	
 ];
 
 //---------------------------------------
@@ -323,7 +329,51 @@ document.getElementById('botonLanzarJuego').addEventListener('click', lanzarJueg
 function lanzarJuego(){
 	
 	if(modoDesarrollo){	
-		//document.getElementById('areaDesarrollo').style.display  = "block";
+		document.getElementById('areaDesarrollo').style.display  = "block";
+		
+		//Botones modo desarrollo.
+		
+		botonFondosModoDesarrollo.addEventListener("click", function(){
+			sumarFondos(10);
+		});		
+
+		botonMaterialesModoDesarrollo.addEventListener("click", function(){
+			encargarMateriales(10);
+		});
+
+		botonEquiposModoDesarrollo.addEventListener("click", function(){
+			sumarEquipo(2);
+		});
+		
+		botonMisionModoDesarrollo.addEventListener("click", function(){		
+
+			let misionId = 0;
+			let plataformaId = 4;
+			plataformas[plataformaId].estado = 0;
+
+			document.getElementById("plataforma" + plataformaId).getElementsByTagName("h5")[0].innerHTML = "Componentes ensamblados";
+			document.getElementById("botonEnsamblarComponentes" + plataformaId).innerHTML = '<i class="material-icons">settings</i>';
+			document.getElementById("plataforma" + plataformaId).style.backgroundColor = "#a1f486";
+			document.getElementById("botonProgramarLanzamiento" + plataformaId).disabled = false;
+			document.getElementById("botonCancelarMision" + plataformaId).disabled = false;			
+
+		});		
+
+
+		//document.getElementById("materiales").addEventListener("click", function(){
+		//	encargarMateriales(20);
+		//});
+
+		//document.getElementById("fondos").addEventListener("click", function(){
+		//	sumarFondos(20);
+		//});
+
+		//document.getElementById("equipos").addEventListener("click", function(){
+		//	sumarEquipo(2);
+		//});
+
+		//Fin botones modo desarrollo.		
+		
 	}
 	
 	//Montar programas.
@@ -586,9 +636,9 @@ function montarPlataformas(){
 	var montarHTMLPlataformas = "<h3>Plataformas</h3>";
 	var longitudArrayPlataformas = plataformas.length;
 	
-	for(var i=0; i<longitudArrayPlataformas; i++){
-	
-		montarHTMLPlataformas += '<div id="plataforma' + i + '">';
+	for(var i=0; i<longitudArrayPlataformas; i++) {
+		
+		montarHTMLPlataformas += '<div id="plataforma' + i + '">';		
 		
 		montarHTMLPlataformas += '<div class="titulosPlataformas">';
 		montarHTMLPlataformas += '<h4>' + plataformas[i].nombreJuego + '</h4>';
@@ -728,30 +778,6 @@ function cerrarVentanaModal(){
 }
 
 //Fin botón cerrar ventana modal.
-
-//Botones modo desarrollo.
-
-botonMaterialesModoDesarrollo.addEventListener("click", function(){
-	encargarMateriales(10);
-});
-
-botonFondosModoDesarrollo.addEventListener("click", function(){
-	sumarFondos(10);
-});
-
-document.getElementById("materiales").addEventListener("click", function(){
-	encargarMateriales(20);
-});
-
-document.getElementById("fondos").addEventListener("click", function(){
-	sumarFondos(20);
-});
-
-document.getElementById("equipos").addEventListener("click", function(){
-	sumarEquipo(2);
-});
-
-//Fin botones modo desarrollo.
 
 //FIN BOTONES
 
@@ -1178,7 +1204,7 @@ function eventoMision(element, tipo){
 						document.getElementById("plataforma" + i).getElementsByTagName("h5")[0].innerHTML = "Plataforma reservada";
 						
 						tiempoDesarrollo = 10;
-						funcionObjetivo = "programarMision";
+						funcionObjetivo = "programarMision";					
 				
 						document.getElementById("mision" + misionId).getElementsByTagName("h5")[0].style.color = "black";
 						document.getElementById("mision" + misionId).getElementsByTagName("h5")[0].innerHTML = "Programando misión";
@@ -1730,10 +1756,18 @@ function lanzamiento(id){
 	//Mostrar/ocultar elementos.
 	document.getElementById("ventanaLanzamiento").style.display = "block";
 	
-	//Contenidos ventana ensamblaje.
+	//Botón lanzamiento (al pinchar lanza la función de ejecución de la misión).
+	document.getElementById("botonConfirmarLanzamiento").style.display = "block";
 	
-	//Datos misión.
-	//var tipoCarga = misiones[misionId].tipoCarga;
+	botonConfirmarLanzamiento.addEventListener("click", function(){
+
+
+
+	})	
+	
+	
+	
+	
 	
 	//Liberar plataforma.
 	plataformas[plataformaId].libre = true;
