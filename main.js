@@ -1349,7 +1349,7 @@ function elegirComponentesMision(element){
 	misionId = plataformas[plataformaId].mision;
 	misionProgramada = plataformas[plataformaId].misionProgramada;
 
-	console.log(misionProgramada);
+	//console.log(misionProgramada);
 
 	//Preparar información para mostrar en la ventana.
 	var textoVentanaModal = "<h4>Confirmar componentes misión</h4>";
@@ -1415,6 +1415,7 @@ function elegirComponentesMision(element){
 		var selectCarga = document.getElementById("selectCarga");
 		var cargaSeleccionada = selectCarga.options[selectCarga.selectedIndex].value;
 
+		/*
 		console.log("Cohete: ");
 		console.log(coheteSeleccionado);
 		console.log("Carga: ");
@@ -1423,6 +1424,7 @@ function elegirComponentesMision(element){
 		console.log(programas[coheteSeleccionado].unidades);
 		console.log("Cargas restantes: ");
 		console.log(programas[cargaSeleccionada].unidades);
+		*/
 
 		/*
 		for(var i=0; i < programas.length; i++){
@@ -1431,11 +1433,6 @@ function elegirComponentesMision(element){
 				document.getElementById('unidadesPrograma' + i).innerHTML = programas[i].unidades;
 			}
 		}
-		*/
-
-		//Creo que todo lo anterior se puede hacer con lo siguiente, COMPROBAR:
-		programas[coheteSeleccionado].unidades -= 1;
-
 
 		for(var j=0; j < programas.length; j++){
 			if (cargaSeleccionada == j){
@@ -1443,6 +1440,16 @@ function elegirComponentesMision(element){
 				document.getElementById('unidadesPrograma' + j).innerHTML = programas[j].unidades;
 			}
 		}
+
+		*/
+
+		//Todo lo anterior se puede hacer con lo siguiente.
+		programas[coheteSeleccionado].unidades -= 1;
+		document.getElementById('unidadesPrograma' + coheteSeleccionado).innerHTML = programas[coheteSeleccionado].unidades;
+
+		programas[cargaSeleccionada].unidades -= 1;
+		document.getElementById('unidadesPrograma' + cargaSeleccionada).innerHTML = programas[cargaSeleccionada].unidades;
+
 
 		console.log("Cohetes restantes: ");
 		console.log(programas[coheteSeleccionado].unidades);
@@ -1531,7 +1538,7 @@ function eventoPlataforma(element, tipo){
 
 			if (nuevoNombreMision != null) {
 			    document.getElementById("plataforma" + plataformaId).getElementsByTagName("h4")[0].innerHTML = nuevoNombreMision;
-					
+
 					misionesProgramadas[plataformas[plataformaId].misionProgramada].nombre = nuevoNombreMision;
 					updateMisionesProgramadas();
   		}
@@ -1832,14 +1839,14 @@ function cancelarMision(id) {
 
 function lanzamiento(id){
 
-	var plataformaId = id;
-	var misionId = plataformas[plataformaId].mision;
+	let plataformaId = id;
+	let misionProgramada = plataformas[plataformaId].misionProgramada;
 
 	//Ventana modal con el resultado del lanzamiento.
 
 	//Preparar información para mostrar en la ventana.
-	var textoVentanaModal = "<h4>Resultado lanzamiento</h4>";
-	textoVentanaModal += "<h5>Misión " + misiones[misionId].nombreJuego + " | Plataforma: " + plataformas[plataformaId].nombreJuego + "</h5>";
+	let textoVentanaModal = "<h4>Resultado lanzamiento</h4>";
+	textoVentanaModal += "<h5>Misión " + misionesProgramadas[misionProgramada].nombreJuego + " | Plataforma: " + plataformas[plataformaId].nombreJuego + "</h5>";
 
 	//Abrir ventana modal parando el timer.
 	abrirVentanaModal(textoVentanaModal);
