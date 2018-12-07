@@ -1527,14 +1527,13 @@ function eventoPlataforma(element, tipo){
 
 			plataformaId = element.id.substr(16,1);
 
-			//Cambiar el nombre en el array de misiones programadas.
-
 			let nuevoNombreMision = prompt("Por favor introduce un nuevo nombre para la misión");
 
 			if (nuevoNombreMision != null) {
 			    document.getElementById("plataforma" + plataformaId).getElementsByTagName("h4")[0].innerHTML = nuevoNombreMision;
+					
 					misionesProgramadas[plataformas[plataformaId].misionProgramada].nombre = nuevoNombreMision;
-					updateMisionesProgramadas;
+					updateMisionesProgramadas();
   		}
 
 		break;
