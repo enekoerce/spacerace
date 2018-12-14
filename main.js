@@ -359,13 +359,49 @@ function lanzarJuego(){
 
 			let misionId = 0;
 			let plataformaId = 4;
-			plataformas[plataformaId].estado = 0;
+			let cohete = 0;
+			let carga = 2;
 
+			plataformas[plataformaId].libre = false;
+			plataformas[plataformaId].mision = misionId; //HAY QUE CAMBIAR ESTO: CREAR UN ARRAY CON MISIONES PROGRAMADAS, CADA VEZ QUE SE LANZA UNA MISIÓN SE AÑADE A ESE ARRAY, CON UNA REFERENCIA A LA PLATAFORMA QUE USA, Y OTRA AL ARRAY GENERAL DE MISIONES, PARA COGER DE AHÍ SUS CARACTERÍSTICAS (CUANDO SE CARGUEN LOS COMPONENTES TAMBIÉN HAY QUE MODIFICAR LA MISIÓN AÑADIÉNDOSELOS).
+
+			let misionProgramada = misionesProgramadas.length;
+			plataformas[plataformaId].misionProgramada = misionProgramada; //Hace falta guardar en el array de plataformas la misión programada, porque para acceder a la ventana de ensamblaje hay que ir desde la plataforma, y si no no se puede obtener el índice de la misión programada para recuperar su información.
+			misiones[misionId].vecesProgramada += 1;
+
+			//Añadir misión al array de misiones programadas. Las características que son comunes a todas las misiones de este tipo no se copian, se leen directamente del array de misiones. En el array de misiones programadas sólo se guardan características que cambian de una misión a otra, como plataforma o componentes seleccionados posteriormente.
+			let nuevaMision = {
+				nombre: "Misión " + misiones[misionId].nombreJuego + " " + misiones[misionId].vecesProgramada,
+				misionId: misionId,
+				plataforma: plataformaId,
+				fechaPrograma: diaActual + " " + mesActual + " " + anioActual,
+				cohete: cohete,
+				carga: carga,
+				tripulacion: -1 //Tiene que haber un array de tripulaciones en el que se crean equipos de astronautas, aunque sólo sea uno. En esta variable se guarda el equipo seleccionado para esta misión.
+			};
+
+			misionesProgramadas.push(nuevaMision);
+			updateMisionesProgramadas();
+
+			document.getElementById("plataforma" + plataformaId).style.backgroundColor = "#f4e786";
+			document.getElementById("plataforma" + plataformaId).getElementsByTagName("h4")[0].innerHTML = nuevaMision.nombre;
+			document.getElementById("plataforma" + plataformaId).getElementsByTagName("h5")[0].style.color = "black";
+			document.getElementById("plataforma" + plataformaId).getElementsByTagName("h5")[0].innerHTML = "Plataforma reservada";
+
+			//Habilitar botones plataforma.
+			document.getElementById("botonEnsamblarComponentes" + plataformaId).disabled = false;
+			document.getElementById("botonCancelarMision" + plataformaId).disabled = false;
+
+
+
+
+			/*
 			document.getElementById("plataforma" + plataformaId).getElementsByTagName("h5")[0].innerHTML = "Componentes ensamblados";
 			document.getElementById("botonEnsamblarComponentes" + plataformaId).innerHTML = '<i class="material-icons">settings</i>';
 			document.getElementById("plataforma" + plataformaId).style.backgroundColor = "#a1f486";
 			document.getElementById("botonProgramarLanzamiento" + plataformaId).disabled = false;
 			document.getElementById("botonCancelarMision" + plataformaId).disabled = false;
+			*/
 
 		});
 
@@ -1250,13 +1286,11 @@ function eventoMision(element, tipo){
 						//Añadir misión al array de misiones programadas. Las características que son comunes a todas las misiones de este tipo no se copian, se leen directamente del array de misiones. En el array de misiones programadas sólo se guardan características que cambian de una misión a otra, como plataforma o componentes seleccionados posteriormente.
 						let nuevaMision = {
 							nombre: "Misión " + misiones[misionId].nombreJuego + " " + misiones[misionId].vecesProgramada,
-							id: misionId,
+							misionId: misionId,
 							plataforma: plataformaId,
 							fechaPrograma: diaActual + " " + mesActual + " " + anioActual,
 							cohete: -1,
-							etapas: -1,
-							satelite: -1,
-							capsula: -1,
+							carga: -1,
 							tripulacion: -1 //Tiene que haber un array de tripulaciones en el que se crean equipos de astronautas, aunque sólo sea uno. En esta variable se guarda el equipo seleccionado para esta misión.
 						};
 
@@ -1364,6 +1398,7 @@ function elegirComponentesMision(element){
 
 	//Mostrar/ocultar elementos.
 	document.getElementById("ventanaEnsamblaje").style.display = "block";
+	document.getElementById("ventanaLanzamiento").style.display = "none"; //Esto no debería hacer falta porque en principio esta ventana viene oculta por estilos, pero hay algún fallo pendiente que hace que la ventana de lanzamiento se muestre a la vez que la pantalla de ensamblaje. - PENDIENTE
 
 	//Contenidos ventana ensamblaje.
 
@@ -1446,18 +1481,18 @@ function elegirComponentesMision(element){
 		//Todo lo anterior se puede hacer con lo siguiente.
 		programas[coheteSeleccionado].unidades -= 1;
 		document.getElementById('unidadesPrograma' + coheteSeleccionado).innerHTML = programas[coheteSeleccionado].unidades;
+		misionesProgramadas[misionProgramada].cohete = coheteSeleccionado;
 
 		programas[cargaSeleccionada].unidades -= 1;
 		document.getElementById('unidadesPrograma' + cargaSeleccionada).innerHTML = programas[cargaSeleccionada].unidades;
+		misionesProgramadas[misionProgramada].carga = cargaSeleccionada;
 
-
-		console.log("Cohetes restantes: ");
-		console.log(programas[coheteSeleccionado].unidades);
-		console.log("Cargas restantes: ");
-		console.log(programas[cargaSeleccionada].unidades);
+		//console.log("Cohetes restantes: ");
+		//console.log(programas[coheteSeleccionado].unidades);
+		//console.log("Cargas restantes: ");
+		//console.log(programas[cargaSeleccionada].unidades);
 
 		cerrarVentanaModal();
-
 
 		//Añadir seguridad definitiva de los componentes (aunque siga cambiando su seguridad en la partida, estos ya están ensamblados; la seguridad de la misión, sin embargo, sí puede seguir incrementándose).
 
@@ -1569,8 +1604,8 @@ function eventoPlataforma(element, tipo){
 			tiempoDesarrollo = misiones[misionId].tiempoCuentaAtras;
 			funcionObjetivo = "programarLanzamiento";
 
-			document.getElementById("plataforma" + misionId).getElementsByTagName("h5")[0].style.color = "black";
-			document.getElementById("plataforma" + misionId).getElementsByTagName("h5")[0].innerHTML = "Cuenta atrás lanzada";
+			document.getElementById("plataforma" + plataformaId).getElementsByTagName("h5")[0].style.color = "black";
+			document.getElementById("plataforma" + plataformaId).getElementsByTagName("h5")[0].innerHTML = "Cuenta atrás lanzada";
 			document.getElementById("botonProgramarLanzamiento" + misionId).disabled = true;
 
 			eventoPlataformaPosible = true;
@@ -1841,12 +1876,21 @@ function lanzamiento(id){
 
 	let plataformaId = id;
 	let misionProgramada = plataformas[plataformaId].misionProgramada;
+	//console.log(misionProgramada);
 
 	//Ventana modal con el resultado del lanzamiento.
 
 	//Preparar información para mostrar en la ventana.
 	let textoVentanaModal = "<h4>Resultado lanzamiento</h4>";
-	textoVentanaModal += "<h5>Misión " + misionesProgramadas[misionProgramada].nombreJuego + " | Plataforma: " + plataformas[plataformaId].nombreJuego + "</h5>";
+	textoVentanaModal += "<h5>Misión " + misionesProgramadas[misionProgramada].nombre + " | Plataforma: " + plataformas[plataformaId].nombreJuego + "</h5>";
+
+		let cohete = misionesProgramadas[misionProgramada].cohete;
+		let carga = misionesProgramadas[misionProgramada].carga;
+
+	textoVentanaModal += "<p>Cohete: " + programas[cohete].nombreJuego + "</p>";
+	textoVentanaModal += "<p>Carga: " + programas[carga].nombreJuego + "</p>";
+
+
 
 	//Abrir ventana modal parando el timer.
 	abrirVentanaModal(textoVentanaModal);
@@ -1859,7 +1903,8 @@ function lanzamiento(id){
 
 	botonConfirmarLanzamiento.addEventListener("click", function(){
 
-
+		document.getElementById("fasesMision").style.display = "block";
+		document.getElementById("fasesMision").innerHTML = "FASES";
 
 	})
 

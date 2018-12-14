@@ -113,7 +113,7 @@
 		visibility: hidden;
 	}
 
-	#ventanaMenu, #ventanaJuego, #ventanaModal, #confirmarEnsamblaje, #ventanaEnsamblaje, #areaDesarrollo {
+	#ventanaMenu, #ventanaJuego, #ventanaModal, #confirmarEnsamblaje, #ventanaEnsamblaje #ventanaLanzamiento, #areaDesarrollo, #fasesMision {
 		display: none;
 	}
 
@@ -130,6 +130,19 @@
 
 	#ventanaEnsamblaje {
 		padding: 20px;
+	}
+
+	#ventanaLanzamiento {
+		padding: 20px;
+		border: 1px solid black;
+	}
+
+	#fasesMision {
+		margin: 10px;
+		padding: 10px;
+		border: 5px solid gray;
+		background: black;
+		color: white;
 	}
 
 	#botonCerrarVentanaModal, #botonCerrarVentanaMenu {
@@ -317,6 +330,15 @@
 
 	<!--FIN ENSAMBLAJE-->
 
+	<div id="ventanaLanzamiento">
+
+		<button id="botonConfirmarLanzamiento" title="LANZAMIENTO"><i class='material-icons'>check_circle</i></button>
+
+		<div id="fasesMision">
+
+		</div>
+
+	</div>
 
 </div>
 
