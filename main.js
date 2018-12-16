@@ -162,13 +162,14 @@ var misiones = [
 		prestigioCancelar: 3,
 		equiposNecesarios: 1,
 		equiposTrabajo: 1,
-		tiempoCuentaAtras: 10,
+		tiempoCuentaAtras: 1,
 		fases: [
-			{nombre: "encendido", componente: 1},
-			{nombre: "despegue", componente: 1},
-			{nombre: "orbita", componente: 1},
-			{nombre: "sueltaCarga",	componente: 1},
-			{nombre: "encendidoCarga", componente: 2}
+			{nombre: "Encendido", componente: 1},
+			{nombre: "Despegue", componente: 1},
+			{nombre: "Espacio", componente: 1},
+			{nombre: "Órbita", componente: 1},
+			{nombre: "Despliegue carga",	componente: 1},
+			{nombre: "Encendido carga", componente: 2}
 		],
 		vecesProgramada: 0
 	},
@@ -1584,7 +1585,7 @@ function eventoPlataforma(element, tipo){
 
 			plataformaId = element.id.substr(25,1);
 
-			tiempoDesarrollo = 10;
+			tiempoDesarrollo = 1;
 			funcionObjetivo = "ensamblarMision";
 
 			document.getElementById("plataforma" + plataformaId).getElementsByTagName("h5")[0].style.color = "black";
@@ -1690,7 +1691,7 @@ function desarrollarPrograma(id) {
 function mejorarPrograma(id) {
 
 	var programaId = id;
-	var mejora = Math.floor(Math.random() * 15);
+	let mejora = Math.floor(Math.random() * 15);
 
 	programas[programaId].seguridad = programas[programaId].seguridad + mejora;
 	document.getElementById("seguridadPrograma" + programaId).innerHTML = programas[programaId].seguridad;
@@ -1875,6 +1876,7 @@ function cancelarMision(id) {
 function lanzamiento(id){
 
 	let plataformaId = id;
+	let misionId = plataformas[plataformaId].mision;
 	let misionProgramada = plataformas[plataformaId].misionProgramada;
 	//console.log(misionProgramada);
 
@@ -1904,27 +1906,89 @@ function lanzamiento(id){
 	botonConfirmarLanzamiento.addEventListener("click", function(){
 
 		document.getElementById("fasesMision").style.display = "block";
-		document.getElementById("fasesMision").innerHTML = "FASES";
+		document.getElementById("fasesMision").innerHTML = "<h5>FASES</h5>";
+
+		let estado = 1;
+		let resultadoFinal;
+		let penalizacion = 0;
+
+		//Por cada fase de la misión.
+		for (let propiedad in misiones[misionId].fases) {
+
+			//Éxito misión.
+			//Según el tipo de componente para esta fase se buscan los datos correspondientes. - PENDIENTE
+			let seguridadComponente = 25;
+			let experienciaComponente = 25;
+			let experienciaFase = 25;
+			//Todo lo anterior hay que buscarlo en los correspondientes arrays. - PENDIENTE
+
+			let resultado = "";
+
+			//Si la misión sigue activa.
+			if (estado > 0) {
+
+				let sumaSeguridades = (seguridadComponente + experienciaComponente + experienciaFase) - penalizacion;
+				let resultadoComparacion = sumaSeguridades - Math.floor((Math.random() * 100) + 1);
+
+				//Éxito.
+				if (resultadoComparacion > 0) {
+					resultado = "éxito (" + resultadoComparacion + ") (penalizacion: " + penalizacion + ")";
+					if (penalizacion > 0) {
+						penalizacion -= 5;
+					}
+					if (estado == 1) {
+						resultadoFinal = "ÉXITO TOTAL";
+					}
+				}
+				else {
+					//Fallo parcial.
+					if (resultadoComparacion > -15) {
+						resultado = "fallo parcial (" + resultadoComparacion + ") (penalizacion: " + penalizacion + ")";
+						resultadoFinal = "ÉXITO PARCIAL";
+						penalizacion += 10;
+						estado = 2;
+					}
+					//Fallo total.
+					else {
+						resultado = "fallo (" + resultadoComparacion + ") (penalizacion: " + penalizacion + ")";
+						resultadoFinal = "FALLO TOTAL";
+						estado = 0;
+					}
+				}
+
+			} //Fin si la misión sigue activa.
+
+			//Si la misión ha fallado.
+			else {
+				resultado = "-";
+				//resultadoFinal = "FALLO TOTAL";
+			}
+
+			document.getElementById("fasesMision").innerHTML += "<p>" + misiones[misionId].fases[propiedad].nombre + ": " + resultado + "</p>";
+
+		}
+
+		document.getElementById("fasesMision").innerHTML += "<p>" + resultadoFinal + "</p>";
+
+		//EXPERIENCIA. - PENDIENTE
+		//PRESTIGIO. - PENDIENTE
+		//Modificar misión en array de misiones programadas. - PENDIENTE
+
+		//Liberar plataforma.
+		plataformas[plataformaId].libre = true;
+		plataformas[plataformaId].estado = 0;
+		plataformas[plataformaId].mision = -1;
+
+	}) //Fin botón confirmar lanzamiento.
+
+	//Botón cancelar lanzamiento (al pinchar lanza la función de cancelación de la misión).
+	document.getElementById("botonCancelarLanzamiento").style.display = "block";
+
+	botonCancelarLanzamiento.addEventListener("click", function(){
 
 	})
 
-
-
-
-
-	//Liberar plataforma.
-	plataformas[plataformaId].libre = true;
-	plataformas[plataformaId].estado = 0;
-	plataformas[plataformaId].mision = -1;
-
 }
-
-
-
-
-
-
-
 
 //Fin misiones activas.
 
@@ -1999,9 +2063,13 @@ function interval() {
 
 	  for (var j = 0; j < arrayEventosLength; j++){
 
-			//Si el evento no ha llegado a cero y no está pausado
-			if ((eventos[j].tiempoRestante > 0) && (eventos[j].estado == 1)){
+			if (modoDesarrollo = true) {
+				eventos[j].tiempoRestante = 0;
+			}
 
+			//Si el evento no ha llegado a cero y no está pausado o finalizado.
+			if ((eventos[j].tiempoRestante > 0) && (eventos[j].estado > 0)){
+			//if ((eventos[j].tiempoRestante > 0) && (eventos[j].estado == 1)){
 				eventos[j].tiempoRestante = eventos[j].tiempoRestante - 1;
 
 				//PROGRESO DEL EVENTO
@@ -2100,10 +2168,11 @@ function interval() {
 			}
 
 			//Si el evento llega a cero lanza función
-			else if (eventos[j].tiempoRestante == 0) {
+			//else if ((eventos[j].tiempoRestante == 0) || (modoDesarrollo = true)) {
 
-				//Se pone a -1 para que no se vuelva a ejecutar como si llegara a cero
-				eventos[j].tiempoRestante = -1;
+			else if ((eventos[j].tiempoRestante == 0) && (eventos[j].estado > 0)) {
+
+				eventos[j].estado = 0;
 
 				switch (eventos[j].funcion) {
 
