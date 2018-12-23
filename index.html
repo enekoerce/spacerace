@@ -203,7 +203,7 @@
 		margin: 10px;
 	}
 
-	#programas > div, #misiones > div {
+	#programas > table > div, #misiones > div {
 		float: left;
 		width: 170px;
 		height: 95px;
@@ -253,12 +253,21 @@
 	}
 	*/
 
-	#programas > div h4:hover ~ .datosProgramas, #misiones > div h4:hover ~ .datosMisiones {
+	#programas > table > div h4:hover ~ .datosProgramas, #misiones > div h4:hover ~ .datosMisiones {
 		visibility: visible;
 		opacity: 1;
 		border: 1px solid white;
 		z-index: 10;
 	}
+
+		#programas > table {
+			font-size: 80%;
+			text-align: right;
+		}
+
+		#programas > table td {
+			border: 1px solid white;
+		}
 
 </style>
 
@@ -391,6 +400,9 @@
 <hr />
 
 	<div id="programas">
+		<h3>Programas</h3>
+		<table>
+		</table>
 	</div>
 
 	<div id="misiones">

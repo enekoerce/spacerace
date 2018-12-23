@@ -510,16 +510,94 @@ function lanzarJuego(){
 
 function montarProgramas(){
 
-	var montarHTMLProgramas = "<h3>Programas</h3>"
+	var montarHTMLProgramas = "";
 	var longitudArrayProgramas = programas.length;
 	var mostrarPrograma = "";
 
+	montarHTMLProgramas += '<tr style="font-style: italic;">';
+	montarHTMLProgramas += '<td>';
+	montarHTMLProgramas += 'Nombre';
+	montarHTMLProgramas += '</td>';
+
+	montarHTMLProgramas += '<td>Seg.</td>';
+	montarHTMLProgramas += '<td>Peso</td>';
+	montarHTMLProgramas += '<td>Cap.</td>';
+	montarHTMLProgramas += '<td>Des.</td>';
+	montarHTMLProgramas += '<td>Desb.</td>';
+	montarHTMLProgramas += '<td>Mej.</td>';
+	montarHTMLProgramas += '<td>Fab.</td>';
+	montarHTMLProgramas += '<td>Unid.</td>';
+	montarHTMLProgramas += '<td>Equi.</td>';
+
+	montarHTMLProgramas += '<td>';
+	montarHTMLProgramas += 'Botones';
+	montarHTMLProgramas += '</td>';
+
+	montarHTMLProgramas += '</tr>';
+
 	for(var i=0; i<longitudArrayProgramas; i++){
 
-		montarHTMLProgramas += '<div id="programa' + i + '">';
+		montarHTMLProgramas += '<tr id="programa' + i + '">';
 
-		montarHTMLProgramas += '<h4>Programa ' + programas[i].nombreJuego + '</h4>';
-		montarHTMLProgramas += '<h5>Sin desarrollar</h5>';
+		montarHTMLProgramas += '<td>';
+		montarHTMLProgramas += '<h4>' + programas[i].nombreJuego + '</h4>';
+		montarHTMLProgramas += '<h5>';
+		montarHTMLProgramas += 'Sin desarrollar';
+		montarHTMLProgramas += '</h5>';
+		montarHTMLProgramas += '</td>';
+
+
+
+		//montarHTMLProgramas += '<div class="">';
+
+
+
+		montarHTMLProgramas += '<td><span id="seguridadPrograma' + i + '">0</span>%</td>';
+		montarHTMLProgramas += '<td>' + programas[i].peso + '</td>';
+		montarHTMLProgramas += '<td>' + programas[i].capacidad + '</td>';
+
+
+
+
+
+		montarHTMLProgramas += '<td><span id="costeDesarrolloPrograma' + i + '">' + programas[i].costeDesarrollo + '</span> - ';
+
+		montarHTMLProgramas += '<span id="tiempoDesarrolloPrograma' + i + '">' + programas[i].tiempoDesarrollo + '</span></td>';
+		montarHTMLProgramas += '<td>';
+
+		var textoDesbloquea = false;
+
+		for(var j = 0; j < programas.length; j++){
+			if(programas[j].requisitoPrograma == i){
+				if(!textoDesbloquea) {
+					montarHTMLProgramas += programas[j].nombreJuego;
+					textoDesbloquea = true;
+				}
+				else {
+					montarHTMLProgramas += ', ' + programas[j].nombreJuego;
+				}
+			}
+		}
+
+		if (textoDesbloquea == false){
+			montarHTMLProgramas += '-';
+		}
+		montarHTMLProgramas += '</td>';
+
+		montarHTMLProgramas += '<td><span id="costeMejoraPrograma' + i + '">' + programas[i].costeMejora + '</span></td>';
+		montarHTMLProgramas += '<td><span id="costeFabricacionComponente' + i + '">' + programas[i].costeFondosFabricacion + '</span> - ';
+		montarHTMLProgramas += '<span id="materialesFabricacionComponente' + i + '">' + programas[i].costeMaterialesFabricacion + '</span> - ';
+		montarHTMLProgramas += '<span id="tiempoFabricacionComponente' + i + '">' + programas[i].tiempoFabricacion + '</span></td>';
+		montarHTMLProgramas += '<td><span id="unidadesPrograma' + i + '">' + programas[i].unidades + '</span></td>';
+		montarHTMLProgramas += '<td><span id="equiposPrograma' + i + '">' + programas[i].equiposTrabajo + '</span> / <span id="equiposNecesarios' + i + '">' + programas[i].equiposNecesarios + '</span></td>';
+
+		montarHTMLProgramas += '</td>';
+
+		//montarHTMLProgramas += '</div>';
+
+
+
+		montarHTMLProgramas += '<td>';
 
 		montarHTMLProgramas += '<div class="botonesProgramas">';
 		montarHTMLProgramas += '<button id="botonDesarrollarPrograma' + i + '" class="botonesDesarrollarProgramas" title="Desarrollar programa (fondos: ' + programas[i].costeDesarrollo + '; tiempo: ' + programas[i].tiempoDesarrollo + ')">';
@@ -545,52 +623,27 @@ function montarProgramas(){
 		montarHTMLProgramas += '</button>';
 		montarHTMLProgramas += '</div>';
 
-		montarHTMLProgramas += '<div class="datosProgramas">';
-		montarHTMLProgramas += '<p>· Seguridad: <span id="seguridadPrograma' + i + '">0</span>%</p>';
-		montarHTMLProgramas += '<p>· Peso: ' + programas[i].peso + '</p>';
-		montarHTMLProgramas += '<p>· Capacidad: ' + programas[i].capacidad + '</p>';
-		montarHTMLProgramas += '<p>· Desarrollo:</p>';
-		montarHTMLProgramas += '<p>Coste: <span id="costeDesarrolloPrograma' + i + '">' + programas[i].costeDesarrollo + '</span> | Tiempo: <span id="tiempoDesarrolloPrograma' + i + '">' + programas[i].tiempoDesarrollo + '</span></p>';
-		montarHTMLProgramas += '<p>· Desbloquea: ';
+		montarHTMLProgramas += '</td>';
 
-		var textoDesbloquea = false;
+		/*
 
-		for(var j = 0; j < programas.length; j++){
-			if(programas[j].requisitoPrograma == i){
-				if(!textoDesbloquea) {
-					montarHTMLProgramas += 'Programa ' + programas[j].nombreJuego;
-					textoDesbloquea = true;
-				}
-				else {
-					montarHTMLProgramas += ', Programa ' + programas[j].nombreJuego;
-				}
-			}
-		}
 
-		if (textoDesbloquea == false){
-			montarHTMLProgramas += '-';
-		}
 
-		montarHTMLProgramas += '</p>';
-		montarHTMLProgramas += '<p>· Coste mejora: <span id="costeMejoraPrograma' + i + '">' + programas[i].costeMejora + '</span></p>';
-		montarHTMLProgramas += '<p>· Fabricación:</p>';
-		montarHTMLProgramas += '<p>Cos: <span id="costeFabricacionComponente' + i + '">' + programas[i].costeFondosFabricacion + '</span> | Mat: <span id="materialesFabricacionComponente' + i + '">' + programas[i].costeMaterialesFabricacion + '</span> | Tie: <span id="tiempoFabricacionComponente' + i + '">' + programas[i].tiempoFabricacion + '</span></p>';
-		montarHTMLProgramas += '<p>· Unidades: <span id="unidadesPrograma' + i + '">' + programas[i].unidades + '</span></p>';
-		montarHTMLProgramas += '<p>· Equipos trabajo: <span id="equiposPrograma' + i + '">' + programas[i].equiposTrabajo + '</span> / <span id="equiposNecesarios' + i + '">' + programas[i].equiposNecesarios + '</span></p>';
-		montarHTMLProgramas += '</div>';
 
-		montarHTMLProgramas += '</div>';
+		*/
+
+		montarHTMLProgramas += '</tr>';
 
 	}
 
-	document.getElementById("programas").innerHTML = montarHTMLProgramas;
+	document.getElementById("programas").getElementsByTagName("table")[0].innerHTML = montarHTMLProgramas;
 
-	//Asignar imágenes y ocultar programas bloqueados (una vez creados los nodos HTML).
+	//Asignar imágenes y ocultar programas bloqueados (se repite el bucle porque tiene que hacerse una vez creados los nodos HTML en el bucle anterior).
 	for(var i=0; i<longitudArrayProgramas; i++){
-			document.getElementById("programa" + i).style.backgroundImage = "url('imagenes/" + programas[i].nombreJuego + ".jpg')";
-			document.getElementById("programa" + i).style.backgroundSize = "cover";
+			//document.getElementById("programa" + i).style.backgroundImage = "url('imagenes/" + programas[i].nombreJuego + ".jpg')";
+			//document.getElementById("programa" + i).style.backgroundSize = "cover";
 
-			mostrarPrograma = (programas[i].desbloqueado) ? "block" : "none";
+			mostrarPrograma = (programas[i].desbloqueado) ? "table-row" : "none";
 			document.getElementById("programa" + i).style.display = mostrarPrograma;
 
 	}

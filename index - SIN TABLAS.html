@@ -1,0 +1,415 @@
+
+<html>
+
+<head>
+
+<link href='https://fonts.googleapis.com/css?family=Aldrich' rel='stylesheet'>
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+<style>
+
+	body {
+		margin: 0ps;
+		padding: 0px;
+		background: black;
+		color: white;
+		font-family: Arial;
+		font-size: 14px;
+	}
+
+	#titulo {
+		float: left;
+		margin-right: 10px;
+	}
+
+	#titulo span#dia {
+		display: inline-block;
+		width: 30px;
+		text-align: right;
+	}
+
+	h1, h2 {
+		margin: 0 0 10px 0;
+		font-weight: normal;
+	}
+
+	h1, h2, h3, h4, h5, h6 {
+		font-family: 'Aldrich';
+	}
+
+	#datos {
+		clear: both;
+	}
+
+	h3 {
+		margin: 0 0 0px 0;
+		padding: 5px;
+		background: #666666;
+		color: white;
+	}
+
+	h4 {
+		margin: 0 0 0px 0;
+		padding: 5px;
+		background: white;
+		color: black;
+	}
+
+	h5 {
+		margin: 0 0 0px 0;
+		padding: 2px;
+		font-weight: normal;
+		background: silver;
+		color: black;
+	}
+
+	hr {
+		clear: both;
+	}
+
+	p {
+		margin: 5px;
+	}
+
+	button {
+		background: white;
+		color: black;
+		border: 1px solid black;
+		margin: 5px 5px 5px 0;
+		padding: 7px;
+	}
+
+	.botonesProgramas button, .botonesMisiones button, .botonesPlataformas button {
+		width: 40px;
+		height: 40px;
+		font-size: 10px;
+	}
+
+	button:disabled {
+		background: black;
+		color: white;
+		border: 1px solid white;
+	}
+
+	.miniIconos {
+		font-size: 18px;
+	}
+
+	div.botonesProgramas, div.botonesMisiones, div.botonesPlataformas div {
+		float: left;
+		width: 23%;
+		margin: 3px 3px 3px 0;
+	}
+
+	.mostrar {
+		display: block;
+	}
+
+	.ocultar {
+		display: none;
+	}
+
+	#botonAbrirVentanaMenu, .textoSeguridadProgramas, #contenidoCartelMensajes {
+		visibility: hidden;
+	}
+
+	#ventanaMenu, #ventanaJuego, #ventanaModal, #confirmarEnsamblaje, #ventanaEnsamblaje #ventanaLanzamiento, #areaDesarrollo, #fasesMision {
+		display: none;
+	}
+
+	#ventanaModal, #ventanaMenu {
+		position: relative;
+		width: 50%;
+		height: 50%;
+		margin: auto auto;
+		padding: 20px;
+		background: white;
+		color: black;
+		border: 20px solid red;
+	}
+
+	#ventanaEnsamblaje {
+		padding: 20px;
+	}
+
+	#ventanaLanzamiento {
+		padding: 20px;
+		border: 1px solid black;
+	}
+
+	#fasesMision {
+		margin: 10px;
+		padding: 10px;
+		border: 5px solid gray;
+		background: black;
+		color: white;
+	}
+
+	#botonCerrarVentanaModal, #botonCerrarVentanaMenu {
+		position: absolute;
+		right: 10px;
+		background: black;
+		color: white;
+	}
+
+	#areaBotones {
+		float: right;
+	}
+
+	#areaDesarrollo	{
+		background: #666;
+		border-bottom: 3px solid white;
+		margin-bottom: 20px;
+		padding: 10px;
+	}
+
+	#programas, #misiones {
+		float: left;
+		width: 35%;
+		border: 5px solid #666666;
+		/*padding: 10px;*/
+		margin: 10px;
+	}
+
+	#plataformas {
+		float: left;
+		width: 20%;
+		border: 5px solid #666666;
+		/*padding: 10px;*/
+		margin: 10px;
+	}
+
+	#plataformas > div {
+		background: #333333;
+		outline: 1px solid black;
+		/*margin: 2px;*/
+		display: table;
+		width: 100%;
+		box-sizing: border-box;
+	}
+
+	.titulosPlataformas, .botonesPlataformas {
+		float: left;
+		width: 50%;
+		padding: 5px;
+		box-sizing: border-box;
+	}
+
+	#misionesProgramadas {
+		float: left;
+		width: 20%;
+		border: 5px solid #666666;
+		/*padding: 10px;*/
+		margin: 10px;
+	}
+
+	#programas > div, #misiones > div {
+		float: left;
+		width: 170px;
+		height: 95px;
+		border: 5px solid silver;
+		padding: 10px;
+		margin: 10px;
+		overflow: visible;
+	}
+
+	#programas div.datosProgramas, #misiones div.datosMisiones {
+		clear: both;
+		background: black;
+		opacity: 0.7;
+		margin: 5px;
+		padding: 5px;
+		font-size: 12px;
+	}
+
+	#programas div, #misiones div {
+		/*position: relative;*/
+		/*display: inline-block;*/
+		z-index: 1;
+	}
+
+	.datosProgramas, .datosMisiones {
+		visibility: hidden;
+		border-radius: 6px;
+		padding: 5px 0;
+		/*position: absolute;*/
+		bottom: 0%;
+		left: 100%;
+		margin-left: -60px;
+		opacity: 1;
+		transition: opacity 0.3s;
+	}
+
+	/*
+	.datosProgramas::after, .datosMisiones::after {
+		content: "";
+		position: absolute;
+		top: 100%;
+		left: 50%;
+		margin-left: -5px;
+		border-width: 5px;
+		border-style: solid;
+		border-color: #555 transparent transparent transparent;
+	}
+	*/
+
+	#programas > div h4:hover ~ .datosProgramas, #misiones > div h4:hover ~ .datosMisiones {
+		visibility: visible;
+		opacity: 1;
+		border: 1px solid white;
+		z-index: 10;
+	}
+
+</style>
+
+</head>
+
+<body>
+
+<button id="botonLanzarJuego">Lanzar juego</button>
+
+<!--VENTANA MEN�-->
+
+<div id="ventanaMenu">
+
+	<button id="botonCerrarVentanaMenu"><i class='material-icons'>not_interested</i></button>
+
+	MEN�
+
+</div>
+
+<!--FIN VENTANA MEN�-->
+
+<!--VENTANA EMERGENTE-->
+
+<div id="ventanaModal">
+
+	<button id="botonCerrarVentanaModal" title="Cerrar ventana"><i class='material-icons'>not_interested</i></button>
+
+	<div id="textoVentanaModal">CAJA TEXTO</div>
+
+	<!--ENSAMBLAJE-->
+
+	<div id="ventanaEnsamblaje">
+
+		Cohete:
+		<select id="selectCohete">
+		<option value="-">-</option>
+		</select>
+
+		&nbsp;&nbsp;&nbsp;
+
+		Carga:
+		<select id="selectCarga">
+		<option value="-">-</option>
+		</select>
+
+		&nbsp;&nbsp;&nbsp;
+
+		<button id="botonConfirmarEnsamblaje" title="Confirmar ensamblaje"><i class='material-icons'>check_circle</i></button>
+
+		<hr />
+
+		<div id="componentesSeleccionados">
+
+		</div>
+
+		&nbsp;&nbsp;&nbsp;
+
+		<div id="datosCoheteSeleccionado">
+
+		</div>
+
+		&nbsp;&nbsp;&nbsp;
+
+		<div id="datosCargaSeleccionada">
+
+		</div>
+
+	</div>
+
+	<!--FIN ENSAMBLAJE-->
+
+	<div id="ventanaLanzamiento">
+
+		<button id="botonConfirmarLanzamiento" title="LANZAMIENTO"><i class='material-icons'>check_circle</i></button>
+		<button id="botonCancelarLanzamiento" title="Cancelar lanzamiento"><i class='material-icons'>not_interested</i></button>
+
+		<div id="fasesMision">
+
+		</div>
+
+	</div>
+
+</div>
+
+<!--FIN VENTANA EMERGENTE-->
+
+<!--VENTANA JUEGO-->
+
+<div id="ventanaJuego">
+
+	<div id="areaDesarrollo">
+
+		<button id="botonFondosModoDesarrollo"><i class='material-icons'>attach_money</i></button>
+		<button id="botonMaterialesModoDesarrollo"><i class='material-icons'>build</i></button>
+		<button id="botonEquiposModoDesarrollo"><i class='material-icons'>group</i></button>
+		<button id="botonMisionModoDesarrollo"><i class='material-icons'>flight_takeoff</i></button>
+
+	</div>
+
+	<div id="areaBotones">
+
+		<button id="botonAbrirVentanaMenu" style="float: right;"><i class='material-icons'>menu</i></button>
+		<button id="botonPausar" style="float: right;"><i class='material-icons'>pause</i></button>
+
+		<hr />
+
+		<button id="" style="float: right;">Control de misiones</button>
+		<button id="" style="float: right;">Historia espacial</button>
+		<button id="" style="float: right;">Exploraci�n</button>
+
+	</div>
+
+	<div id="areaDatos">
+
+		<div id="titulo">
+			<h1>Space Race</h1>
+			<h2><span id="dia"></span> <span id="mes"></span> <span id="anio"></span></h2>
+		</div>
+
+		<div id="datos">
+			<p>
+			<span id="fondos">0</span> <i class="material-icons miniIconos">attach_money</i> |
+			<span id="materiales">0</span> <i class="material-icons miniIconos">build</i> |
+			<span id="equipos">0</span> <i class="material-icons miniIconos">group</i> |
+			<span id="prestigio">50</span> <i class="material-icons miniIconos">grade</i></p>
+		</div>
+
+  </div>
+
+<hr />
+
+	<div id="programas">
+	</div>
+
+	<div id="misiones">
+	</div>
+
+	<div id="plataformas">
+	</div>
+
+	<div id="misionesProgramadas">
+	</div>
+
+	<div id="contenidoCartelMensajes" style="border: 1px solid #666; padding: 10px; margin: 10px; float: right; width: 70%;"></div>
+
+  </div>
+
+<!--FIN VENTANA JUEGO-->
+
+<script type="text/javascript" src="main.js"></script>
+
+</body>
+
+</html>
