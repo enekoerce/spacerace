@@ -19,6 +19,13 @@ var materiales = 40;
 var equipos = 2;
 var prestigio = 50;
 
+if(modoDesarrollo) {
+	var fondos = 400;
+	var materiales = 400;
+	var equipos = 20;
+	var prestigio = 500;
+}
+
 //---------------------------------------
 
 //ARRAY PROGRAMAS
@@ -26,15 +33,15 @@ var programas = [
 	{
 		nombre: "programa0",
 		nombreJuego: "Atlas",
-		tipo: 1,
-		nivel: 1,
-		peso: 0,
-		capacidad: 400,
-		desarrollado: 0,
-		desbloqueado: true,
+		tipo: 1, // 1-> Cohete; 2-> Satélite; 3-> Cápsula.
+		nivel: 1, // 1-> Atlas/Mercury; 2-> X/Gemini; 3-> Saturn/Apolo.
+		peso: 0, // 0 si es cohete.
+		capacidad: 400, // 0 si no es cohete.
+		desarrollado: 0, // Todos empiezan a cero hasta que se investigan.
+		desbloqueado: true, // True-> Aparece desde el principio; False-> Requiere de que otro programa se desarrolle antes.
 		costeDesarrollo: 10,
 		tiempoDesarrollo: 10,
-		requisitoPrograma: "-",
+		requisitoPrograma: "-", // ID del programa que se tiene que desarrollar previamente.
 		seguridad: 10,
 		seguridadMaxima: 90,
 		costeMejora: 10,
@@ -42,8 +49,8 @@ var programas = [
 		costeFondosFabricacion: 5,
 		costeMaterialesFabricacion: 5,
 		tiempoFabricacion: 10,
-		equiposNecesarios: 1,
-		equiposTrabajo: 1,
+		equiposNecesarios: 1, // Mínimo de equipos necesarios. - ¿PARA SU DESARROLLO? ¿PARA SU FUNCIONAMIENTO? - PENDIENTE.
+		equiposTrabajo: 1, // Equipos asignados.
 		unidades: 1
 	},
 	{
@@ -146,9 +153,9 @@ var programas = [
 var misiones = [
 	{
 		nombre: "mision0",
-		nombreJuego: "Satélite orbital",
-		nivel: 1,
-		tipoCarga: 2,
+		nombreJuego: "Cohete espacial",
+		nivel: 1, // Nivel mínimo de los componentes necesarios para esta misión.
+		tipoCarga: 0, // ¿? - PENDIENTE.
 		experiencia: 0,
 		desarrollado: 0,
 		desbloqueado: true,
@@ -162,22 +169,19 @@ var misiones = [
 		prestigioCancelar: 3,
 		equiposNecesarios: 1,
 		equiposTrabajo: 1,
-		tiempoCuentaAtras: 1,
+		tiempoCuentaAtras: 10,
 		fases: [
 			{nombre: "Encendido", componente: 1},
 			{nombre: "Despegue", componente: 1},
-			{nombre: "Espacio", componente: 1},
-			{nombre: "Órbita", componente: 1},
-			{nombre: "Despliegue carga",	componente: 1},
-			{nombre: "Encendido carga", componente: 2}
+			{nombre: "Espacio", componente: 1}
 		],
 		vecesProgramada: 0
 	},
 	{
 		nombre: "mision1",
-		nombreJuego: "Vuelo suborbital NT",
+		nombreJuego: "Satélite orbital",
 		nivel: 1,
-		tipoCarga: 3,
+		tipoCarga: 2,
 		experiencia: 0,
 		desarrollado: 0,
 		desbloqueado: false,
@@ -192,11 +196,19 @@ var misiones = [
 		equiposNecesarios: 1,
 		equiposTrabajo: 1,
 		tiempoCuentaAtras: 10,
+		fases: [
+			{nombre: "Encendido", componente: 1},
+			{nombre: "Despegue", componente: 1},
+			{nombre: "Espacio", componente: 1},
+			{nombre: "Órbita", componente: 1},
+			{nombre: "Despliegue carga",	componente: 1},
+			{nombre: "Encendido carga", componente: 2}
+		],
 		vecesProgramada: 0
 	},
 	{
 		nombre: "mision2",
-		nombreJuego: "Vuelo suborbital T",
+		nombreJuego: "Vuelo suborbital NT",
 		nivel: 1,
 		tipoCarga: 3,
 		experiencia: 0,
@@ -213,11 +225,19 @@ var misiones = [
 		equiposNecesarios: 1,
 		equiposTrabajo: 1,
 		tiempoCuentaAtras: 10,
+		fases: [
+			{nombre: "Encendido", componente: 1},
+			{nombre: "Despegue", componente: 1},
+			{nombre: "Espacio", componente: 1},
+			{nombre: "Despliegue carga",	componente: 1},
+			{nombre: "Reentrada", componente: 2},
+			{nombre: "Aterrizaje", componente: 2}
+		],
 		vecesProgramada: 0
 	},
 	{
 		nombre: "mision3",
-		nombreJuego: "Vuelo orbital NT",
+		nombreJuego: "Vuelo suborbital T",
 		nivel: 1,
 		tipoCarga: 3,
 		experiencia: 0,
@@ -225,7 +245,7 @@ var misiones = [
 		desbloqueado: false,
 		costeDesarrollo: 10,
 		tiempoDesarrollo: 5,
-		requisitoMision: 0,
+		requisitoMision: 2,
 		seguridad: 10,
 		seguridadMaxima: 90,
 		costeMejora: 10,
@@ -234,6 +254,45 @@ var misiones = [
 		equiposNecesarios: 1,
 		equiposTrabajo: 1,
 		tiempoCuentaAtras: 10,
+		fases: [
+			{nombre: "Encendido", componente: 1},
+			{nombre: "Despegue", componente: 1},
+			{nombre: "Espacio", componente: 1},
+			{nombre: "Despliegue carga",	componente: 1},
+			{nombre: "Reentrada", componente: 2},
+			{nombre: "Aterrizaje", componente: 2}
+		],
+		vecesProgramada: 0
+	},
+	{
+		nombre: "mision4",
+		nombreJuego: "Vuelo orbital NT",
+		nivel: 1,
+		tipoCarga: 3,
+		experiencia: 0,
+		desarrollado: 0,
+		desbloqueado: false,
+		costeDesarrollo: 10,
+		tiempoDesarrollo: 5,
+		requisitoMision: 1,
+		seguridad: 10,
+		seguridadMaxima: 90,
+		costeMejora: 10,
+		tiempoMejora: 10,
+		prestigioCancelar: 3,
+		equiposNecesarios: 1,
+		equiposTrabajo: 1,
+		tiempoCuentaAtras: 10,
+		fases: [
+			{nombre: "Encendido", componente: 1},
+			{nombre: "Despegue", componente: 1},
+			{nombre: "Espacio", componente: 1},
+			{nombre: "Órbita", componente: 1},
+			{nombre: "Despliegue carga",	componente: 1},
+			{nombre: "Actividades órbita",	componente: 1},
+			{nombre: "Reentrada", componente: 2},
+			{nombre: "Aterrizaje", componente: 2}
+		],
 		vecesProgramada: 0
 	}
 ];
@@ -1949,9 +2008,11 @@ function lanzamiento(id){
 
 	//Abrir ventana modal parando el timer.
 	abrirVentanaModal(textoVentanaModal);
+	document.getElementById("botonCerrarVentanaModal").style.display = "none"; //El botón de cerrar ventana no aparece, sólo existen los botones de aceptar o cancelar lanzamiento.
 
 	//Mostrar/ocultar elementos.
 	document.getElementById("ventanaLanzamiento").style.display = "block";
+	document.getElementById("fasesMision").innerHTML = ""; //Para borrar la información que quedó impresa en pantalla en el lanzamiento anterior.
 
 	//Botón lanzamiento (al pinchar lanza la función de ejecución de la misión).
 	document.getElementById("botonConfirmarLanzamiento").style.display = "block";
@@ -2022,6 +2083,13 @@ function lanzamiento(id){
 		}
 
 		document.getElementById("fasesMision").innerHTML += "<p>" + resultadoFinal + "</p>";
+
+		//Mostrar/ocultar botones.
+		document.getElementById("botonCerrarVentanaModal").style.display = "block";
+		if(!modoDesarrollo) {
+			document.getElementById("botonConfirmarLanzamiento").style.display = "none";
+		}
+		document.getElementById("botonCancelarLanzamiento").style.display = "none";
 
 		//EXPERIENCIA. - PENDIENTE
 		//PRESTIGIO. - PENDIENTE
