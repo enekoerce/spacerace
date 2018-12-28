@@ -1,0 +1,9 @@
+0 - ALPHA
+---------
+
+0.5.1 - Añadir prestigio.
+
+
+0.6 - Presupuesto anual (cada 1 de abril).
+
+
