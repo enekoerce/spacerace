@@ -30,9 +30,20 @@ if(modoDesarrollo) {
 
 //ARRAY PROGRAMAS
 var programas = [
+	// 0-> Vanguard/Juno
+	// 1-> Redstone/Atlas
+	// 2-> Atlas II
+	// 3-> Saturn V
+	// 4-> Explorer
+	// 5-> Ranger
+	// 6-> Mariner
+	// 7-> Mercury
+	// 8-> Gemini
+	// 9-> Apollo
 	{
+		id: 0,
 		nombre: "programa0",
-		nombreJuego: "Atlas",
+		nombreJuego: "Vanguard/Juno",
 		tipo: 1, // 1-> Cohete; 2-> Satélite; 3-> Cápsula.
 		nivel: 1, // 1-> Atlas/Mercury; 2-> X/Gemini; 3-> Saturn/Apolo.
 		peso: 0, // 0 si es cohete.
@@ -51,11 +62,24 @@ var programas = [
 		tiempoFabricacion: 10,
 		equiposNecesarios: 1, // Mínimo de equipos necesarios. - ¿PARA SU DESARROLLO? ¿PARA SU FUNCIONAMIENTO? - PENDIENTE.
 		equiposTrabajo: 1, // Equipos asignados.
-		unidades: 1
+		unidades: 1,
+		experiencia: 0,
+		experienciaFases: [
+			{nombre: "Encendido", experiencia: 0},
+			{nombre: "Despegue", experiencia: 0},
+			{nombre: "Espacio", experiencia: 0},
+			{nombre: "Órbita", experiencia: 0},
+			{nombre: "Despliegue carga",	experiencia: 0},
+			{nombre: "Encendido carga", experiencia: 0},
+			{nombre: "Actividades órbita",	experiencia: 0},
+			{nombre: "Reentrada", experiencia: 0},
+			{nombre: "Aterrizaje", experiencia: 0}
+		],
 	},
 	{
+		id: 1,
 		nombre: "programa1",
-		nombreJuego: "Juno",
+		nombreJuego: "Redstone/Atlas",
 		tipo: 1,
 		nivel: 1,
 		peso: 0,
@@ -74,9 +98,22 @@ var programas = [
 		tiempoFabricacion: 10,
 		equiposNecesarios: 1,
 		equiposTrabajo: 1,
-		unidades: 1
+		unidades: 1,
+		experiencia: 0,
+		experienciaFases: [
+			{nombre: "Encendido", experiencia: 0},
+			{nombre: "Despegue", experiencia: 0},
+			{nombre: "Espacio", experiencia: 0},
+			{nombre: "Órbita", experiencia: 0},
+			{nombre: "Despliegue carga",	experiencia: 0},
+			{nombre: "Encendido carga", experiencia: 0},
+			{nombre: "Actividades órbita",	experiencia: 0},
+			{nombre: "Reentrada", experiencia: 0},
+			{nombre: "Aterrizaje", experiencia: 0}
+		],
 	},
 	{
+		id: 2,
 		nombre: "programa2",
 		nombreJuego: "Explorer",
 		tipo: 2,
@@ -97,9 +134,22 @@ var programas = [
 		tiempoFabricacion: 10,
 		equiposNecesarios: 1,
 		equiposTrabajo: 1,
-		unidades: 1
+		unidades: 1,
+		experiencia: 0,
+		experienciaFases: [
+			{nombre: "Encendido", experiencia: 0},
+			{nombre: "Despegue", experiencia: 0},
+			{nombre: "Espacio", experiencia: 0},
+			{nombre: "Órbita", experiencia: 0},
+			{nombre: "Despliegue carga",	experiencia: 0},
+			{nombre: "Encendido carga", experiencia: 0},
+			{nombre: "Actividades órbita",	experiencia: 0},
+			{nombre: "Reentrada", experiencia: 0},
+			{nombre: "Aterrizaje", experiencia: 0}
+		],
 	},
 	{
+		id: 3,
 		nombre: "programa3",
 		nombreJuego: "Mercury",
 		tipo: 3,
@@ -120,9 +170,22 @@ var programas = [
 		tiempoFabricacion: 10,
 		equiposNecesarios: 2,
 		equiposTrabajo: 1,
-		unidades: 1
+		unidades: 1,
+		experiencia: 0,
+		experienciaFases: [
+			{nombre: "Encendido", experiencia: 0},
+			{nombre: "Despegue", experiencia: 0},
+			{nombre: "Espacio", experiencia: 0},
+			{nombre: "Órbita", experiencia: 0},
+			{nombre: "Despliegue carga",	experiencia: 0},
+			{nombre: "Encendido carga", experiencia: 0},
+			{nombre: "Actividades órbita",	experiencia: 0},
+			{nombre: "Reentrada", experiencia: 0},
+			{nombre: "Aterrizaje", experiencia: 0}
+		],
 	},
 	{
+		id: 4,
 		nombre: "programa4",
 		nombreJuego: "Gemini",
 		tipo: 3,
@@ -143,9 +206,31 @@ var programas = [
 		tiempoFabricacion: 10,
 		equiposNecesarios: 3,
 		equiposTrabajo: 1,
-		unidades: 1
+		unidades: 1,
+		experiencia: 0,
+		experienciaFases: [
+			{nombre: "Encendido", experiencia: 0},
+			{nombre: "Despegue", experiencia: 0},
+			{nombre: "Espacio", experiencia: 0},
+			{nombre: "Órbita", experiencia: 0},
+			{nombre: "Despliegue carga",	experiencia: 0},
+			{nombre: "Encendido carga", experiencia: 0},
+			{nombre: "Actividades órbita",	experiencia: 0},
+			{nombre: "Reentrada", experiencia: 0},
+			{nombre: "Aterrizaje", experiencia: 0}
+		],
 	}
 ];
+
+//Modificar programas en modo desarrollo.
+if(modoDesarrollo){
+	for(let i = 0; i < programas.length; i++){
+		programas[i].desarrollado = 1;
+		programas[i].desbloqueado = true;
+		programas[i].unidades = 50;
+		programas[i].experiencia = 20;
+	}
+}
 
 //---------------------------------------
 
@@ -167,13 +252,20 @@ var misiones = [
 		costeMejora: 10,
 		tiempoMejora: 10,
 		prestigioCancelar: 3,
+		prestigioFallo: -1,
 		equiposNecesarios: 1,
 		equiposTrabajo: 1,
 		tiempoCuentaAtras: 10,
 		fases: [
 			{nombre: "Encendido", componente: 1},
 			{nombre: "Despegue", componente: 1},
-			{nombre: "Espacio", componente: 1}
+			{nombre: "Espacio", componente: 1},
+			{nombre: "Órbita", componente: 0},
+			{nombre: "Despliegue carga",	componente: 0},
+			{nombre: "Encendido carga", componente: 0},
+			{nombre: "Actividades órbita",	componente: 0},
+			{nombre: "Reentrada", componente: 0},
+			{nombre: "Aterrizaje", componente: 0}
 		],
 		vecesProgramada: 0
 	},
@@ -193,6 +285,7 @@ var misiones = [
 		costeMejora: 10,
 		tiempoMejora: 10,
 		prestigioCancelar: 3,
+		prestigioFallo: -2,
 		equiposNecesarios: 1,
 		equiposTrabajo: 1,
 		tiempoCuentaAtras: 10,
@@ -202,7 +295,10 @@ var misiones = [
 			{nombre: "Espacio", componente: 1},
 			{nombre: "Órbita", componente: 1},
 			{nombre: "Despliegue carga",	componente: 1},
-			{nombre: "Encendido carga", componente: 2}
+			{nombre: "Encendido carga", componente: 2},
+			{nombre: "Actividades órbita",	componente: 0},
+			{nombre: "Reentrada", componente: 0},
+			{nombre: "Aterrizaje", componente: 0}
 		],
 		vecesProgramada: 0
 	},
@@ -222,6 +318,7 @@ var misiones = [
 		costeMejora: 10,
 		tiempoMejora: 10,
 		prestigioCancelar: 3,
+		prestigioFallo: -3,
 		equiposNecesarios: 1,
 		equiposTrabajo: 1,
 		tiempoCuentaAtras: 10,
@@ -229,7 +326,10 @@ var misiones = [
 			{nombre: "Encendido", componente: 1},
 			{nombre: "Despegue", componente: 1},
 			{nombre: "Espacio", componente: 1},
+			{nombre: "Órbita", componente: 0},
 			{nombre: "Despliegue carga",	componente: 1},
+			{nombre: "Encendido carga", componente: 0},
+			{nombre: "Actividades órbita",	componente: 0},
 			{nombre: "Reentrada", componente: 2},
 			{nombre: "Aterrizaje", componente: 2}
 		],
@@ -251,6 +351,7 @@ var misiones = [
 		costeMejora: 10,
 		tiempoMejora: 10,
 		prestigioCancelar: 3,
+		prestigioFallo: -4,
 		equiposNecesarios: 1,
 		equiposTrabajo: 1,
 		tiempoCuentaAtras: 10,
@@ -258,7 +359,10 @@ var misiones = [
 			{nombre: "Encendido", componente: 1},
 			{nombre: "Despegue", componente: 1},
 			{nombre: "Espacio", componente: 1},
+			{nombre: "Órbita", componente: 0},
 			{nombre: "Despliegue carga",	componente: 1},
+			{nombre: "Encendido carga", componente: 0},
+			{nombre: "Actividades órbita",	componente: 0},
 			{nombre: "Reentrada", componente: 2},
 			{nombre: "Aterrizaje", componente: 2}
 		],
@@ -280,6 +384,7 @@ var misiones = [
 		costeMejora: 10,
 		tiempoMejora: 10,
 		prestigioCancelar: 3,
+		prestigioFallo: -10,
 		equiposNecesarios: 1,
 		equiposTrabajo: 1,
 		tiempoCuentaAtras: 10,
@@ -289,13 +394,23 @@ var misiones = [
 			{nombre: "Espacio", componente: 1},
 			{nombre: "Órbita", componente: 1},
 			{nombre: "Despliegue carga",	componente: 1},
-			{nombre: "Actividades órbita",	componente: 1},
+			{nombre: "Encendido carga", componente: 2},
+			{nombre: "Actividades órbita",	componente: 2},
 			{nombre: "Reentrada", componente: 2},
 			{nombre: "Aterrizaje", componente: 2}
 		],
 		vecesProgramada: 0
 	}
 ];
+
+//Modificar misiones en modo desarrollo.
+if(modoDesarrollo){
+	for(let i = 0; i < misiones.length; i++){
+		misiones[i].desarrollado = 1;
+		misiones[i].experiencia = 20;
+		misiones[i].desbloqueado = true;
+	}
+}
 
 //---------------------------------------
 
@@ -340,6 +455,45 @@ var plataformas = [
 
 //---------------------------------------
 
+//ARRAY HITOS
+var hitos = [
+	{
+		misionId: 0,
+		nombre: "Cohete espacial",
+		primero: "-",
+		segundo: "-",
+		fechaPrimero: "",
+		fechaSegundo: "",
+		prestigioPrimero: 20,
+		prestigioSegundo: 10,
+		prestigioNormal: 1
+	},
+	{
+		misionId: 1,
+		nombre: "Satélite orbital",
+		primero: "-",
+		segundo: "-",
+		fechaPrimero: "",
+		fechaSegundo: "",
+		prestigioPrimero: 20,
+		prestigioSegundo: 10,
+		prestigioNormal: 1
+	},
+	{
+		misionId: 2,
+		nombre: "Vuelo suborbital NT",
+		primero: "-",
+		segundo: "-",
+		fechaPrimero: "",
+		fechaSegundo: "",
+		prestigioPrimero: 20,
+		prestigioSegundo: 10,
+		prestigioNormal: 1
+	}
+];
+
+//---------------------------------------
+
 //ARRAY EVENTOS
 var eventos = [
 	{
@@ -356,9 +510,30 @@ var eventos = [
 	}
 ];
 
+//---------------------------------------
+
+//ARRAY MODIFICADORES
+var modificadores = {
+  function() {
+    // do something
+		alert("0");
+  },
+
+  function() {
+    // do something
+		alert("1");
+  },
+
+  function() {
+    // do something
+		alert("2");
+  }
+}
+
+
+
 //ARRAYS VACÍOS PARA RELLENAR DURANTE LA PARTIDA
 var arrayCartelMensajes = [];
-var hitos = [];
 var misionesProgramadas = [];
 
 //---------------------------------------
@@ -494,6 +669,9 @@ function lanzarJuego(){
 	//Montar misiones programadas.
 	updateMisionesProgramadas();
 
+	//Montar hitos.
+	updateHitos();
+
 	//Mostrar/ocultar elementos.
 	document.getElementById('botonLanzarJuego').style.display  = "none";
 	document.getElementById('ventanaJuego').style.display  = "block";
@@ -587,6 +765,7 @@ function montarProgramas(){
 	montarHTMLProgramas += '<td>Fab.</td>';
 	montarHTMLProgramas += '<td>Unid.</td>';
 	montarHTMLProgramas += '<td>Equi.</td>';
+	montarHTMLProgramas += '<td>Exp.</td>';
 
 	montarHTMLProgramas += '<td>';
 	montarHTMLProgramas += 'Botones';
@@ -649,6 +828,7 @@ function montarProgramas(){
 		montarHTMLProgramas += '<span id="tiempoFabricacionComponente' + i + '">' + programas[i].tiempoFabricacion + '</span></td>';
 		montarHTMLProgramas += '<td><span id="unidadesPrograma' + i + '">' + programas[i].unidades + '</span></td>';
 		montarHTMLProgramas += '<td><span id="equiposPrograma' + i + '">' + programas[i].equiposTrabajo + '</span> / <span id="equiposNecesarios' + i + '">' + programas[i].equiposNecesarios + '</span></td>';
+		montarHTMLProgramas += '<td><span id="experienciaPrograma' + i + '">' + programas[i].experiencia + '</span></td>';
 
 		montarHTMLProgramas += '</td>';
 
@@ -862,6 +1042,32 @@ function updateMisionesProgramadas(){
 		}
 
 		document.getElementById("misionesProgramadas").innerHTML = montarHTMLMisionesProgramadas;
+
+}
+
+function updateHitos(){
+
+		var montarHTMLHitos = "<h3>Hitos</h3>";
+		var longitudArrayHitos = hitos.length;
+
+		montarHTMLHitos += '<table>';
+		montarHTMLHitos += '<tr><td>Hito</td><td>Primero</td><td>Fecha</td><td>Segundo</td><td>Fecha</td></tr>';
+
+		for(var i=0; i<longitudArrayHitos; i++) {
+
+			montarHTMLHitos += '<div id="hito' + i + '">';
+
+			montarHTMLHitos += '<tr>';
+			montarHTMLHitos += '<td>' + hitos[i].nombre + '</td><td>'  + hitos[i].primero + '</td><td>' + hitos[i].fechaPrimero + '</td><td>' + hitos[i].segundo + '</td><td>' + hitos[i].fechaSegundo + '</td>';
+			montarHTMLHitos += '</tr>';
+
+			montarHTMLHitos += '</div>';
+
+		}
+
+		montarHTMLHitos += '</table>';
+
+		document.getElementById("hitos").innerHTML = montarHTMLHitos;
 
 }
 
@@ -1956,7 +2162,7 @@ function programarLanzamiento(id) {
 	var plataformaId = id;
 
 	document.getElementById("plataforma" + plataformaId).getElementsByTagName("h5")[0].innerHTML = "¡LANZAMIENTO!";
-	document.getElementById("botonCancelarMision" + plataformaId).innerHTML = '<i class="material-icons">flight_takeoff</i>';
+	document.getElementById("botonProgramarLanzamiento" + plataformaId).innerHTML = '<i class="material-icons">flight_takeoff</i>';
 	document.getElementById("plataforma" + plataformaId).style.backgroundColor = "red";
 	document.getElementById("botonProgramarLanzamiento" + plataformaId).disabled = true;
 	document.getElementById("botonCancelarMision" + plataformaId).disabled = true;
@@ -1998,13 +2204,20 @@ function lanzamiento(id){
 	let textoVentanaModal = "<h4>Resultado lanzamiento</h4>";
 	textoVentanaModal += "<h5>Misión " + misionesProgramadas[misionProgramada].nombre + " | Plataforma: " + plataformas[plataformaId].nombreJuego + "</h5>";
 
-		let cohete = misionesProgramadas[misionProgramada].cohete;
-		let carga = misionesProgramadas[misionProgramada].carga;
+	let cohete = misionesProgramadas[misionProgramada].cohete;
+	let carga = misionesProgramadas[misionProgramada].carga;
+
+	let seguridadCohete = programas[cohete].seguridad;
+	let experienciaCohete = programas[cohete].experiencia;
+	let seguridadMision = misiones[misionId].seguridad;
+	let experienciaMision = misiones[misionId].experiencia;
 
 	textoVentanaModal += "<p>Cohete: " + programas[cohete].nombreJuego + "</p>";
 	textoVentanaModal += "<p>Carga: " + programas[carga].nombreJuego + "</p>";
-
-
+	textoVentanaModal += "<p>Seguridad cohete: " + seguridadCohete + "</p>";
+	textoVentanaModal += "<p>Experiencia cohete: " + experienciaCohete + "</p>";
+	textoVentanaModal += "<p>Seguridad misión: " + seguridadMision + "</p>";
+	textoVentanaModal += "<p>Experiencia misión: " + experienciaMision + "</p>";
 
 	//Abrir ventana modal parando el timer.
 	abrirVentanaModal(textoVentanaModal);
@@ -2022,55 +2235,62 @@ function lanzamiento(id){
 		document.getElementById("fasesMision").style.display = "block";
 		document.getElementById("fasesMision").innerHTML = "<h5>FASES</h5>";
 
-		let estado = 1;
-		let resultadoFinal;
-		let penalizacion = 0;
+		let estado = 1; // 0-> Fallo; 1-> Activa; 2-> Activa pero con un fallo parcial.
+		let resultadoFinal; //Texto final.
+		let penalizacion = 0; //Tras un éxito parcial se añade una penalización.
 
 		//Por cada fase de la misión.
 		for (let propiedad in misiones[misionId].fases) {
 
 			//Éxito misión.
-			//Según el tipo de componente para esta fase se buscan los datos correspondientes. - PENDIENTE
-			let seguridadComponente = 25;
-			let experienciaComponente = 25;
-			let experienciaFase = 25;
+			//Según el tipo de componente para esta fase se buscan los datos correspondientes. - PENDIENTE, DE MOMENTO SIEMPRE SE COGE EL COHETE COMO COMPONENTE DE CUALQUIER FASE.
+			let seguridadComponente = seguridadCohete;
+			let experienciaComponente = experienciaCohete;
+			let experienciaFase = programas[cohete].experienciaFases[propiedad].experiencia;
 			//Todo lo anterior hay que buscarlo en los correspondientes arrays. - PENDIENTE
 
-			let resultado = "";
+			let resultado = ""; //Texto para resultado de cada fase.
 
-			//Si la misión sigue activa.
-			if (estado > 0) {
+			//Sólo se comprueba por cada fase que utilice un componente.
+			if (misiones[misionId].fases[propiedad].componente > 0){
 
-				let sumaSeguridades = (seguridadComponente + experienciaComponente + experienciaFase) - penalizacion;
-				let resultadoComparacion = sumaSeguridades - Math.floor((Math.random() * 100) + 1);
+				//Si la misión sigue activa.
+				if (estado > 0) {
 
-				//Éxito.
-				if (resultadoComparacion > 0) {
-					resultado = "éxito (" + resultadoComparacion + ") (penalizacion: " + penalizacion + ")";
-					if (penalizacion > 0) {
-						penalizacion -= 5;
+					let sumaSeguridades = (seguridadComponente + experienciaComponente + experienciaFase + seguridadMision + experienciaMision) - penalizacion;
+					let resultadoComparacion = sumaSeguridades - Math.floor((Math.random() * 100) + 1);
+
+					//Éxito.
+					if (resultadoComparacion > 0) {
+						resultado = "éxito (" + resultadoComparacion + ") (penalizacion: " + penalizacion + ")";
+						programas[cohete].experienciaFases[propiedad].experiencia += 1;
+						if (penalizacion > 0) {
+							penalizacion -= 5;
+						}
+						if (estado == 1) {
+							resultadoFinal = "ÉXITO TOTAL";
+						}
 					}
-					if (estado == 1) {
-						resultadoFinal = "ÉXITO TOTAL";
-					}
-				}
-				else {
-					//Fallo parcial.
-					if (resultadoComparacion > -15) {
-						resultado = "fallo parcial (" + resultadoComparacion + ") (penalizacion: " + penalizacion + ")";
-						resultadoFinal = "ÉXITO PARCIAL";
-						penalizacion += 10;
-						estado = 2;
-					}
-					//Fallo total.
 					else {
-						resultado = "fallo (" + resultadoComparacion + ") (penalizacion: " + penalizacion + ")";
-						resultadoFinal = "FALLO TOTAL";
-						estado = 0;
+						//Fallo parcial.
+						if (resultadoComparacion > -15) {
+							resultado = "fallo parcial (" + resultadoComparacion + ") (penalizacion: " + penalizacion + ")";
+							programas[cohete].experienciaFases[propiedad].experiencia += 1;
+							resultadoFinal = "ÉXITO PARCIAL";
+							penalizacion += 10;
+							estado = 2;
+						}
+						//Fallo total.
+						else {
+							resultado = "fallo (" + resultadoComparacion + ") (penalizacion: " + penalizacion + ")";
+							resultadoFinal = "FALLO TOTAL";
+							estado = 0;
+						}
 					}
-				}
 
-			} //Fin si la misión sigue activa.
+				} //Fin si la misión sigue activa.
+
+			} //Fin si no se utiliza un componente.
 
 			//Si la misión ha fallado.
 			else {
@@ -2092,13 +2312,82 @@ function lanzamiento(id){
 		document.getElementById("botonCancelarLanzamiento").style.display = "none";
 
 		//EXPERIENCIA. - PENDIENTE
-		//PRESTIGIO. - PENDIENTE
+		if(estado > 0) {
+			programas[cohete].seguridad += 5;
+			programas[cohete].experiencia += 1;
+			misiones[misionId].seguridad += 5;
+			misiones[misionId].experiencia += 1;
+
+			document.getElementById("seguridadPrograma" + programas[cohete].id).innerHTML = programas[cohete].seguridad;
+			document.getElementById("experienciaPrograma" + programas[cohete].id).innerHTML = programas[cohete].experiencia;
+
+			//FALTA LO MISMO PARA LA MISIÓN. - PENDIENTE.
+
+		}
+
+		else {
+			programas[cohete].seguridad -= 5;
+			misiones[misionId].seguridad -= 5;
+
+			document.getElementById("seguridadPrograma" + programas[cohete].id).innerHTML = programas[cohete].seguridad;
+
+			//FALTA LO MISMO PARA LA MISIÓN. - PENDIENTE.
+
+		}
+
+		//PRESTIGIO. - MEJOR PONER ESTO COMO UNA FUNCIÓN QUE SE LLAME DESDE AQUÍ PERO TAMBIÉN CON LOS EVENTOS PROGRAMADOS DE LA URSS, PORQUE SI NO NO SE TIENEN EN CUENTA PARA EL PRESTIGIO - PENDIENTE.
+		if(estado > 0) {
+			if(hitos[misionId].primero == "-") {
+				hitos[misionId].primero = "USA";
+				hitos[misionId].fechaPrimero = diaActual + " " + mesActual + " " + anioActual;
+				prestigio += hitos[misionId].prestigioPrimero;
+			}
+			else if(hitos[misionId].segundo == "-") {
+				hitos[misionId].segundo = "USA";
+				hitos[misionId].fechaSegundo = diaActual + " " + mesActual + " " + anioActual;
+				prestigio += hitos[misionId].prestigioSegundo;
+			}
+			else {
+				prestigio += hitos[misionId].prestigioNormal;
+			}
+		}
+		else {
+			prestigio += misiones[misionId].prestigioFallo;
+		}
+
+		//Actualizar prestigio.
+		document.getElementById("prestigio").innerHTML = prestigio;
+		updateHitos();
+
+		//MODIFICADORES. - ALEATORIAMENTE PUEDEN SER CARGADOS EVENTOS DEL ARRAY DE MODIFICADORES (SON FUNCIONES QUE SE EJECUTAN Y MODIFICAN EL JUEGO EN FUNCIÓN DE LAS VARIABLES CORRESPONDIENTES). - PENDIENTE.
+		//Los modificadores se ponen en este lugar del juego porque las misiones son el componente principal del juego, los puntos de inflexión del mismo para bien o para mal. Así que se cargan modificadores que en función del resultado de la misión y de otras condiciones tienen consecuencias en el juego.
+
+		let modificadorAleatorio = Math.floor(Math.random() * (modificadores.length * 5));
+
+						console.log(modificadorAleatorio);
+
+		if (1 < modificadores.length){
+			modificadores[modificadorAleatorio]();
+
+						console.log(modificadores[modificadorAleatorio]);
+						
+		}
+
 		//Modificar misión en array de misiones programadas. - PENDIENTE
 
 		//Liberar plataforma.
 		plataformas[plataformaId].libre = true;
 		plataformas[plataformaId].estado = 0;
 		plataformas[plataformaId].mision = -1;
+
+		//CREAR EVENTO PARA DESPEJAR PLATAFORMA - PENDIENTE.
+
+		document.getElementById("plataforma" + plataformaId).getElementsByTagName("h4")[0].innerHTML = plataformas[plataformaId].nombreJuego;
+		document.getElementById("plataforma" + plataformaId).getElementsByTagName("h5")[0].innerHTML = "No hay misión asignada";
+		document.getElementById("plataforma" + plataformaId).style.backgroundColor = "#333";
+		document.getElementById("botonEnsamblarComponentes" + plataformaId).disabled = true;
+		document.getElementById("botonProgramarLanzamiento" + plataformaId).disabled = true;
+		document.getElementById("botonCancelarMision" + plataformaId).disabled = true;
 
 	}) //Fin botón confirmar lanzamiento.
 
