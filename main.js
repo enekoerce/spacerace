@@ -1,3 +1,136 @@
+///////////////////////////////////////////////////////////////////
+////
+////	INFO
+////	====
+////
+////	1. ARRAYS
+////
+////	- programas
+////
+////
+////	- misiones
+////
+////
+////	- plataformas
+////
+////
+////	- hitos
+////
+////
+////	- eventos
+////
+////
+////	- modificadores
+////
+////
+////	- arrayCartelMensajes
+////
+////
+////	- misionesProgramadas
+////
+////
+////---------------------------------------------------------------
+////
+////	2. FUNCIONES
+////
+////	- lanzarJuego
+////
+////
+////	-	montarProgramas
+////
+////
+////	-	montarMisiones
+////
+////
+////	-	montarPlataformas
+////
+////
+////	- updateMisionesProgramadas
+////
+////
+////	- updateHitos
+////
+////
+////	-	abrirVentanaMenu
+////
+////
+////	- cerrarVentanaMenu
+////
+////
+////	- pausar
+////
+////
+////	- abrirVentanaModal
+////
+////
+////	- cerrarVentanaModal
+////
+////
+////	- sumarFondos
+////
+////
+////	- encargarMateriales
+////
+////
+////	- sumarEquipo
+////
+////
+////	- eventoPrograma
+////
+////
+////	- eventoMision
+////
+////
+////	- elegirComponentesMision
+////
+////
+////	- mostrarDatosComponentes
+////
+////
+////	- eventoPlataforma
+////
+////
+////	- desarrollarPrograma
+////
+////
+////	- mejorarPrograma
+////
+////
+////	- fabricarComponente
+////
+////
+////	- asignarEquipoPrograma
+////
+////
+////	- desarrollarMision
+////
+////
+////	- mejorarMision
+////
+////
+////	- programarMision
+////
+////
+////	- asignarEquipoMision
+////
+////
+////	- ensamblarMision
+////
+////
+////	-	programarLanzamiento
+////
+////
+////	-	cancelarMision
+////
+////
+////	-	lanzamiento
+////
+////
+////	- interval
+////
+////
+///////////////////////////////////////////////////////////////////
+
 ﻿//VARIABLES PARTIDA
 
 //Variables configuración
@@ -228,7 +361,7 @@ if(modoDesarrollo){
 		programas[i].desarrollado = 1;
 		programas[i].desbloqueado = true;
 		programas[i].unidades = 50;
-		programas[i].experiencia = 20;
+		//programas[i].experiencia = 20;
 	}
 }
 
@@ -257,7 +390,7 @@ var misiones = [
 		equiposTrabajo: 1,
 		tiempoCuentaAtras: 10,
 		fases: [
-			{nombre: "Encendido", componente: 1},
+			{nombre: "Encendido", componente: 1}, // Componente: 0-> No se ejecuta esta fase; 1-> Cohete; 2-> Carga.
 			{nombre: "Despegue", componente: 1},
 			{nombre: "Espacio", componente: 1},
 			{nombre: "Órbita", componente: 0},
@@ -407,8 +540,8 @@ var misiones = [
 if(modoDesarrollo){
 	for(let i = 0; i < misiones.length; i++){
 		misiones[i].desarrollado = 1;
-		misiones[i].experiencia = 20;
 		misiones[i].desbloqueado = true;
+		//misiones[i].experiencia = 20;
 	}
 }
 
@@ -489,7 +622,30 @@ var hitos = [
 		prestigioPrimero: 20,
 		prestigioSegundo: 10,
 		prestigioNormal: 1
-	}
+	},
+	{
+		misionId: 3,
+		nombre: "Vuelo suborbital T",
+		primero: "-",
+		segundo: "-",
+		fechaPrimero: "",
+		fechaSegundo: "",
+		prestigioPrimero: 20,
+		prestigioSegundo: 10,
+		prestigioNormal: 1
+	},
+	{
+		misionId: 4,
+		nombre: "Vuelo orbital NT",
+		primero: "-",
+		segundo: "-",
+		fechaPrimero: "",
+		fechaSegundo: "",
+		prestigioPrimero: 20,
+		prestigioSegundo: 10,
+		prestigioNormal: 1
+	},
+
 ];
 
 //---------------------------------------
@@ -513,24 +669,19 @@ var eventos = [
 //---------------------------------------
 
 //ARRAY MODIFICADORES
-var modificadores = {
-  function() {
-    // do something
+var modificadores = [
+  {ejecutar: function() {
 		alert("0");
-  },
+  }},
 
-  function() {
-    // do something
+  {ejecutar: function() {
 		alert("1");
-  },
+  }},
 
-  function() {
-    // do something
+  {ejecutar: function() {
 		alert("2");
-  }
-}
-
-
+  }}
+];
 
 //ARRAYS VACÍOS PARA RELLENAR DURANTE LA PARTIDA
 var arrayCartelMensajes = [];
@@ -738,6 +889,8 @@ function lanzarJuego(){
 	//Datos partida.
 	document.getElementById('fondos').innerHTML = fondos;
 	document.getElementById('materiales').innerHTML = materiales;
+	document.getElementById('equipos').innerHTML = equipos;
+	document.getElementById('prestigio').innerHTML = prestigio;
 
 	//INICIAR EL LOOP DEL JUEGO.
 	juegoPausado = 0;
@@ -891,85 +1044,117 @@ function montarProgramas(){
 
 function montarMisiones(){
 
-	var montarHTMLMisiones = "<h3>Misiones</h3>"
+	var montarHTMLMisiones = ""
 	var longitudArrayMisiones = misiones.length;
 	var mostrarMision = "";
 
-	for(var i=0; i<longitudArrayMisiones; i++){
+	montarHTMLMisiones += '<tr style="font-style: italic;">';
+	montarHTMLMisiones += '<td>';
+	montarHTMLMisiones += 'Nombre';
+	montarHTMLMisiones += '</td>';
 
-		montarHTMLMisiones += '<div id="mision' + i + '">';
+	montarHTMLMisiones += '<td>Seg.</td>';
+	montarHTMLMisiones += '<td>Des.</td>';
+	montarHTMLMisiones += '<td>Desb.</td>';
+	montarHTMLMisiones += '<td>Mej.</td>';
+	montarHTMLMisiones += '<td>Equi.</td>';
+	montarHTMLMisiones += '<td>Exp.</td>';
 
+	montarHTMLMisiones += '<td>';
+	montarHTMLMisiones += 'Botones';
+	montarHTMLMisiones += '</td>';
+
+	montarHTMLMisiones += '</tr>';
+
+	for(let i=0; i<longitudArrayMisiones; i++){
+
+		montarHTMLMisiones += '<tr id="mision' + i + '">';
+		montarHTMLMisiones += '<td>';
 		montarHTMLMisiones += '<h4>' + misiones[i].nombreJuego + '</h4>';
 		montarHTMLMisiones += '<h5>Sin desarrollar</h5>';
+		montarHTMLMisiones += '</td>';
+		montarHTMLMisiones += '<td><span id="seguridadMision' + i + '">0</span>%</td>';
 
-		montarHTMLMisiones += '<div class="botonesMisiones">';
-		montarHTMLMisiones += '<button id="botonDesarrollarMision' + i + '" class="botonesDesarrollarMisiones" title="Desarrollar misión (fondos: ' + misiones[i].costeDesarrollo + '; tiempo: ' + misiones[i].tiempoDesarrollo + ')">';
-		montarHTMLMisiones += '<i class="material-icons">lightbulb_outline</i>';
-		montarHTMLMisiones += '</button>';
-		montarHTMLMisiones += '</div>';
 
-		montarHTMLMisiones += '<div class="botonesMisiones">';
-		montarHTMLMisiones += '<button id="botonMejorarMision' + i + '" class="botonesMejorarMisiones" title="Mejorar misión (fondos: ' + misiones[i].costeMejora + '; tiempo: ' + misiones[i].costeMejora + ')">';
-		montarHTMLMisiones += '<i class="material-icons">security</i>';
-		montarHTMLMisiones += '</button>';
-		montarHTMLMisiones += '</div>';
+				montarHTMLMisiones += '<td><span id="costeDesarrolloMision' + i + '">' + misiones[i].costeDesarrollo + '</span> - ';
 
-		montarHTMLMisiones += '<div class="botonesMisiones">';
-		montarHTMLMisiones += '<button id="botonProgramarMision' + i + '" class="botonesProgramarMisiones" title="Programar misión">';
-		montarHTMLMisiones += '<i class="material-icons">schedule</i>';
-		montarHTMLMisiones += '</button>';
-		montarHTMLMisiones += '</div>';
+				montarHTMLMisiones += '<span id="tiempoDesarrolloMision' + i + '">' + misiones[i].tiempoDesarrollo + '</span></td>';
+				montarHTMLMisiones += '<td>';
 
-		montarHTMLMisiones += '<div class="botonesMisiones">';
-		montarHTMLMisiones += '<button id="botonEquipoMision' + i + '" class="botonesEquiposMisiones" title="Ampliar equipo (actual: ' + misiones[i].equiposTrabajo + '; necesarios: ' + misiones[i].equiposNecesarios + ')">';
-		montarHTMLMisiones += '<i class="material-icons">group_add</i>';
-		montarHTMLMisiones += '</button>';
-		montarHTMLMisiones += '</div>';
+				var textoDesbloquea = false;
 
-		montarHTMLMisiones += '<div class="datosMisiones">';
-		montarHTMLMisiones += '<p>· Seguridad: <span id="seguridadMision' + i + '">0</span>%</p>';
-		montarHTMLMisiones += '<p>· Desarrollo:</p>';
-		montarHTMLMisiones += '<p>Coste: <span id="costeDesarrolloMision' + i + '">' + misiones[i].costeDesarrollo + '</span> | Tiempo: <span id="tiempoDesarrolloMision' + i + '">' + misiones[i].tiempoDesarrollo + '</span></p>';
-		montarHTMLMisiones += '<p>· Desbloquea: ';
-
-		var textoDesbloquea = false;
-
-		for(var j = 0; j < misiones.length; j++){
-			if(misiones[j].requisitoMision == i){
-				if(!textoDesbloquea) {
-					montarHTMLMisiones += misiones[j].nombreJuego;
-					textoDesbloquea = true;
+				for(var j = 0; j < misiones.length; j++){
+					if(misiones[j].requisitoMision == i){
+						if(!textoDesbloquea) {
+							montarHTMLMisiones += misiones[j].nombreJuego;
+							textoDesbloquea = true;
+						}
+						else {
+							montarHTMLMisiones += '<br />' + misiones[j].nombreJuego;
+						}
+					}
 				}
-				else {
-					montarHTMLMisiones += ', ' + misiones[j].nombreJuego;
+
+				if (textoDesbloquea == false){
+					montarHTMLMisiones += '-';
 				}
-			}
-		}
+				montarHTMLMisiones += '</td>';
 
-		if (textoDesbloquea == false){
-			montarHTMLMisiones += '-';
-		}
+				montarHTMLMisiones += '<td><span id="costeMejoraMision' + i + '">' + misiones[i].costeMejora + '</span></td>';
+				montarHTMLMisiones += '<td><span id="equiposMision' + i + '">' + misiones[i].equiposTrabajo + '</span> / <span id="equiposNecesarios' + i + '">' + misiones[i].equiposNecesarios + '</span></td>';
+				montarHTMLMisiones += '<td><span id="experienciaMision' + i + '">' + misiones[i].experiencia + '</span></td>';
 
-		montarHTMLMisiones += '</p>';
-		montarHTMLMisiones += '<p>· Coste mejora: <span id="costeMejoraMision' + i + '">' + misiones[i].costeMejora + '</span></p>';
-		montarHTMLMisiones += '<p>· Equipos trabajo: <span id="equiposMision' + i + '">' + misiones[i].equiposTrabajo + '</span> / <span id="equiposNecesarios' + i + '">' + misiones[i].equiposNecesarios + '</span></p>';
-		montarHTMLMisiones += '</div>';
+				montarHTMLMisiones += '</td>';
 
-		montarHTMLMisiones += '</div>';
+				montarHTMLMisiones += '<td>';
+
+
+				montarHTMLMisiones += '<div class="botonesMisiones">';
+				montarHTMLMisiones += '<button id="botonDesarrollarMision' + i + '" class="botonesDesarrollarMisiones" title="Desarrollar misión (fondos: ' + misiones[i].costeDesarrollo + '; tiempo: ' + misiones[i].tiempoDesarrollo + ')">';
+				montarHTMLMisiones += '<i class="material-icons">lightbulb_outline</i>';
+				montarHTMLMisiones += '</button>';
+				montarHTMLMisiones += '</div>';
+
+				montarHTMLMisiones += '<div class="botonesMisiones">';
+				montarHTMLMisiones += '<button id="botonMejorarMision' + i + '" class="botonesMejorarMisiones" title="Mejorar misión (fondos: ' + misiones[i].costeMejora + '; tiempo: ' + misiones[i].costeMejora + ')">';
+				montarHTMLMisiones += '<i class="material-icons">security</i>';
+				montarHTMLMisiones += '</button>';
+				montarHTMLMisiones += '</div>';
+
+				montarHTMLMisiones += '<div class="botonesMisiones">';
+				montarHTMLMisiones += '<button id="botonProgramarMision' + i + '" class="botonesProgramarMisiones" title="Programar misión">';
+				montarHTMLMisiones += '<i class="material-icons">schedule</i>';
+				montarHTMLMisiones += '</button>';
+				montarHTMLMisiones += '</div>';
+
+				montarHTMLMisiones += '<div class="botonesMisiones">';
+				montarHTMLMisiones += '<button id="botonEquipoMision' + i + '" class="botonesEquiposMisiones" title="Ampliar equipo (actual: ' + misiones[i].equiposTrabajo + '; necesarios: ' + misiones[i].equiposNecesarios + ')">';
+				montarHTMLMisiones += '<i class="material-icons">group_add</i>';
+				montarHTMLMisiones += '</button>';
+				montarHTMLMisiones += '</div>';
+
+
+				montarHTMLMisiones += '</td>';
+				montarHTMLMisiones += '</tr>';
 
 	}
 
-	document.getElementById("misiones").innerHTML = montarHTMLMisiones;
+	document.getElementById("misiones").getElementsByTagName("table")[0].innerHTML = montarHTMLMisiones;
 
 	//Asignar imágenes y ocultar misiones bloqueados (una vez creados los nodos HTML).
 	for(var i=0; i<longitudArrayMisiones; i++){
 			//document.getElementById("mision" + i).style.backgroundImage = "url('imagenes/" + misiones[i].nombreJuego + ".jpg')";
 			//document.getElementById("mision" + i).style.backgroundSize = "cover";
 
-			mostrarMision = (misiones[i].desbloqueado) ? "block" : "none";
-			document.getElementById("mision" + i).style.display = mostrarMision;
+			mostrarMision = (misiones[i].desbloqueado) ? "table-row" : "none";
+			//document.getElementById("mision" + i).style.display = mostrarMision;
 
 	}
+
+
+
+
+
 
 }
 
@@ -1696,7 +1881,7 @@ function eventoMision(element, tipo){
 	}
 }
 
-function elegirComponentesMision(element){
+function elegirComponentesMision(element){ //Se recibe el ID de la plataforma.
 
 	plataformaId = element.id.substr(25,1);
 	misionId = plataformas[plataformaId].mision;
@@ -1717,7 +1902,7 @@ function elegirComponentesMision(element){
 
 	//Mostrar/ocultar elementos.
 	document.getElementById("ventanaEnsamblaje").style.display = "block";
-	document.getElementById("ventanaLanzamiento").style.display = "none"; //Esto no debería hacer falta porque en principio esta ventana viene oculta por estilos, pero hay algún fallo pendiente que hace que la ventana de lanzamiento se muestre a la vez que la pantalla de ensamblaje. - PENDIENTE
+	document.getElementById("ventanaLanzamiento").style.display = "none"; //Esto no debería hacer falta porque en principio esta ventana viene oculta por estilos, pero hay algún fallo pendiente que hace que la ventana de lanzamiento se muestre a la vez que la pantalla de ensamblaje. - PENDIENTE.
 
 	//Contenidos ventana ensamblaje.
 
@@ -1742,21 +1927,29 @@ function elegirComponentesMision(element){
 	}
 
 	document.getElementById('selectCohete').addEventListener('change', function(event){
-		mostrarDatosComponentes(event.target);
+		mostrarDatosComponentes(misionId);
 	});
 
-	//Buscar carga: componente de tipo X que cumpla con los requisitos que pueda haber
-	for (var j=0; j < programas.length; j++){
-		if (programas[j].tipo == tipoCarga){
-			if (programas[j].unidades > 0){
-				document.getElementById('selectCarga').insertAdjacentHTML('beforeend', "<option value='" + j + "'>" + programas[j].nombreJuego + "</option>")
+	if(tipoCarga == 0) {
+
+	} //If si tipoCarga = 0.
+
+	else {
+
+		//Buscar carga: componente de tipo X que cumpla con los requisitos que pueda haber
+		for (var j=0; j < programas.length; j++){
+			if (programas[j].tipo == tipoCarga){
+				if (programas[j].unidades > 0){
+					document.getElementById('selectCarga').insertAdjacentHTML('beforeend', "<option value='" + j + "'>" + programas[j].nombreJuego + "</option>")
+				}
 			}
 		}
-	}
 
-	document.getElementById('selectCarga').addEventListener('change', function(event){
-		mostrarDatosComponentes(event.target);
-	});
+		document.getElementById('selectCarga').addEventListener('change', function(event){
+			mostrarDatosComponentes(misionId);
+		});
+
+	} //Else si tipoCarga = 0.
 
 	//Fin contenidos ventana ensamblaje.
 
@@ -1766,61 +1959,36 @@ function elegirComponentesMision(element){
 		//Restar componentes del stock.
 		var selectCohete = document.getElementById("selectCohete");
 		var coheteSeleccionado = selectCohete.options[selectCohete.selectedIndex].value;
-		var selectCarga = document.getElementById("selectCarga");
-		var cargaSeleccionada = selectCarga.options[selectCarga.selectedIndex].value;
 
-		/*
-		console.log("Cohete: ");
-		console.log(coheteSeleccionado);
-		console.log("Carga: ");
-		console.log(cargaSeleccionada);
-		console.log("Cohetes restantes: ");
-		console.log(programas[coheteSeleccionado].unidades);
-		console.log("Cargas restantes: ");
-		console.log(programas[cargaSeleccionada].unidades);
-		*/
-
-		/*
-		for(var i=0; i < programas.length; i++){
-			if (coheteSeleccionado == i){
-				programas[i].unidades = programas[i].unidades -1;
-				document.getElementById('unidadesPrograma' + i).innerHTML = programas[i].unidades;
-			}
-		}
-
-		for(var j=0; j < programas.length; j++){
-			if (cargaSeleccionada == j){
-				programas[j].unidades = programas[j].unidades -1;
-				document.getElementById('unidadesPrograma' + j).innerHTML = programas[j].unidades;
-			}
-		}
-
-		*/
-
-		//Todo lo anterior se puede hacer con lo siguiente.
 		programas[coheteSeleccionado].unidades -= 1;
 		document.getElementById('unidadesPrograma' + coheteSeleccionado).innerHTML = programas[coheteSeleccionado].unidades;
 		misionesProgramadas[misionProgramada].cohete = coheteSeleccionado;
 
-		programas[cargaSeleccionada].unidades -= 1;
-		document.getElementById('unidadesPrograma' + cargaSeleccionada).innerHTML = programas[cargaSeleccionada].unidades;
-		misionesProgramadas[misionProgramada].carga = cargaSeleccionada;
+		if(tipoCarga == 0) {
+			misionesProgramadas[misionProgramada].carga = -1;
+		} //If si tipoCarga = 0.
 
-		//console.log("Cohetes restantes: ");
-		//console.log(programas[coheteSeleccionado].unidades);
-		//console.log("Cargas restantes: ");
-		//console.log(programas[cargaSeleccionada].unidades);
+		else {
+
+			var selectCarga = document.getElementById("selectCarga");
+			var cargaSeleccionada = selectCarga.options[selectCarga.selectedIndex].value;
+			programas[cargaSeleccionada].unidades -= 1;
+			document.getElementById('unidadesPrograma' + cargaSeleccionada).innerHTML = programas[cargaSeleccionada].unidades;
+			misionesProgramadas[misionProgramada].carga = cargaSeleccionada;
+
+		} //Else si tipoCarga = 0.
 
 		cerrarVentanaModal();
 
-		//Añadir seguridad definitiva de los componentes (aunque siga cambiando su seguridad en la partida, estos ya están ensamblados; la seguridad de la misión, sin embargo, sí puede seguir incrementándose).
-
+		//Añadir seguridad definitiva de los componentes (aunque siga cambiando su seguridad en la partida, estos ya están ensamblados; la seguridad de la misión, sin embargo, sí puede seguir incrementándose). - PENDIENTE.
 
 		eventoPlataforma(element, "ensamblarMision");
 	};
 }
 
-function mostrarDatosComponentes(){
+function mostrarDatosComponentes(misionId){
+
+	var tipoCarga = misiones[misionId].tipoCarga;
 
 	//Vaciar contenidos anteriores cajas datos.
 	document.getElementById("datosCoheteSeleccionado").innerHTML = "";
@@ -1853,29 +2021,44 @@ function mostrarDatosComponentes(){
 
 	//Activar botón ensamblar.
 
-	if ((coheteSeleccionado.value == "-") || (cargaSeleccionada.value == "-")){
-		document.getElementById("componentesSeleccionados").innerHTML = "Faltan componentes por seleccionar";
-		document.getElementById("botonConfirmarEnsamblaje").disabled = true;
-	}
+	if(tipoCarga == 0) {
+		if(coheteSeleccionado.value != "-") {
+			document.getElementById("botonConfirmarEnsamblaje").disabled = false;
+			document.getElementById("componentesSeleccionados").innerHTML = coheteSeleccionado.value;
+		}
+		else { //Se añade un else porque el jugador puede haber seleccionado un cohete, habilitando el botón, y a continuación deseleccionarlo, y se podría quedar sin cohete seleccionado pero con el botón de confirmar activo.
+			document.getElementById("botonConfirmarEnsamblaje").disabled = true;
+		}
+	} //If si tipoCarga = 0.
+
 	else {
 
-  	//Comprobar si son compatibles
-		for (var cohete=0; cohete < programas.length; cohete++){
-			if (cohete == coheteSeleccionado.value){
-				for (var carga=0; carga < programas.length; carga++){
-					if (carga == cargaSeleccionada.value) {
-						if (programas[cohete].capacidad > programas[carga].peso){
-							document.getElementById("botonConfirmarEnsamblaje").disabled = false;
-						}
-						else {
-							document.getElementById("botonConfirmarEnsamblaje").disabled = true;
+		if ((coheteSeleccionado.value == "-") || (cargaSeleccionada.value == "-")){
+			document.getElementById("componentesSeleccionados").innerHTML = "Faltan componentes por seleccionar";
+			document.getElementById("botonConfirmarEnsamblaje").disabled = true;
+		}
+		else {
+
+	  	//Comprobar si son compatibles
+			for (var cohete=0; cohete < programas.length; cohete++){
+				if (cohete == coheteSeleccionado.value){
+					for (var carga=0; carga < programas.length; carga++){
+						if (carga == cargaSeleccionada.value) {
+							if (programas[cohete].capacidad > programas[carga].peso){
+								document.getElementById("botonConfirmarEnsamblaje").disabled = false;
+							}
+							else {
+								document.getElementById("botonConfirmarEnsamblaje").disabled = true;
+							}
 						}
 					}
 				}
 			}
+			document.getElementById("componentesSeleccionados").innerHTML = coheteSeleccionado.value + " + " + cargaSeleccionada.value;
 		}
-		document.getElementById("componentesSeleccionados").innerHTML = coheteSeleccionado.value + " + " + cargaSeleccionada.value;
-	}
+
+	} //Else si tipoCarga = 0.
+
 }
 
 function eventoPlataforma(element, tipo){
@@ -2196,7 +2379,8 @@ function lanzamiento(id){
 	let plataformaId = id;
 	let misionId = plataformas[plataformaId].mision;
 	let misionProgramada = plataformas[plataformaId].misionProgramada;
-	//console.log(misionProgramada);
+	let cohete = misionesProgramadas[misionProgramada].cohete;
+	let carga = misionesProgramadas[misionProgramada].carga;
 
 	//Ventana modal con el resultado del lanzamiento.
 
@@ -2204,20 +2388,33 @@ function lanzamiento(id){
 	let textoVentanaModal = "<h4>Resultado lanzamiento</h4>";
 	textoVentanaModal += "<h5>Misión " + misionesProgramadas[misionProgramada].nombre + " | Plataforma: " + plataformas[plataformaId].nombreJuego + "</h5>";
 
-	let cohete = misionesProgramadas[misionProgramada].cohete;
-	let carga = misionesProgramadas[misionProgramada].carga;
-
-	let seguridadCohete = programas[cohete].seguridad;
-	let experienciaCohete = programas[cohete].experiencia;
 	let seguridadMision = misiones[misionId].seguridad;
 	let experienciaMision = misiones[misionId].experiencia;
 
-	textoVentanaModal += "<p>Cohete: " + programas[cohete].nombreJuego + "</p>";
-	textoVentanaModal += "<p>Carga: " + programas[carga].nombreJuego + "</p>";
-	textoVentanaModal += "<p>Seguridad cohete: " + seguridadCohete + "</p>";
-	textoVentanaModal += "<p>Experiencia cohete: " + experienciaCohete + "</p>";
+	if(seguridadMision < 0){
+		seguridadMision = 0;
+	}
+
 	textoVentanaModal += "<p>Seguridad misión: " + seguridadMision + "</p>";
 	textoVentanaModal += "<p>Experiencia misión: " + experienciaMision + "</p>";
+
+	let seguridadCohete = programas[cohete].seguridad;
+	let experienciaCohete = programas[cohete].experiencia;
+
+	textoVentanaModal += "<p>Cohete: " + programas[cohete].nombreJuego + "</p>";
+	textoVentanaModal += "<p>Seguridad cohete: " + seguridadCohete + "</p>";
+	textoVentanaModal += "<p>Experiencia cohete: " + experienciaCohete + "</p>";
+
+	if(carga != -1) {
+
+		let seguridadCarga = programas[carga].seguridad;
+		let experienciaCarga = programas[carga].experiencia;
+
+		textoVentanaModal += "<p>Carga: " + programas[carga].nombreJuego + "</p>";
+		textoVentanaModal += "<p>Seguridad carga: " + seguridadCarga + "</p>";
+		textoVentanaModal += "<p>Experiencia carga: " + experienciaCarga + "</p>";
+
+	}
 
 	//Abrir ventana modal parando el timer.
 	abrirVentanaModal(textoVentanaModal);
@@ -2230,7 +2427,8 @@ function lanzamiento(id){
 	//Botón lanzamiento (al pinchar lanza la función de ejecución de la misión).
 	document.getElementById("botonConfirmarLanzamiento").style.display = "block";
 
-	botonConfirmarLanzamiento.addEventListener("click", function(){
+	//botonConfirmarLanzamiento.addEventListener("click", function(){
+		botonConfirmarLanzamiento.onclick = function(event) { //IMPORTANTE: onclick en vez de un event listener (lanzaba varias veces el mismo evento).
 
 		document.getElementById("fasesMision").style.display = "block";
 		document.getElementById("fasesMision").innerHTML = "<h5>FASES</h5>";
@@ -2242,28 +2440,41 @@ function lanzamiento(id){
 		//Por cada fase de la misión.
 		for (let propiedad in misiones[misionId].fases) {
 
-			//Éxito misión.
-			//Según el tipo de componente para esta fase se buscan los datos correspondientes. - PENDIENTE, DE MOMENTO SIEMPRE SE COGE EL COHETE COMO COMPONENTE DE CUALQUIER FASE.
-			let seguridadComponente = seguridadCohete;
-			let experienciaComponente = experienciaCohete;
-			let experienciaFase = programas[cohete].experienciaFases[propiedad].experiencia;
-			//Todo lo anterior hay que buscarlo en los correspondientes arrays. - PENDIENTE
-
 			let resultado = ""; //Texto para resultado de cada fase.
 
 			//Sólo se comprueba por cada fase que utilice un componente.
 			if (misiones[misionId].fases[propiedad].componente > 0){
 
+				//Según el tipo de componente para esta fase se buscan los datos correspondientes.
+				if(misiones[misionId].fases[propiedad].componente == 1) { //Cohete.
+					programaId = cohete;
+				}
+				else { //Carga.
+					programaId = carga;
+				}
+
+				let seguridadComponente = programas[programaId].seguridad;
+				let experienciaComponente = programas[programaId].experiencia;
+				let experienciaFase = programas[programaId].experienciaFases[propiedad].experiencia;
+
+				if(seguridadComponente < 0){
+					seguridadComponente = 0;
+				}
+
 				//Si la misión sigue activa.
 				if (estado > 0) {
 
-					let sumaSeguridades = (seguridadComponente + experienciaComponente + experienciaFase + seguridadMision + experienciaMision) - penalizacion;
+					//let sumaSeguridades = (seguridadComponente + (experienciaComponente * 5) + experienciaFase + seguridadMision + experienciaMision) - penalizacion;
+					let sumaSeguridades = ((seguridadComponente + (experienciaComponente * 2) + (experienciaFase * 5)) + (seguridadMision + (experienciaMision * 5)) / 2) - penalizacion;
+					if (sumaSeguridades > 90) {
+						sumaSeguridades = 90;
+					}
 					let resultadoComparacion = sumaSeguridades - Math.floor((Math.random() * 100) + 1);
 
 					//Éxito.
 					if (resultadoComparacion > 0) {
-						resultado = "éxito (" + resultadoComparacion + ") (penalizacion: " + penalizacion + ")";
-						programas[cohete].experienciaFases[propiedad].experiencia += 1;
+						resultado = "éxito (probabilidad: " + sumaSeguridades + "; resultado: " + resultadoComparacion + ") (penalizacion: " + penalizacion + ")";
+						programas[programaId].experienciaFases[propiedad].experiencia += 2;
 						if (penalizacion > 0) {
 							penalizacion -= 5;
 						}
@@ -2274,15 +2485,15 @@ function lanzamiento(id){
 					else {
 						//Fallo parcial.
 						if (resultadoComparacion > -15) {
-							resultado = "fallo parcial (" + resultadoComparacion + ") (penalizacion: " + penalizacion + ")";
-							programas[cohete].experienciaFases[propiedad].experiencia += 1;
+							resultado = "fallo parcial (probabilidad: " + sumaSeguridades + "; resultado: " + resultadoComparacion + ") (penalizacion: " + penalizacion + ")";
+							programas[programaId].experienciaFases[propiedad].experiencia += 1;
 							resultadoFinal = "ÉXITO PARCIAL";
 							penalizacion += 10;
 							estado = 2;
 						}
 						//Fallo total.
 						else {
-							resultado = "fallo (" + resultadoComparacion + ") (penalizacion: " + penalizacion + ")";
+							resultado = "fallo (probabilidad: " + sumaSeguridades + "; resultado: " + resultadoComparacion + ") (penalizacion: " + penalizacion + ")";
 							resultadoFinal = "FALLO TOTAL";
 							estado = 0;
 						}
@@ -2290,15 +2501,14 @@ function lanzamiento(id){
 
 				} //Fin si la misión sigue activa.
 
+				else {
+					resultado = "-";
+				}
+
+				var textoComponente = " (" + programas[programaId].nombreJuego + " - " + programas[programaId].experienciaFases[propiedad].experiencia + ")";
+				document.getElementById("fasesMision").innerHTML += "<p>" + misiones[misionId].fases[propiedad].nombre + textoComponente + ": " + resultado + "</p>";
+
 			} //Fin si no se utiliza un componente.
-
-			//Si la misión ha fallado.
-			else {
-				resultado = "-";
-				//resultadoFinal = "FALLO TOTAL";
-			}
-
-			document.getElementById("fasesMision").innerHTML += "<p>" + misiones[misionId].fases[propiedad].nombre + ": " + resultado + "</p>";
 
 		}
 
@@ -2311,29 +2521,47 @@ function lanzamiento(id){
 		}
 		document.getElementById("botonCancelarLanzamiento").style.display = "none";
 
-		//EXPERIENCIA. - PENDIENTE
+		//EXPERIENCIA DESPUÉS DEL RESULTADO DE LA MISIÓN.
 		if(estado > 0) {
+
 			programas[cohete].seguridad += 5;
-			programas[cohete].experiencia += 1;
+			programas[cohete].experiencia += 2;
+
+			if(carga != -1) {
+				programas[carga].seguridad += 5;
+				programas[carga].experiencia += 2;
+			}
+
 			misiones[misionId].seguridad += 5;
-			misiones[misionId].experiencia += 1;
-
-			document.getElementById("seguridadPrograma" + programas[cohete].id).innerHTML = programas[cohete].seguridad;
-			document.getElementById("experienciaPrograma" + programas[cohete].id).innerHTML = programas[cohete].experiencia;
-
-			//FALTA LO MISMO PARA LA MISIÓN. - PENDIENTE.
+			misiones[misionId].experiencia += 2;
 
 		}
 
 		else {
 			programas[cohete].seguridad -= 5;
+			programas[cohete].experiencia += 1;
+
+			if(carga != -1) {
+				programas[carga].seguridad -= 5;
+				programas[carga].experiencia += 1;
+			}
+
 			misiones[misionId].seguridad -= 5;
-
-			document.getElementById("seguridadPrograma" + programas[cohete].id).innerHTML = programas[cohete].seguridad;
-
-			//FALTA LO MISMO PARA LA MISIÓN. - PENDIENTE.
-
+			misiones[misionId].experiencia += 1;
 		}
+
+		document.getElementById("seguridadPrograma" + programas[cohete].id).innerHTML = programas[cohete].seguridad;
+		document.getElementById("experienciaPrograma" + programas[cohete].id).innerHTML = programas[cohete].experiencia;
+
+		if(carga != -1) {
+			document.getElementById("seguridadPrograma" + programas[carga].id).innerHTML = programas[carga].seguridad;
+			document.getElementById("experienciaPrograma" + programas[carga].id).innerHTML = programas[carga].experiencia;
+		}
+
+		document.getElementById("seguridadMision" + misionId).innerHTML = misiones[misionId].seguridad;
+		document.getElementById("experienciaMision" + misionId).innerHTML = misiones[misionId].experiencia;
+
+		//FIN EXPERIENCIA DESPUÉS DEL RESULTADO DE LA MISIÓN.
 
 		//PRESTIGIO. - MEJOR PONER ESTO COMO UNA FUNCIÓN QUE SE LLAME DESDE AQUÍ PERO TAMBIÉN CON LOS EVENTOS PROGRAMADOS DE LA URSS, PORQUE SI NO NO SE TIENEN EN CUENTA PARA EL PRESTIGIO - PENDIENTE.
 		if(estado > 0) {
@@ -2364,13 +2592,11 @@ function lanzamiento(id){
 
 		let modificadorAleatorio = Math.floor(Math.random() * (modificadores.length * 5));
 
-						console.log(modificadorAleatorio);
+						//console.log(modificadores.length);
+						//console.log(modificadorAleatorio);
 
-		if (1 < modificadores.length){
-			modificadores[modificadorAleatorio]();
-
-						console.log(modificadores[modificadorAleatorio]);
-						
+		if (modificadorAleatorio < modificadores.length){
+			modificadores[modificadorAleatorio].ejecutar();
 		}
 
 		//Modificar misión en array de misiones programadas. - PENDIENTE
@@ -2389,7 +2615,7 @@ function lanzamiento(id){
 		document.getElementById("botonProgramarLanzamiento" + plataformaId).disabled = true;
 		document.getElementById("botonCancelarMision" + plataformaId).disabled = true;
 
-	}) //Fin botón confirmar lanzamiento.
+	} //Fin botón confirmar lanzamiento.
 
 	//Botón cancelar lanzamiento (al pinchar lanza la función de cancelación de la misión).
 	document.getElementById("botonCancelarLanzamiento").style.display = "block";

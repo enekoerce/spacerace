@@ -203,7 +203,7 @@
 		margin: 10px;
 	}
 
-	#programas > table > div, #misiones > div {
+	#programas > table > div, #misiones > table > div {
 		float: left;
 		width: 170px;
 		height: 95px;
@@ -253,19 +253,19 @@
 	}
 	*/
 
-	#programas > table > div h4:hover ~ .datosProgramas, #misiones > div h4:hover ~ .datosMisiones {
+	#programas > table > div h4:hover ~ .datosProgramas, #misiones > table > div h4:hover ~ .datosMisiones {
 		visibility: visible;
 		opacity: 1;
 		border: 1px solid white;
 		z-index: 10;
 	}
 
-		#programas > table, #hitos > table {
+		#programas > table, #misiones > table, #hitos > table {
 			font-size: 80%;
 			text-align: right;
 		}
 
-		#programas > table td, #hitos > table td {
+		#programas > table td, #misiones > table td, #hitos > table td {
 			/*border: 1px solid white;*/
 			background: #333;
 			padding: 5px;
@@ -394,7 +394,7 @@
 			<span id="fondos">0</span> <i class="material-icons miniIconos">attach_money</i> |
 			<span id="materiales">0</span> <i class="material-icons miniIconos">build</i> |
 			<span id="equipos">0</span> <i class="material-icons miniIconos">group</i> |
-			<span id="prestigio">50</span> <i class="material-icons miniIconos">grade</i></p>
+			<span id="prestigio">0</span> <i class="material-icons miniIconos">grade</i></p>
 		</div>
 
   </div>
@@ -405,9 +405,13 @@
 		<h3>Programas</h3>
 		<table>
 		</table>
+
 	</div>
 
 	<div id="misiones">
+		<h3>Misiones</h3>
+		<table>
+		</table>
 	</div>
 
 	<div id="plataformas">
