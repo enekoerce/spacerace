@@ -1,9 +1,37 @@
 0 - ALPHA
 ---------
 
-0.5.1 - Añadir prestigio.
+0.4 - Fases misiones.
 
+0.5 - Añadir prestigio.
+  Pendiente: datos reales.
 
-0.6 - Presupuesto anual (cada 1 de abril).
+0.6 - Timer en fases.
+  Pendiente: efecto columnas de colores.
+
+0.7 - Astronautas.
+  Pendiente: equipos de astronautas.
+
+*****
+
+Funcionalidades mínimas pendientes:
+  - Presupuesto anual (cada 1 de abril).
+    - Añadir posibilidad de adelantar fondos del presupuesto posterior, hasta un tope, consumiéndolos).
+  - Duración misiones (y evento asociado al timer).
+    - Tienen que tener un requisito previo de duración anterior (algunas podrán saltarse y otras no: la B no puede tener lugar sin la A, pero la D podría ser válida después de la B, sin la C, por ejemplo).
+    - Ya no valdría el array de fases en la misión, éste tendría que copiarse en el array de misiones programadas, modificado según lo que se haya añadido a la misión (sistema válido también para los extras de las misiones). A la hora de lanzar la misión se comprobaría del array de fases de la misión programada (modificada), no la de la misión original. Aquí habría un problema a la hora de comprobar la experiencia del componente por cada fase, ya que ya no coincidirían como hasta ahora, que son arrays idénticos (habría que buscar cada fase por separado para obtener sus datos del array de fases del componente).
+  - Extras misiones: EVA, mujer en el espacio, número astronautas.
+    - Habría que añadir esas características al array de misiones programadas.
+    - En cuanto a la ejecución, sería similar al sistema para la duración de misiones.
+  - Misiones extraplanetarias (reconocimiento, sonda).
+    - Evento asociado al timer, como en el sistema de duración o extras de misiones.
+  - Utilidad real equipos de trabajo (¿reducir los tiempos en desarrollo y mejora?).
+  - Misiones conjuntas.
+  
+ Otras funcionalidades pendientes:
+  - ¿Bootstraps y etapas?
+  - Ventana historia espacial.
+  - Ventana exploración espacial.
+  - Entrenamiento astronautas.
 
 
