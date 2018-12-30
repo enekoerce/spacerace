@@ -186,7 +186,7 @@ var programas = [
 		costeDesarrollo: 10,
 		tiempoDesarrollo: 10,
 		requisitoPrograma: "-", // ID del programa que se tiene que desarrollar previamente.
-		seguridad: 10,
+		seguridad: 20,
 		seguridadMaxima: 90,
 		costeMejora: 10,
 		tiempoMejora: 10,
@@ -222,7 +222,7 @@ var programas = [
 		costeDesarrollo: 10,
 		tiempoDesarrollo: 10,
 		requisitoPrograma: 0,
-		seguridad: 10,
+		seguridad: 20,
 		seguridadMaxima: 90,
 		costeMejora: 10,
 		tiempoMejora: 10,
@@ -258,7 +258,7 @@ var programas = [
 		costeDesarrollo: 10,
 		tiempoDesarrollo: 10,
 		requisitoPrograma: "-",
-		seguridad: 10,
+		seguridad: 20,
 		seguridadMaxima: 90,
 		costeMejora: 10,
 		tiempoMejora: 10,
@@ -290,11 +290,11 @@ var programas = [
 		peso: 500,
 		capacidad: 0,
 		desarrollado: 0,
-		desbloqueado: true,
+		desbloqueado: false,
 		costeDesarrollo: 10,
 		tiempoDesarrollo: 10,
-		requisitoPrograma: "-",
-		seguridad: 10,
+		requisitoPrograma: "2",
+		seguridad: 20,
 		seguridadMaxima: 90,
 		costeMejora: 10,
 		tiempoMejora: 10,
@@ -330,7 +330,7 @@ var programas = [
 		costeDesarrollo: 10,
 		tiempoDesarrollo: 10,
 		requisitoPrograma: 3,
-		seguridad: 10,
+		seguridad: 20,
 		seguridadMaxima: 90,
 		costeMejora: 10,
 		tiempoMejora: 10,
@@ -358,8 +358,8 @@ var programas = [
 //Modificar programas en modo desarrollo.
 if(modoDesarrollo){
 	for(let i = 0; i < programas.length; i++){
-		programas[i].desarrollado = 1;
-		programas[i].desbloqueado = true;
+		//programas[i].desarrollado = 1;
+		//programas[i].desbloqueado = true;
 		programas[i].unidades = 50;
 		//programas[i].experiencia = 20;
 	}
@@ -539,8 +539,8 @@ var misiones = [
 //Modificar misiones en modo desarrollo.
 if(modoDesarrollo){
 	for(let i = 0; i < misiones.length; i++){
-		misiones[i].desarrollado = 1;
-		misiones[i].desbloqueado = true;
+		//misiones[i].desarrollado = 1;
+		//misiones[i].desbloqueado = true;
 		//misiones[i].experiencia = 20;
 	}
 }
@@ -743,6 +743,7 @@ function lanzarJuego(){
 
 		botonMisionModoDesarrollo.addEventListener("click", function(){
 
+			/*
 			let misionId = 0;
 			let plataformaId = 4;
 			let cohete = 0;
@@ -763,7 +764,8 @@ function lanzarJuego(){
 				fechaPrograma: diaActual + " " + mesActual + " " + anioActual,
 				cohete: cohete,
 				carga: carga,
-				tripulacion: -1 //Tiene que haber un array de tripulaciones en el que se crean equipos de astronautas, aunque sólo sea uno. En esta variable se guarda el equipo seleccionado para esta misión.
+				tripulacion: -1, //Tiene que haber un array de tripulaciones en el que se crean equipos de astronautas, aunque sólo sea uno. En esta variable se guarda el equipo seleccionado para esta misión.
+				activa: 1
 			};
 
 			misionesProgramadas.push(nuevaMision);
@@ -905,16 +907,11 @@ function montarProgramas(){
 	var mostrarPrograma = "";
 
 	montarHTMLProgramas += '<tr style="font-style: italic;">';
-	montarHTMLProgramas += '<td>';
-	montarHTMLProgramas += 'Nombre';
-	montarHTMLProgramas += '</td>';
 
 	montarHTMLProgramas += '<td>Seg.</td>';
-	montarHTMLProgramas += '<td>Peso</td>';
-	montarHTMLProgramas += '<td>Cap.</td>';
-	montarHTMLProgramas += '<td>Des.</td>';
-	montarHTMLProgramas += '<td>Desb.</td>';
-	montarHTMLProgramas += '<td>Mej.</td>';
+	montarHTMLProgramas += '<td>Peso<br />/ Cap.</td>';
+	montarHTMLProgramas += '<td>Desarrollo<br />/ Mejora</td>';
+	montarHTMLProgramas += '<td>Desbloquea</td>';
 	montarHTMLProgramas += '<td>Fab.</td>';
 	montarHTMLProgramas += '<td>Unid.</td>';
 	montarHTMLProgramas += '<td>Equi.</td>';
@@ -929,31 +926,35 @@ function montarProgramas(){
 	for(var i=0; i<longitudArrayProgramas; i++){
 
 		montarHTMLProgramas += '<tr id="programa' + i + '">';
+		//montarHTMLProgramas += '<div id="programa' + i + '">';
+		//montarHTMLProgramas += '<tr>';
 
-		montarHTMLProgramas += '<td>';
+		montarHTMLProgramas += '<td colspan="9">';
 		montarHTMLProgramas += '<h4>' + programas[i].nombreJuego + '</h4>';
 		montarHTMLProgramas += '<h5>';
 		montarHTMLProgramas += 'Sin desarrollar';
 		montarHTMLProgramas += '</h5>';
 		montarHTMLProgramas += '</td>';
 
-
-
-		//montarHTMLProgramas += '<div class="">';
-
+		montarHTMLProgramas += '</tr>';
+		montarHTMLProgramas += '<tr>';
 
 
 		montarHTMLProgramas += '<td><span id="seguridadPrograma' + i + '">0</span>%</td>';
-		montarHTMLProgramas += '<td>' + programas[i].peso + '</td>';
-		montarHTMLProgramas += '<td>' + programas[i].capacidad + '</td>';
+		montarHTMLProgramas += '<td>' + programas[i].peso + '<br />';
+		montarHTMLProgramas += programas[i].capacidad + '</td>';
 
+		//Si no está desarrollada se muestra el coste de desarrollo.
+		if(programas[i].desarrollado == 0){
+			montarHTMLProgramas += '<td><span id="costeDesarrolloPrograma' + i + '">' + programas[i].costeDesarrollo + '</span> M<br />';
+			montarHTMLProgramas += '<span id="tiempoDesarrolloPrograma' + i + '">' + programas[i].tiempoDesarrollo + '</span> días</td>';
+		}
+		//Si está desarrollada se muestra el coste de mejora.
+		else {
+			montarHTMLProgramas += '<td><span id="costeMejoraPrograma' + i + '">' + programas[i].costeMejora + '</span> M<br />';
+			montarHTMLProgramas += '<span id="tiempoMejoraPrograma' + i + '">' + programas[i].tiempoMejora + '</span> días</td>';
+		}
 
-
-
-
-		montarHTMLProgramas += '<td><span id="costeDesarrolloPrograma' + i + '">' + programas[i].costeDesarrollo + '</span> - ';
-
-		montarHTMLProgramas += '<span id="tiempoDesarrolloPrograma' + i + '">' + programas[i].tiempoDesarrollo + '</span></td>';
 		montarHTMLProgramas += '<td>';
 
 		var textoDesbloquea = false;
@@ -975,10 +976,9 @@ function montarProgramas(){
 		}
 		montarHTMLProgramas += '</td>';
 
-		montarHTMLProgramas += '<td><span id="costeMejoraPrograma' + i + '">' + programas[i].costeMejora + '</span></td>';
-		montarHTMLProgramas += '<td><span id="costeFabricacionComponente' + i + '">' + programas[i].costeFondosFabricacion + '</span> - ';
-		montarHTMLProgramas += '<span id="materialesFabricacionComponente' + i + '">' + programas[i].costeMaterialesFabricacion + '</span> - ';
-		montarHTMLProgramas += '<span id="tiempoFabricacionComponente' + i + '">' + programas[i].tiempoFabricacion + '</span></td>';
+		montarHTMLProgramas += '<td><span id="costeFabricacionComponente' + i + '">' + programas[i].costeFondosFabricacion + '</span> M<br />';
+		montarHTMLProgramas += '<span id="materialesFabricacionComponente' + i + '">' + programas[i].costeMaterialesFabricacion + '</span> mat.<br />';
+		montarHTMLProgramas += '<span id="tiempoFabricacionComponente' + i + '">' + programas[i].tiempoFabricacion + '</span> días</td>';
 		montarHTMLProgramas += '<td><span id="unidadesPrograma' + i + '">' + programas[i].unidades + '</span></td>';
 		montarHTMLProgramas += '<td><span id="equiposPrograma' + i + '">' + programas[i].equiposTrabajo + '</span> / <span id="equiposNecesarios' + i + '">' + programas[i].equiposNecesarios + '</span></td>';
 		montarHTMLProgramas += '<td><span id="experienciaPrograma' + i + '">' + programas[i].experiencia + '</span></td>';
@@ -1025,6 +1025,7 @@ function montarProgramas(){
 		*/
 
 		montarHTMLProgramas += '</tr>';
+		//montarHTMLProgramas += '</div>';
 
 	}
 
@@ -1037,6 +1038,7 @@ function montarProgramas(){
 
 			mostrarPrograma = (programas[i].desbloqueado) ? "table-row" : "none";
 			document.getElementById("programa" + i).style.display = mostrarPrograma;
+			document.getElementById("programa" + i).nextSibling.style.display = mostrarPrograma;
 
 	}
 
@@ -1054,14 +1056,13 @@ function montarMisiones(){
 	montarHTMLMisiones += '</td>';
 
 	montarHTMLMisiones += '<td>Seg.</td>';
-	montarHTMLMisiones += '<td>Des.</td>';
-	montarHTMLMisiones += '<td>Desb.</td>';
-	montarHTMLMisiones += '<td>Mej.</td>';
+	montarHTMLMisiones += '<td>Desarrollo<br />/ Mejora</td>';
+	montarHTMLMisiones += '<td>Desbloquea</td>';
 	montarHTMLMisiones += '<td>Equi.</td>';
 	montarHTMLMisiones += '<td>Exp.</td>';
 
 	montarHTMLMisiones += '<td>';
-	montarHTMLMisiones += 'Botones';
+	montarHTMLMisiones += 'Acciones';
 	montarHTMLMisiones += '</td>';
 
 	montarHTMLMisiones += '</tr>';
@@ -1075,67 +1076,73 @@ function montarMisiones(){
 		montarHTMLMisiones += '</td>';
 		montarHTMLMisiones += '<td><span id="seguridadMision' + i + '">0</span>%</td>';
 
+		//Si no está desarrollada se muestra el coste de desarrollo.
+		if(misiones[i].desarrollado == 0){
+			montarHTMLMisiones += '<td><span id="costeDesarrolloMision' + i + '">' + misiones[i].costeDesarrollo + '</span> M<br />';
+			montarHTMLMisiones += '<span id="tiempoDesarrolloMision' + i + '">' + misiones[i].tiempoDesarrollo + '</span> días</td>';
+		}
+		//Si está desarrollada se muestra el coste de mejora.
+		else {
+			montarHTMLMisiones += '<td><span id="costeMejoraMision' + i + '">' + misiones[i].costeMejora + '</span> M<br />';
+			montarHTMLMisiones += '<span id="tiempoMejoraMision' + i + '">' + misiones[i].tiempoMejora + '</span> días</td>';
+		}
 
-				montarHTMLMisiones += '<td><span id="costeDesarrolloMision' + i + '">' + misiones[i].costeDesarrollo + '</span> - ';
+		montarHTMLMisiones += '<td>';
 
-				montarHTMLMisiones += '<span id="tiempoDesarrolloMision' + i + '">' + misiones[i].tiempoDesarrollo + '</span></td>';
-				montarHTMLMisiones += '<td>';
+		var textoDesbloquea = false;
 
-				var textoDesbloquea = false;
-
-				for(var j = 0; j < misiones.length; j++){
-					if(misiones[j].requisitoMision == i){
-						if(!textoDesbloquea) {
-							montarHTMLMisiones += misiones[j].nombreJuego;
-							textoDesbloquea = true;
-						}
-						else {
-							montarHTMLMisiones += '<br />' + misiones[j].nombreJuego;
-						}
-					}
+		for(var j = 0; j < misiones.length; j++){
+			if(misiones[j].requisitoMision == i){
+				if(!textoDesbloquea) {
+					montarHTMLMisiones += misiones[j].nombreJuego;
+					textoDesbloquea = true;
 				}
-
-				if (textoDesbloquea == false){
-					montarHTMLMisiones += '-';
+				else {
+					montarHTMLMisiones += '<br />' + misiones[j].nombreJuego;
 				}
-				montarHTMLMisiones += '</td>';
+			}
+		}
 
-				montarHTMLMisiones += '<td><span id="costeMejoraMision' + i + '">' + misiones[i].costeMejora + '</span></td>';
-				montarHTMLMisiones += '<td><span id="equiposMision' + i + '">' + misiones[i].equiposTrabajo + '</span> / <span id="equiposNecesarios' + i + '">' + misiones[i].equiposNecesarios + '</span></td>';
-				montarHTMLMisiones += '<td><span id="experienciaMision' + i + '">' + misiones[i].experiencia + '</span></td>';
+		if (textoDesbloquea == false){
+			montarHTMLMisiones += '-';
+		}
+		montarHTMLMisiones += '</td>';
 
-				montarHTMLMisiones += '</td>';
+		montarHTMLMisiones += '<td><span id="equiposMision' + i + '">' + misiones[i].equiposTrabajo + '</span>/<span id="equiposNecesarios' + i + '">' + misiones[i].equiposNecesarios + '</span></td>';
+		montarHTMLMisiones += '<td><span id="experienciaMision' + i + '">' + misiones[i].experiencia + '</span></td>';
 
-				montarHTMLMisiones += '<td>';
+		montarHTMLMisiones += '</td>';
 
-
-				montarHTMLMisiones += '<div class="botonesMisiones">';
-				montarHTMLMisiones += '<button id="botonDesarrollarMision' + i + '" class="botonesDesarrollarMisiones" title="Desarrollar misión (fondos: ' + misiones[i].costeDesarrollo + '; tiempo: ' + misiones[i].tiempoDesarrollo + ')">';
-				montarHTMLMisiones += '<i class="material-icons">lightbulb_outline</i>';
-				montarHTMLMisiones += '</button>';
-				montarHTMLMisiones += '</div>';
-
-				montarHTMLMisiones += '<div class="botonesMisiones">';
-				montarHTMLMisiones += '<button id="botonMejorarMision' + i + '" class="botonesMejorarMisiones" title="Mejorar misión (fondos: ' + misiones[i].costeMejora + '; tiempo: ' + misiones[i].costeMejora + ')">';
-				montarHTMLMisiones += '<i class="material-icons">security</i>';
-				montarHTMLMisiones += '</button>';
-				montarHTMLMisiones += '</div>';
-
-				montarHTMLMisiones += '<div class="botonesMisiones">';
-				montarHTMLMisiones += '<button id="botonProgramarMision' + i + '" class="botonesProgramarMisiones" title="Programar misión">';
-				montarHTMLMisiones += '<i class="material-icons">schedule</i>';
-				montarHTMLMisiones += '</button>';
-				montarHTMLMisiones += '</div>';
-
-				montarHTMLMisiones += '<div class="botonesMisiones">';
-				montarHTMLMisiones += '<button id="botonEquipoMision' + i + '" class="botonesEquiposMisiones" title="Ampliar equipo (actual: ' + misiones[i].equiposTrabajo + '; necesarios: ' + misiones[i].equiposNecesarios + ')">';
-				montarHTMLMisiones += '<i class="material-icons">group_add</i>';
-				montarHTMLMisiones += '</button>';
-				montarHTMLMisiones += '</div>';
+		montarHTMLMisiones += '<td>';
 
 
-				montarHTMLMisiones += '</td>';
-				montarHTMLMisiones += '</tr>';
+		montarHTMLMisiones += '<div class="botonesMisiones">';
+		montarHTMLMisiones += '<button id="botonDesarrollarMision' + i + '" class="botonesDesarrollarMisiones" title="Desarrollar misión (fondos: ' + misiones[i].costeDesarrollo + '; tiempo: ' + misiones[i].tiempoDesarrollo + ')">';
+		montarHTMLMisiones += '<i class="material-icons">lightbulb_outline</i>';
+		montarHTMLMisiones += '</button>';
+		montarHTMLMisiones += '</div>';
+
+		montarHTMLMisiones += '<div class="botonesMisiones">';
+		montarHTMLMisiones += '<button id="botonMejorarMision' + i + '" class="botonesMejorarMisiones" title="Mejorar misión (fondos: ' + misiones[i].costeMejora + '; tiempo: ' + misiones[i].costeMejora + ')">';
+		montarHTMLMisiones += '<i class="material-icons">security</i>';
+		montarHTMLMisiones += '</button>';
+		montarHTMLMisiones += '</div>';
+
+		montarHTMLMisiones += '<div class="botonesMisiones">';
+		montarHTMLMisiones += '<button id="botonProgramarMision' + i + '" class="botonesProgramarMisiones" title="Programar misión">';
+		montarHTMLMisiones += '<i class="material-icons">schedule</i>';
+		montarHTMLMisiones += '</button>';
+		montarHTMLMisiones += '</div>';
+
+		montarHTMLMisiones += '<div class="botonesMisiones">';
+		montarHTMLMisiones += '<button id="botonEquipoMision' + i + '" class="botonesEquiposMisiones" title="Ampliar equipo (actual: ' + misiones[i].equiposTrabajo + '; necesarios: ' + misiones[i].equiposNecesarios + ')">';
+		montarHTMLMisiones += '<i class="material-icons">group_add</i>';
+		montarHTMLMisiones += '</button>';
+		montarHTMLMisiones += '</div>';
+
+
+		montarHTMLMisiones += '</td>';
+		montarHTMLMisiones += '</tr>';
 
 	}
 
@@ -1216,13 +1223,17 @@ function updateMisionesProgramadas(){
 
 		for(var i=0; i<longitudArrayMisionesProgramadas; i++) {
 
-			montarHTMLMisionesProgramadas += '<div id="misionProgramada' + i + '">';
+			if(misionesProgramadas[i].activa == 1) {
 
-			montarHTMLMisionesProgramadas += '<div class="titulosMisionesProgramadas">';
-			montarHTMLMisionesProgramadas += '<h4>' + misionesProgramadas[i].fechaPrograma + " - "+ misionesProgramadas[i].nombre + '</h4>';
-			montarHTMLMisionesProgramadas += '</div>';
+				montarHTMLMisionesProgramadas += '<div id="misionProgramada' + i + '">';
 
-			montarHTMLMisionesProgramadas += '</div>';
+				montarHTMLMisionesProgramadas += '<div class="titulosMisionesProgramadas">';
+				montarHTMLMisionesProgramadas += '<h4>' + misionesProgramadas[i].fechaPrograma + " - "+ misionesProgramadas[i].nombre + '</h4>';
+				montarHTMLMisionesProgramadas += '</div>';
+
+				montarHTMLMisionesProgramadas += '</div>';
+
+			}
 
 		}
 
@@ -1795,7 +1806,8 @@ function eventoMision(element, tipo){
 							fechaPrograma: diaActual + " " + mesActual + " " + anioActual,
 							cohete: -1,
 							carga: -1,
-							tripulacion: -1 //Tiene que haber un array de tripulaciones en el que se crean equipos de astronautas, aunque sólo sea uno. En esta variable se guarda el equipo seleccionado para esta misión.
+							tripulacion: -1, //Tiene que haber un array de tripulaciones en el que se crean equipos de astronautas, aunque sólo sea uno. En esta variable se guarda el equipo seleccionado para esta misión.
+							activa: 1
 						};
 
 						misionesProgramadas.push(nuevaMision);
@@ -2108,7 +2120,7 @@ function eventoPlataforma(element, tipo){
 
 			document.getElementById("plataforma" + plataformaId).getElementsByTagName("h5")[0].style.color = "black";
 			document.getElementById("plataforma" + plataformaId).getElementsByTagName("h5")[0].innerHTML = "Cuenta atrás lanzada";
-			document.getElementById("botonProgramarLanzamiento" + misionId).disabled = true;
+			document.getElementById("botonProgramarLanzamiento" + plataformaId).disabled = true;
 
 			eventoPlataformaPosible = true;
 
@@ -2182,7 +2194,8 @@ function desarrollarPrograma(id) {
 	for(var i = 0; i < programas.length; i++){
 		if(programas[i].requisitoPrograma == programaId){
 			programas[i].desbloqueado = true;
-			document.getElementById("programa" + i).style = "block";
+			document.getElementById("programa" + i).style = "table-row";
+			document.getElementById("programa" + i).nextSibling.style.display = "table-row";
 			//document.getElementById("programa" + i).style.backgroundImage = "url('imagenes/" + programas[i].nombreJuego + ".jpg')";
 			//document.getElementById("programa" + i).style.backgroundSize = "cover";
 		}
@@ -2192,7 +2205,7 @@ function desarrollarPrograma(id) {
 function mejorarPrograma(id) {
 
 	var programaId = id;
-	let mejora = Math.floor(Math.random() * 15);
+	let mejora = (Math.floor(Math.random() * 10)) + 10;
 
 	programas[programaId].seguridad = programas[programaId].seguridad + mejora;
 	document.getElementById("seguridadPrograma" + programaId).innerHTML = programas[programaId].seguridad;
@@ -2275,7 +2288,7 @@ function desarrollarMision(id) {
 function mejorarMision(id) {
 
 	var misionId = id;
-	var mejora = Math.floor(Math.random() * 15);
+	var mejora = (Math.floor(Math.random() * 10)) + 10;
 
 	misiones[misionId].seguridad = misiones[misionId].seguridad + mejora;
 	document.getElementById("seguridadMision" + misionId).innerHTML = misiones[misionId].seguridad;
@@ -2395,11 +2408,23 @@ function lanzamiento(id){
 		seguridadMision = 0;
 	}
 
+	if(seguridadMision > 50){
+		seguridadMision = 50;
+	}
+
 	textoVentanaModal += "<p>Seguridad misión: " + seguridadMision + "</p>";
 	textoVentanaModal += "<p>Experiencia misión: " + experienciaMision + "</p>";
 
 	let seguridadCohete = programas[cohete].seguridad;
 	let experienciaCohete = programas[cohete].experiencia;
+
+	if(seguridadCohete < 0){
+		seguridadCohete = 0;
+	}
+
+	if(seguridadCohete > 50){
+		seguridadCohete = 50;
+	}
 
 	textoVentanaModal += "<p>Cohete: " + programas[cohete].nombreJuego + "</p>";
 	textoVentanaModal += "<p>Seguridad cohete: " + seguridadCohete + "</p>";
@@ -2407,14 +2432,32 @@ function lanzamiento(id){
 
 	if(carga != -1) {
 
-		let seguridadCarga = programas[carga].seguridad;
-		let experienciaCarga = programas[carga].experiencia;
+		var seguridadCarga = programas[carga].seguridad;
+		var experienciaCarga = programas[carga].experiencia;
+
+		if(seguridadCarga < 0){
+			seguridadCarga = 0;
+		}
+
+		if(seguridadCarga > 50){
+			seguridadCarga = 50;
+		}
 
 		textoVentanaModal += "<p>Carga: " + programas[carga].nombreJuego + "</p>";
 		textoVentanaModal += "<p>Seguridad carga: " + seguridadCarga + "</p>";
 		textoVentanaModal += "<p>Experiencia carga: " + experienciaCarga + "</p>";
 
 	}
+
+	let probabilidadAproximada = 0;
+
+	if(carga != -1) {
+		probabilidadAproximada = (((seguridadCohete + (seguridadCohete * 2) + seguridadCarga + (seguridadCarga * 2)) / 2) + (seguridadMision + (experienciaMision * 5))) / 4;
+	}
+	else {
+		probabilidadAproximada = ((seguridadCohete + (seguridadCohete * 2)) + (seguridadMision + (experienciaMision * 5))) / 4;
+	}
+	textoVentanaModal += "<h6>Probabilidad aproximada: " + probabilidadAproximada + "</h6>";
 
 	//Abrir ventana modal parando el timer.
 	abrirVentanaModal(textoVentanaModal);
@@ -2436,6 +2479,8 @@ function lanzamiento(id){
 		let estado = 1; // 0-> Fallo; 1-> Activa; 2-> Activa pero con un fallo parcial.
 		let resultadoFinal; //Texto final.
 		let penalizacion = 0; //Tras un éxito parcial se añade una penalización.
+
+		let resultadoFases = [];
 
 		//Por cada fase de la misión.
 		for (let propiedad in misiones[misionId].fases) {
@@ -2461,14 +2506,21 @@ function lanzamiento(id){
 					seguridadComponente = 0;
 				}
 
+				if(seguridadComponente > 50){
+					seguridadComponente = 50;
+				}
+
+				let textoFase = "<p>" + misiones[misionId].fases[propiedad].nombre + " (" + programas[programaId].nombreJuego + " - " + programas[programaId].experienciaFases[propiedad].experiencia + "): ";
+
 				//Si la misión sigue activa.
 				if (estado > 0) {
 
 					//let sumaSeguridades = (seguridadComponente + (experienciaComponente * 5) + experienciaFase + seguridadMision + experienciaMision) - penalizacion;
-					let sumaSeguridades = ((seguridadComponente + (experienciaComponente * 2) + (experienciaFase * 5)) + (seguridadMision + (experienciaMision * 5)) / 2) - penalizacion;
-					if (sumaSeguridades > 90) {
-						sumaSeguridades = 90;
+					let sumaSeguridades = ((seguridadComponente + (experienciaComponente * 2) + (experienciaFase * 5)) + (seguridadMision + (experienciaMision * 5))) / 2;
+					if (sumaSeguridades > 85) {
+						sumaSeguridades = 85;
 					}
+					sumaSeguridades = sumaSeguridades - penalizacion;
 					let resultadoComparacion = sumaSeguridades - Math.floor((Math.random() * 100) + 1);
 
 					//Éxito.
@@ -2484,11 +2536,12 @@ function lanzamiento(id){
 					}
 					else {
 						//Fallo parcial.
-						if (resultadoComparacion > -15) {
+						if (resultadoComparacion > -10) {
 							resultado = "fallo parcial (probabilidad: " + sumaSeguridades + "; resultado: " + resultadoComparacion + ") (penalizacion: " + penalizacion + ")";
 							programas[programaId].experienciaFases[propiedad].experiencia += 1;
+							programas[programaId].seguridad -= 5;
 							resultadoFinal = "ÉXITO PARCIAL";
-							penalizacion += 10;
+							penalizacion += 15;
 							estado = 2;
 						}
 						//Fallo total.
@@ -2505,17 +2558,42 @@ function lanzamiento(id){
 					resultado = "-";
 				}
 
-				var textoComponente = " (" + programas[programaId].nombreJuego + " - " + programas[programaId].experienciaFases[propiedad].experiencia + ")";
-				document.getElementById("fasesMision").innerHTML += "<p>" + misiones[misionId].fases[propiedad].nombre + textoComponente + ": " + resultado + "</p>";
+				resultadoFases.push(textoFase + resultado + "</p>");
 
 			} //Fin si no se utiliza un componente.
 
 		}
 
-		document.getElementById("fasesMision").innerHTML += "<p>" + resultadoFinal + "</p>";
+		resultadoFases.push("<p>" + resultadoFinal + "</p>");
+
+		var curNewsIndex = 0;
+
+		var intervalID = setInterval(function() {
+
+			document.getElementById("fasesMision").innerHTML += (resultadoFases[curNewsIndex]);
+			++curNewsIndex;
+
+
+		    if (curNewsIndex >= resultadoFases.length) {
+		document.getElementById("botonCerrarVentanaModal").style.display = "block";
+						clearInterval(intervalID);
+		    }
+
+
+
+		}, 1500);
+
+		//clearInterval(intervalID);
+
+
+
+
+
+
+
 
 		//Mostrar/ocultar botones.
-		document.getElementById("botonCerrarVentanaModal").style.display = "block";
+
 		if(!modoDesarrollo) {
 			document.getElementById("botonConfirmarLanzamiento").style.display = "none";
 		}
@@ -2570,7 +2648,7 @@ function lanzamiento(id){
 				hitos[misionId].fechaPrimero = diaActual + " " + mesActual + " " + anioActual;
 				prestigio += hitos[misionId].prestigioPrimero;
 			}
-			else if(hitos[misionId].segundo == "-") {
+			else if((hitos[misionId].segundo == "-") && (hitos[misionId].primero != "USA")) {
 				hitos[misionId].segundo = "USA";
 				hitos[misionId].fechaSegundo = diaActual + " " + mesActual + " " + anioActual;
 				prestigio += hitos[misionId].prestigioSegundo;
@@ -2605,6 +2683,13 @@ function lanzamiento(id){
 		plataformas[plataformaId].libre = true;
 		plataformas[plataformaId].estado = 0;
 		plataformas[plataformaId].mision = -1;
+
+		//Modificar misión programada.
+		misionesProgramadas[misionProgramada].activa = 0;
+		updateMisionesProgramadas();
+
+		//Modificar cartel en misión.
+		document.getElementById("mision" + misionId).getElementsByTagName("h5")[0].innerHTML = "Misión lanzada";
 
 		//CREAR EVENTO PARA DESPEJAR PLATAFORMA - PENDIENTE.
 
