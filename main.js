@@ -2500,7 +2500,7 @@ function lanzamiento(id){
 
 				let seguridadComponente = programas[programaId].seguridad;
 				let experienciaComponente = programas[programaId].experiencia;
-				let experienciaFase = programas[programaId].experienciaFases[propiedad].experiencia;//
+				let experienciaFase = programas[programaId].experienciaFases[propiedad].experiencia;
 
 				if(seguridadComponente < 0){
 					seguridadComponente = 0;
