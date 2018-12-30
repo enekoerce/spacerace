@@ -374,6 +374,7 @@ var misiones = [
 		nombreJuego: "Cohete espacial",
 		nivel: 1, // Nivel mínimo de los componentes necesarios para esta misión.
 		tipoCarga: 0, // ¿? - PENDIENTE.
+		tripulacion: 0, // 0-> No lleva; 1/2/3-> Número mínimo de astronautas necesario para la misión.
 		experiencia: 0,
 		desarrollado: 0,
 		desbloqueado: true,
@@ -407,6 +408,7 @@ var misiones = [
 		nombreJuego: "Satélite orbital",
 		nivel: 1,
 		tipoCarga: 2,
+		tripulacion: 0,
 		experiencia: 0,
 		desarrollado: 0,
 		desbloqueado: false,
@@ -440,6 +442,7 @@ var misiones = [
 		nombreJuego: "Vuelo suborbital NT",
 		nivel: 1,
 		tipoCarga: 3,
+		tripulacion: 0,
 		experiencia: 0,
 		desarrollado: 0,
 		desbloqueado: false,
@@ -473,6 +476,7 @@ var misiones = [
 		nombreJuego: "Vuelo suborbital T",
 		nivel: 1,
 		tipoCarga: 3,
+		tripulacion: 1,
 		experiencia: 0,
 		desarrollado: 0,
 		desbloqueado: false,
@@ -506,12 +510,47 @@ var misiones = [
 		nombreJuego: "Vuelo orbital NT",
 		nivel: 1,
 		tipoCarga: 3,
+		tripulacion: 0,
 		experiencia: 0,
 		desarrollado: 0,
 		desbloqueado: false,
 		costeDesarrollo: 10,
 		tiempoDesarrollo: 5,
 		requisitoMision: 1,
+		seguridad: 10,
+		seguridadMaxima: 90,
+		costeMejora: 10,
+		tiempoMejora: 10,
+		prestigioCancelar: 3,
+		prestigioFallo: -10,
+		equiposNecesarios: 1,
+		equiposTrabajo: 1,
+		tiempoCuentaAtras: 10,
+		fases: [
+			{nombre: "Encendido", componente: 1},
+			{nombre: "Despegue", componente: 1},
+			{nombre: "Espacio", componente: 1},
+			{nombre: "Órbita", componente: 1},
+			{nombre: "Despliegue carga",	componente: 1},
+			{nombre: "Encendido carga", componente: 2},
+			{nombre: "Actividades órbita",	componente: 2},
+			{nombre: "Reentrada", componente: 2},
+			{nombre: "Aterrizaje", componente: 2}
+		],
+		vecesProgramada: 0
+	},
+	{
+		nombre: "mision5",
+		nombreJuego: "Vuelo orbital T",
+		nivel: 1,
+		tipoCarga: 3,
+		tripulacion: 1,
+		experiencia: 0,
+		desarrollado: 0,
+		desbloqueado: false,
+		costeDesarrollo: 10,
+		tiempoDesarrollo: 5,
+		requisitoMision: 4,
 		seguridad: 10,
 		seguridadMaxima: 90,
 		costeMejora: 10,
@@ -578,11 +617,45 @@ var plataformas = [
 		estado: 0
 	},
 	{
-		nombreJuego: "Modo desarrollo",
-		mision: 1,
+		nombreJuego: "Plataforma 4",
+		mision: -1,
 		misionProgramada: -1,
-		libre: false,
+		libre: true,
 		estado: 0
+	}
+];
+
+//---------------------------------------
+
+//ARRAY ASTRONAUTAS
+var astronautas = [
+	{
+		nombreJuego: "Shepard",
+		estado: 1 // 0-> Fuera de servicio; 1-> Disponible; 2-> Asignado a misión.
+	},
+	{
+		nombreJuego: "Glenn",
+		estado: 1 // 0-> Fuera de servicio; 1-> Disponible; 2-> Asignado a misión.
+	},
+	{
+		nombreJuego: "Slayton",
+		estado: 1 // 0-> Fuera de servicio; 1-> Disponible; 2-> Asignado a misión.
+	},
+	{
+		nombreJuego: "Cooper",
+		estado: 1 // 0-> Fuera de servicio; 1-> Disponible; 2-> Asignado a misión.
+	},
+	{
+		nombreJuego: "Shirra",
+		estado: 1 // 0-> Fuera de servicio; 1-> Disponible; 2-> Asignado a misión.
+	},
+	{
+		nombreJuego: "Carpenter",
+		estado: 1 // 0-> Fuera de servicio; 1-> Disponible; 2-> Asignado a misión.
+	},
+	{
+		nombreJuego: "Grissom",
+		estado: 1 // 0-> Fuera de servicio; 1-> Disponible; 2-> Asignado a misión.
 	}
 ];
 
@@ -645,7 +718,17 @@ var hitos = [
 		prestigioSegundo: 10,
 		prestigioNormal: 1
 	},
-
+	{
+		misionId: 5,
+		nombre: "Vuelo orbital T",
+		primero: "-",
+		segundo: "-",
+		fechaPrimero: "",
+		fechaSegundo: "",
+		prestigioPrimero: 30,
+		prestigioSegundo: 20,
+		prestigioNormal: 4
+	}
 ];
 
 //---------------------------------------
@@ -818,6 +901,9 @@ function lanzarJuego(){
 
 	//Montar plataformas.
 	montarPlataformas();
+
+	//Montar astronautas.
+	updateAstronautas();
 
 	//Montar misiones programadas.
 	updateMisionesProgramadas();
@@ -1264,6 +1350,47 @@ function updateHitos(){
 		montarHTMLHitos += '</table>';
 
 		document.getElementById("hitos").innerHTML = montarHTMLHitos;
+
+}
+
+function updateAstronautas(){
+
+		var montarHTMLAstronautas = "<h3>Astronautas</h3>";
+		var longitudArrayAstronautas = astronautas.length;
+
+		montarHTMLAstronautas += '<table>';
+		montarHTMLAstronautas += '<tr><td>Nombre</td><td>Estado</td></tr>';
+
+		for(var i=0; i<longitudArrayAstronautas; i++) {
+
+			switch (astronautas[i].estado){
+				case 0:
+					textoEstadoAstronauta = "Fuera de servicio";
+					break;
+				case 1:
+					textoEstadoAstronauta = "Disponible";
+					break;
+				case 2:
+					textoEstadoAstronauta = "Asignado a misión";
+					break;
+				default:
+					textoEstadoAstronauta = "No disponible";
+					break;
+			}
+
+			montarHTMLAstronautas += '<div id="astronauta' + i + '">';
+
+			montarHTMLAstronautas += '<tr>';
+			montarHTMLAstronautas += '<td>' + astronautas[i].nombreJuego + '</td><td>'  + textoEstadoAstronauta + '</td>';
+			montarHTMLAstronautas += '</tr>';
+
+			montarHTMLAstronautas += '</div>';
+
+		}
+
+		montarHTMLAstronautas += '</table>';
+
+		document.getElementById("astronautas").innerHTML = montarHTMLAstronautas;
 
 }
 
@@ -1921,10 +2048,12 @@ function elegirComponentesMision(element){ //Se recibe el ID de la plataforma.
 	//Limpiar valores previos.
 	document.getElementById('selectCohete').innerHTML = "<option value='-'>-</option>";
 	document.getElementById('selectCarga').innerHTML = "<option value='-'>-</option>";
+	document.getElementById('selectTripulacion').innerHTML = "<option value='-'>-</option>";
 	document.getElementById("botonConfirmarEnsamblaje").disabled = true;
 
 	//Datos misión.
 	var tipoCarga = misiones[misionId].tipoCarga;
+	var tripulacion = misiones[misionId].tripulacion;
 
 	//Añadir opciones a los select.
 
@@ -1948,7 +2077,7 @@ function elegirComponentesMision(element){ //Se recibe el ID de la plataforma.
 
 	else {
 
-		//Buscar carga: componente de tipo X que cumpla con los requisitos que pueda haber
+		//Buscar carga: componente de tipo X que cumpla con los requisitos que pueda haber.
 		for (var j=0; j < programas.length; j++){
 			if (programas[j].tipo == tipoCarga){
 				if (programas[j].unidades > 0){
@@ -1958,6 +2087,25 @@ function elegirComponentesMision(element){ //Se recibe el ID de la plataforma.
 		}
 
 		document.getElementById('selectCarga').addEventListener('change', function(event){
+			mostrarDatosComponentes(misionId);
+		});
+
+	} //Else si tipoCarga = 0.
+
+	if(tripulacion == 0) {
+
+	} //If si tipoCarga = 0.
+
+	else {
+
+		//Buscar tripulación: de momento sólo seleccionar del array de astronautas, más adelante del array de equipos de astronautas. - PENDIENTE.
+		for (let j=0; j < astronautas.length; j++){
+			if (astronautas[j].estado == 1){
+				document.getElementById('selectTripulacion').insertAdjacentHTML('beforeend', "<option value='" + j + "'>" + astronautas[j].nombreJuego + "</option>")
+			}
+		}
+
+		document.getElementById('selectTripulacion').addEventListener('change', function(event){
 			mostrarDatosComponentes(misionId);
 		});
 
@@ -1990,6 +2138,20 @@ function elegirComponentesMision(element){ //Se recibe el ID de la plataforma.
 
 		} //Else si tipoCarga = 0.
 
+		if(tripulacion == 0) {
+			misionesProgramadas[misionProgramada].tripulacion = -1;
+		} //If si tripulación = 0.
+
+		else {
+
+			var selectTripulacion = document.getElementById("selectTripulacion");
+			var tripulacionSeleccionada = selectTripulacion.options[selectTripulacion.selectedIndex].value;
+			astronautas[tripulacionSeleccionada].estado = 2;
+			updateAstronautas();
+			misionesProgramadas[misionProgramada].tripulacion = tripulacionSeleccionada;
+
+		} //Else si tripulación = 0.
+
 		cerrarVentanaModal();
 
 		//Añadir seguridad definitiva de los componentes (aunque siga cambiando su seguridad en la partida, estos ya están ensamblados; la seguridad de la misión, sin embargo, sí puede seguir incrementándose). - PENDIENTE.
@@ -2001,10 +2163,12 @@ function elegirComponentesMision(element){ //Se recibe el ID de la plataforma.
 function mostrarDatosComponentes(misionId){
 
 	var tipoCarga = misiones[misionId].tipoCarga;
+	var tripulacion = misiones[misionId].tripulacion;
 
 	//Vaciar contenidos anteriores cajas datos.
 	document.getElementById("datosCoheteSeleccionado").innerHTML = "";
 	document.getElementById("datosCargaSeleccionada").innerHTML = "";
+	document.getElementById("datosTripulacionSeleccionada").innerHTML = "";
 	document.getElementById("componentesSeleccionados").innerHTML = "";
 
 	var selectCohete = document.getElementById("selectCohete");
@@ -2012,6 +2176,9 @@ function mostrarDatosComponentes(misionId){
 
 	var selectCarga = document.getElementById("selectCarga");
 	var cargaSeleccionada = selectCarga.options[selectCarga.selectedIndex];
+
+	var selectTripulacion = document.getElementById("selectTripulacion");
+	var tripulacionSeleccionada = selectTripulacion.options[selectTripulacion.selectedIndex];
 
 	//Buscar id componente cohete y mostrar info.
 	for (var i=0; i < programas.length; i++){
@@ -2031,6 +2198,14 @@ function mostrarDatosComponentes(misionId){
 		}
 	}
 
+	//Buscar id tripulación y mostrar info.
+	for (var i=0; i < astronautas.length; i++){
+		if (i == tripulacionSeleccionada.value) {
+		  var contenidoDatosTripulacion = "Astronauta: " + astronautas[i].nombreJuego + "<br />";
+		  document.getElementById("datosTripulacionSeleccionada").innerHTML = contenidoDatosTripulacion;
+		}
+	}
+
 	//Activar botón ensamblar.
 
 	if(tipoCarga == 0) {
@@ -2045,29 +2220,61 @@ function mostrarDatosComponentes(misionId){
 
 	else {
 
-		if ((coheteSeleccionado.value == "-") || (cargaSeleccionada.value == "-")){
-			document.getElementById("componentesSeleccionados").innerHTML = "Faltan componentes por seleccionar";
-			document.getElementById("botonConfirmarEnsamblaje").disabled = true;
-		}
-		else {
+		if(tripulacion > 0){ //If si lleva tripulación.
 
-	  	//Comprobar si son compatibles
-			for (var cohete=0; cohete < programas.length; cohete++){
-				if (cohete == coheteSeleccionado.value){
-					for (var carga=0; carga < programas.length; carga++){
-						if (carga == cargaSeleccionada.value) {
-							if (programas[cohete].capacidad > programas[carga].peso){
-								document.getElementById("botonConfirmarEnsamblaje").disabled = false;
-							}
-							else {
-								document.getElementById("botonConfirmarEnsamblaje").disabled = true;
+			if ((coheteSeleccionado.value == "-") || (cargaSeleccionada.value == "-") || (tripulacionSeleccionada.value == "-")){
+				document.getElementById("componentesSeleccionados").innerHTML = "Faltan componentes por seleccionar";
+				document.getElementById("botonConfirmarEnsamblaje").disabled = true;
+			}
+			else {
+
+				//Comprobar si son compatibles
+				for (var cohete=0; cohete < programas.length; cohete++){
+					if (cohete == coheteSeleccionado.value){
+						for (var carga=0; carga < programas.length; carga++){
+							if (carga == cargaSeleccionada.value) {
+								if (programas[cohete].capacidad > programas[carga].peso){
+									document.getElementById("botonConfirmarEnsamblaje").disabled = false;
+								}
+								else {
+									document.getElementById("botonConfirmarEnsamblaje").disabled = true;
+								}
 							}
 						}
 					}
 				}
+				document.getElementById("componentesSeleccionados").innerHTML = coheteSeleccionado.value + " + " + cargaSeleccionada.value + " + " + tripulacionSeleccionada.value;
 			}
-			document.getElementById("componentesSeleccionados").innerHTML = coheteSeleccionado.value + " + " + cargaSeleccionada.value;
-		}
+
+		} //Fin if si lleva tripulación.
+
+		else { //Else si tripulación > 0 (si no lleva tripulación).
+
+			if ((coheteSeleccionado.value == "-") || (cargaSeleccionada.value == "-")){
+				document.getElementById("componentesSeleccionados").innerHTML = "Faltan componentes por seleccionar";
+				document.getElementById("botonConfirmarEnsamblaje").disabled = true;
+			}
+			else {
+
+		  	//Comprobar si son compatibles
+				for (var cohete=0; cohete < programas.length; cohete++){
+					if (cohete == coheteSeleccionado.value){
+						for (var carga=0; carga < programas.length; carga++){
+							if (carga == cargaSeleccionada.value) {
+								if (programas[cohete].capacidad > programas[carga].peso){
+									document.getElementById("botonConfirmarEnsamblaje").disabled = false;
+								}
+								else {
+									document.getElementById("botonConfirmarEnsamblaje").disabled = true;
+								}
+							}
+						}
+					}
+				}
+				document.getElementById("componentesSeleccionados").innerHTML = coheteSeleccionado.value + " + " + cargaSeleccionada.value;
+			}
+
+	} //Else si tripulación > 0.
 
 	} //Else si tipoCarga = 0.
 
@@ -2394,6 +2601,7 @@ function lanzamiento(id){
 	let misionProgramada = plataformas[plataformaId].misionProgramada;
 	let cohete = misionesProgramadas[misionProgramada].cohete;
 	let carga = misionesProgramadas[misionProgramada].carga;
+	let tripulacion = misionesProgramadas[misionProgramada].tripulacion;
 
 	//Ventana modal con el resultado del lanzamiento.
 
@@ -2447,6 +2655,10 @@ function lanzamiento(id){
 		textoVentanaModal += "<p>Seguridad carga: " + seguridadCarga + "</p>";
 		textoVentanaModal += "<p>Experiencia carga: " + experienciaCarga + "</p>";
 
+	}
+
+	if(tripulacion != -1) {
+		textoVentanaModal += "<p>Tripulación: " + astronautas[tripulacion].nombreJuego + "</p>";
 	}
 
 	let probabilidadAproximada = 0;
@@ -2525,7 +2737,7 @@ function lanzamiento(id){
 
 					//Éxito.
 					if (resultadoComparacion > 0) {
-						resultado = "éxito (probabilidad: " + sumaSeguridades + "; resultado: " + resultadoComparacion + ") (penalizacion: " + penalizacion + ")";
+						resultado = "<span style='color: green;'>éxito (probabilidad: " + sumaSeguridades + "; resultado: " + resultadoComparacion + ") (penalizacion: " + penalizacion + ")</span>";
 						programas[programaId].experienciaFases[propiedad].experiencia += 2;
 						if (penalizacion > 0) {
 							penalizacion -= 5;
@@ -2536,29 +2748,33 @@ function lanzamiento(id){
 					}
 					else {
 						//Fallo parcial.
-						if (resultadoComparacion > -10) {
-							resultado = "fallo parcial (probabilidad: " + sumaSeguridades + "; resultado: " + resultadoComparacion + ") (penalizacion: " + penalizacion + ")";
+						if (resultadoComparacion > -15) {
+							resultado = "<span style='color: yellow;'>fallo parcial (probabilidad: " + sumaSeguridades + "; resultado: " + resultadoComparacion + ") (penalizacion: " + penalizacion + ")</span>";
 							programas[programaId].experienciaFases[propiedad].experiencia += 1;
 							programas[programaId].seguridad -= 5;
 							resultadoFinal = "ÉXITO PARCIAL";
-							penalizacion += 15;
+							penalizacion += 10;
 							estado = 2;
 						}
 						//Fallo total.
 						else {
-							resultado = "fallo (probabilidad: " + sumaSeguridades + "; resultado: " + resultadoComparacion + ") (penalizacion: " + penalizacion + ")";
+							resultado = "<span style='color: red;'>fallo (probabilidad: " + sumaSeguridades + "; resultado: " + resultadoComparacion + ") (penalizacion: " + penalizacion + ")</span>";
 							resultadoFinal = "FALLO TOTAL";
+							if(tripulacion != -1) {
+								astronautas[tripulacion].estado = 0;
+								resultadoFinal = "FALLO TOTAL - TRIPULACIÓN FALLECIDA";
+							}
 							estado = 0;
 						}
 					}
+
+					resultadoFases.push(textoFase + resultado + "</p>");
 
 				} //Fin si la misión sigue activa.
 
 				else {
 					resultado = "-";
 				}
-
-				resultadoFases.push(textoFase + resultado + "</p>");
 
 			} //Fin si no se utiliza un componente.
 
@@ -2579,18 +2795,9 @@ function lanzamiento(id){
 						clearInterval(intervalID);
 		    }
 
-
-
 		}, 1500);
 
 		//clearInterval(intervalID);
-
-
-
-
-
-
-
 
 		//Mostrar/ocultar botones.
 
@@ -2599,8 +2806,12 @@ function lanzamiento(id){
 		}
 		document.getElementById("botonCancelarLanzamiento").style.display = "none";
 
-		//EXPERIENCIA DESPUÉS DEL RESULTADO DE LA MISIÓN.
+		//EXPERIENCIA DESPUÉS DEL RESULTADO DE LA MISIÓN. - MEJOR PONER AQUÍ TODOS LOS EFECTOS DESPÚES DEL RESTULTADO DE LA MISIÓN, NO SÓLO EXPERIENCIA, TAMBIÉN TRIPULACIÓN, HITOS, ETC. - PENDIENTE.
 		if(estado > 0) {
+
+			if(tripulacion != -1) {
+				astronautas[tripulacion].estado = 1;
+			}
 
 			programas[cohete].seguridad += 5;
 			programas[cohete].experiencia += 2;
@@ -2661,9 +2872,10 @@ function lanzamiento(id){
 			prestigio += misiones[misionId].prestigioFallo;
 		}
 
-		//Actualizar prestigio.
+		//Actualizar prestigio y astronautas.
 		document.getElementById("prestigio").innerHTML = prestigio;
 		updateHitos();
+		updateAstronautas();
 
 		//MODIFICADORES. - ALEATORIAMENTE PUEDEN SER CARGADOS EVENTOS DEL ARRAY DE MODIFICADORES (SON FUNCIONES QUE SE EJECUTAN Y MODIFICAN EL JUEGO EN FUNCIÓN DE LAS VARIABLES CORRESPONDIENTES). - PENDIENTE.
 		//Los modificadores se ponen en este lugar del juego porque las misiones son el componente principal del juego, los puntos de inflexión del mismo para bien o para mal. Así que se cargan modificadores que en función del resultado de la misión y de otras condiciones tienen consecuencias en el juego.

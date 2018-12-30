@@ -195,7 +195,7 @@
 		box-sizing: border-box;
 	}
 
-	#misionesProgramadas, #hitos {
+	#misionesProgramadas, #hitos, #astronautas {
 		float: left;
 		width: 20%;
 		border: 5px solid #666666;
@@ -203,7 +203,7 @@
 		margin: 10px;
 	}
 
-	#programas table, #misiones table, #hitos table {
+	#programas table, #misiones table, #hitos table, #astronautas table {
 		width: 100%;
 	}
 
@@ -268,12 +268,12 @@
 	}
 	*/
 
-		#programas > table, #misiones > table, #hitos > table {
+		#programas > table, #misiones > table, #hitos > table, #astronautas > table {
 			font-size: 80%;
 			text-align: right;
 		}
 
-		#programas > table td, #misiones > table td, #hitos > table td {
+		#programas > table td, #misiones > table td, #hitos > table td, #astronautas > table td {
 			/*border: 1px solid white;*/
 			background: #333;
 			padding: 5px;
@@ -325,6 +325,13 @@
 
 		&nbsp;&nbsp;&nbsp;
 
+		Tripulación:
+		<select id="selectTripulacion">
+		<option value="-">-</option>
+		</select>
+
+		&nbsp;&nbsp;&nbsp;
+
 		<button id="botonConfirmarEnsamblaje" title="Confirmar ensamblaje"><i class='material-icons'>check_circle</i></button>
 
 		<hr />
@@ -342,6 +349,12 @@
 		&nbsp;&nbsp;&nbsp;
 
 		<div id="datosCargaSeleccionada">
+
+		</div>
+
+		&nbsp;&nbsp;&nbsp;
+
+		<div id="datosTripulacionSeleccionada">
 
 		</div>
 
@@ -429,6 +442,9 @@
 	</div>
 
 	<div id="hitos">
+	</div>
+
+	<div id="astronautas">
 	</div>
 
 	<div id="contenidoCartelMensajes" style="border: 1px solid #666; padding: 10px; margin: 10px; float: right; width: 70%;"></div>
