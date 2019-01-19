@@ -375,12 +375,14 @@ var misiones = [
 		nivel: 1, // Nivel mínimo de los componentes necesarios para esta misión.
 		tipoCarga: 0, // ¿? - PENDIENTE.
 		tripulacion: 0, // 0-> No lleva; 1/2/3-> Número mínimo de astronautas necesario para la misión.
+		duracionMinima: 1,
+		duracionMaxima: 1,
 		experiencia: 0,
-		desarrollado: 0,
-		desbloqueado: true,
+		desarrollado: 0, //Si no se desarrollar no se puede hacer nada.
+		desbloqueado: true, //Si al comienzo del juego aparece en la lista de misiones.
 		costeDesarrollo: 10,
 		tiempoDesarrollo: 5,
-		requisitoMision: "-",
+		requisitoMision: "-", //ID de la misión que hay que desarrollar previamente para desbloquear ésta y mostrarla en la lista de misiones.
 		seguridad: 10,
 		seguridadMaxima: 90,
 		costeMejora: 10,
@@ -409,6 +411,8 @@ var misiones = [
 		nivel: 1,
 		tipoCarga: 2,
 		tripulacion: 0,
+		duracionMinima: 1,
+		duracionMaxima: 1,
 		experiencia: 0,
 		desarrollado: 0,
 		desbloqueado: false,
@@ -443,6 +447,8 @@ var misiones = [
 		nivel: 1,
 		tipoCarga: 3,
 		tripulacion: 0,
+		duracionMinima: 1,
+		duracionMaxima: 1,
 		experiencia: 0,
 		desarrollado: 0,
 		desbloqueado: false,
@@ -477,6 +483,8 @@ var misiones = [
 		nivel: 1,
 		tipoCarga: 3,
 		tripulacion: 1,
+		duracionMinima: 1,
+		duracionMaxima: 1,
 		experiencia: 0,
 		desarrollado: 0,
 		desbloqueado: false,
@@ -511,6 +519,8 @@ var misiones = [
 		nivel: 1,
 		tipoCarga: 3,
 		tripulacion: 0,
+		duracionMinima: 1,
+		duracionMaxima: 15,
 		experiencia: 0,
 		desarrollado: 0,
 		desbloqueado: false,
@@ -545,6 +555,8 @@ var misiones = [
 		nivel: 1,
 		tipoCarga: 3,
 		tripulacion: 1,
+		duracionMinima: 1,
+		duracionMaxima: 15,
 		experiencia: 0,
 		desarrollado: 0,
 		desbloqueado: false,
@@ -966,6 +978,12 @@ function lanzarJuego(){
 			arrayBotonesProgramarLanzamientos[i].disabled = true;
 		}
 
+		//Parámetros misiones.
+		var arrayBotonesParametrosMisiones = document.getElementsByClassName('botonesParametrosMisiones');
+		for(i = 0; i < arrayBotonesParametrosMisiones.length; i++){
+			arrayBotonesParametrosMisiones[i].disabled = true;
+		}
+
 		//Cancelar misiones.
 		var arrayBotonesCancelarMisiones = document.getElementsByClassName('botonesCancelarMisiones');
 		for(i = 0; i < arrayBotonesCancelarMisiones.length; i++){
@@ -1272,6 +1290,12 @@ function montarPlataformas(){
 		montarHTMLPlataformas += '<div class="botonesPlataformas">';
 
 		montarHTMLPlataformas += '<div>';
+		montarHTMLPlataformas += '<button id="botonParametrosMision' + i + '" class="botonesParametrosMisiones" title="Parámetros misión">';
+		montarHTMLPlataformas += '<i class="material-icons">assignment</i>';
+		montarHTMLPlataformas += '</button>';
+		montarHTMLPlataformas += '</div>';
+
+		montarHTMLPlataformas += '<div>';
 		montarHTMLPlataformas += '<button id="botonEnsamblarComponentes' + i + '" class="botonesEnsamblarComponentes" title="Ensamblar componentes">';
 		montarHTMLPlataformas += '<i class="material-icons">settings</i>';
 		montarHTMLPlataformas += '</button>';
@@ -1488,6 +1512,11 @@ function cerrarVentanaModal(){
 	document.getElementById('ventanaJuego').style.display = "block";
 	document.getElementById("botonAbrirVentanaMenu").style.display = "block";
 
+	//Ocultar desde aquí todas las ventanas que salen dentro de la ventana modal, para no dejar nunca alguna visible por error. - COMPROBAR QUE SIEMPRE QUE SE ABRA LA VENTANA MODAL ESTÁ VISIBLE EL CONTENIDO CORRESPONDIENTE. - PENDIENTE.
+	document.getElementById("ventanaEnsamblaje").style.display = "none";
+	document.getElementById("ventanaLanzamiento").style.display = "none";
+	document.getElementById("ventanaParametros").style.display = "none";
+
 	pausar(false);
 
 }
@@ -1580,6 +1609,14 @@ for(i = 0; i < arrayBotonesCambiarNombresMisiones.length; i++){
 	arrayBotonesCambiarNombresMisiones[i].addEventListener('click', function(event) {
 		eventoPlataforma(event.currentTarget, "cambiarNombreMision");
 	})
+}
+
+var arrayBotonesParametrosMisiones = document.getElementsByClassName('botonesParametrosMisiones');
+
+for(i = 0; i < arrayBotonesParametrosMisiones.length; i++){
+	arrayBotonesParametrosMisiones[i].onclick = function(event) { //IMPORTANTE: onclick en vez de un event listener (lanzaba varias veces el mismo evento).
+		elegirParametrosMision(event.currentTarget);
+	}
 }
 
 var arrayBotonesEnsamblarComponentes = document.getElementsByClassName('botonesEnsamblarComponentes');
@@ -1907,7 +1944,6 @@ function eventoMision(element, tipo){
 
 			var plataformaAsignada = false;
 
-
 			//Sólo si hay una plataforma libre se puede continuar.
 			for (var i=0; i<plataformas.length; i++){
 
@@ -1934,6 +1970,7 @@ function eventoMision(element, tipo){
 							cohete: -1,
 							carga: -1,
 							tripulacion: -1, //Tiene que haber un array de tripulaciones en el que se crean equipos de astronautas, aunque sólo sea uno. En esta variable se guarda el equipo seleccionado para esta misión.
+							duracion: misiones[misionId].duracionMinima,
 							activa: 1
 						};
 
@@ -2020,6 +2057,44 @@ function eventoMision(element, tipo){
 	}
 }
 
+function elegirParametrosMision(element){ //Se recibe el ID de la plataforma.
+
+	plataformaId = element.id.substr(21,1);
+	misionId = plataformas[plataformaId].mision;
+	misionProgramada = plataformas[plataformaId].misionProgramada;
+
+	//Preparar información para mostrar en la ventana.
+	var textoVentanaModal = "<h4>Parámetros misión</h4>";
+	textoVentanaModal += "<h5>Misión " + misionesProgramadas[misionProgramada].nombre + " | Plataforma: " + plataformas[plataformaId].nombreJuego + "</h5>";
+	textoVentanaModal += "<p>Iniciada el " + misionesProgramadas[misionProgramada].fechaPrograma + "</p>";
+	textoVentanaModal += "<hr />";
+	textoVentanaModal += "<p>Duración: " + misionesProgramadas[misionProgramada].duracion + " días.</p>";
+
+	//Abrir ventana modal parando el timer.
+	abrirVentanaModal(textoVentanaModal);
+
+	//Mostrar/ocultar elementos.
+	document.getElementById("ventanaParametros").style.display = "block";
+
+	//Contenidos ventana parámetros.
+
+	//Datos misión.
+	var tipoCarga = misiones[misionId].tipoCarga;
+	var tripulacion = misiones[misionId].tripulacion;
+
+	//Fin contenidos ventana ensamblaje.
+
+	//Añadir evento para el botón de confirmar parámetros.
+	document.getElementById("botonConfirmarParametros").onclick = function(){ //IMPORTANTE: onclick en vez de un event listener (lanzaba varias veces el mismo evento).
+
+		document.getElementById("ventanaParametros").style.display = "none";
+		document.getElementById("botonEnsamblarComponentes" + plataformaId).disabled = false;
+
+		cerrarVentanaModal();
+
+	};
+}
+
 function elegirComponentesMision(element){ //Se recibe el ID de la plataforma.
 
 	plataformaId = element.id.substr(25,1);
@@ -2059,11 +2134,8 @@ function elegirComponentesMision(element){ //Se recibe el ID de la plataforma.
 
 	//Buscar cohete: componente de tipo 1 con capacidad mayor que el peso de la carga
 	for (var i=0; i < programas.length; i++){
-		if (programas[i].tipo == 1){
-			//if ((componentes[i].capacidad > pesoCarga) && (componentes[i].unidades > 0)){
-			if (programas[i].unidades > 0){
-				document.getElementById('selectCohete').insertAdjacentHTML('beforeend', "<option value='" + i + "'>" + programas[i].nombreJuego + "</option>")
-			}
+		if ((programas[i].tipo == 1) & (programas[i].desarrollado == 1) & (programas[i].unidades > 0)) {
+			document.getElementById('selectCohete').insertAdjacentHTML('beforeend', "<option value='" + i + "'>" + programas[i].nombreJuego + "</option>")
 		}
 	}
 
@@ -2079,10 +2151,8 @@ function elegirComponentesMision(element){ //Se recibe el ID de la plataforma.
 
 		//Buscar carga: componente de tipo X que cumpla con los requisitos que pueda haber.
 		for (var j=0; j < programas.length; j++){
-			if (programas[j].tipo == tipoCarga){
-				if (programas[j].unidades > 0){
-					document.getElementById('selectCarga').insertAdjacentHTML('beforeend', "<option value='" + j + "'>" + programas[j].nombreJuego + "</option>")
-				}
+			if ((programas[j].tipo == tipoCarga) & (programas[j].desarrollado == 1) & (programas[j].unidades > 0)) {
+				document.getElementById('selectCarga').insertAdjacentHTML('beforeend', "<option value='" + j + "'>" + programas[j].nombreJuego + "</option>")
 			}
 		}
 
@@ -2151,6 +2221,8 @@ function elegirComponentesMision(element){ //Se recibe el ID de la plataforma.
 			misionesProgramadas[misionProgramada].tripulacion = tripulacionSeleccionada;
 
 		} //Else si tripulación = 0.
+
+		document.getElementById("botonParametrosMision" + plataformaId).disabled = true;
 
 		cerrarVentanaModal();
 
@@ -2523,7 +2595,7 @@ function programarMision(id, plataformaId) {
 	document.getElementById("plataforma" + plataformaId).style.backgroundColor = "#f4e786";
 
 	//Habilitar botones plataforma.
-	document.getElementById("botonEnsamblarComponentes" + plataformaId).disabled = false;
+	document.getElementById("botonParametrosMision" + plataformaId).disabled = false;
 	document.getElementById("botonCancelarMision" + plataformaId).disabled = false;
 
 }
@@ -2555,6 +2627,7 @@ function ensamblarMision(id) {
 	document.getElementById("plataforma" + plataformaId).getElementsByTagName("h5")[0].innerHTML = "Componentes ensamblados";
 	document.getElementById("botonEnsamblarComponentes" + plataformaId).innerHTML = '<i class="material-icons">settings</i>';
 	document.getElementById("plataforma" + plataformaId).style.backgroundColor = "#a1f486";
+	document.getElementById("botonParametrosMision" + plataformaId).disabled = true;
 	document.getElementById("botonProgramarLanzamiento" + plataformaId).disabled = false;
 	document.getElementById("botonCancelarMision" + plataformaId).disabled = false;
 
@@ -2567,6 +2640,7 @@ function programarLanzamiento(id) {
 	document.getElementById("plataforma" + plataformaId).getElementsByTagName("h5")[0].innerHTML = "¡LANZAMIENTO!";
 	document.getElementById("botonProgramarLanzamiento" + plataformaId).innerHTML = '<i class="material-icons">flight_takeoff</i>';
 	document.getElementById("plataforma" + plataformaId).style.backgroundColor = "red";
+	document.getElementById("botonParametrosMision" + plataformaId).disabled = true;
 	document.getElementById("botonProgramarLanzamiento" + plataformaId).disabled = true;
 	document.getElementById("botonCancelarMision" + plataformaId).disabled = true;
 
@@ -2584,6 +2658,7 @@ function cancelarMision(id) {
 	document.getElementById("plataforma" + plataformaId).getElementsByTagName("h5")[0].innerHTML = "Misión cancelada";
 	document.getElementById("botonCancelarMision" + plataformaId).innerHTML = '<i class="material-icons">cancel</i>';
 	document.getElementById("plataforma" + plataformaId).style.backgroundColor = "gray";
+	document.getElementById("botonParametrosMision" + plataformaId).disabled = true;
 	document.getElementById("botonEnsamblarComponentes" + plataformaId).disabled = true;
 	document.getElementById("botonProgramarLanzamiento" + plataformaId).disabled = true;
 	document.getElementById("botonCancelarMision" + plataformaId).disabled = true;
