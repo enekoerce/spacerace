@@ -253,6 +253,7 @@ var programas = [
 		nivel: 1,
 		peso: 300,
 		capacidad: 0,
+		duracionMaxima: 1,
 		desarrollado: 0,
 		desbloqueado: true,
 		costeDesarrollo: 10,
@@ -289,6 +290,7 @@ var programas = [
 		nivel: 1,
 		peso: 500,
 		capacidad: 0,
+		duracionMaxima: 3,
 		desarrollado: 0,
 		desbloqueado: false,
 		costeDesarrollo: 10,
@@ -325,6 +327,7 @@ var programas = [
 		nivel: 2,
 		peso: 1000,
 		capacidad: 0,
+		duracionMaxima: 5,
 		desarrollado: 0,
 		desbloqueado: false,
 		costeDesarrollo: 10,
@@ -376,7 +379,7 @@ var misiones = [
 		tipoCarga: 0, // ¿? - PENDIENTE.
 		tripulacion: 0, // 0-> No lleva; 1/2/3-> Número mínimo de astronautas necesario para la misión.
 		duracionMinima: 1,
-		duracionMaxima: 1,
+		duracionMaxima: 3,
 		experiencia: 0,
 		desarrollado: 0, //Si no se desarrollar no se puede hacer nada.
 		desbloqueado: true, //Si al comienzo del juego aparece en la lista de misiones.
@@ -2079,13 +2082,32 @@ function elegirParametrosMision(element){ //Se recibe el ID de la plataforma.
 	//Contenidos ventana parámetros.
 
 	//Datos misión.
-	var tipoCarga = misiones[misionId].tipoCarga;
-	var tripulacion = misiones[misionId].tripulacion;
+
+	//var tipoCarga = misiones[misionId].tipoCarga;
+	//var tripulacion = misiones[misionId].tripulacion;
+
+	//Construir el select de duración de la misión.
+
+		document.getElementById('selectDuracion').innerHTML = "";
+
+	for (let i=misiones[misionId].duracionMinima; i <= misiones[misionId].duracionMaxima; i++){
+		if (i == misionesProgramadas[misionProgramada].duracion) {
+			document.getElementById('selectDuracion').insertAdjacentHTML('beforeend', "<option value='" + i + "' selected>" + i + "</option>")
+		}
+		else {
+			document.getElementById('selectDuracion').insertAdjacentHTML('beforeend', "<option value='" + i + "'>" + i + "</option>")
+		}
+	}
 
 	//Fin contenidos ventana ensamblaje.
 
 	//Añadir evento para el botón de confirmar parámetros.
 	document.getElementById("botonConfirmarParametros").onclick = function(){ //IMPORTANTE: onclick en vez de un event listener (lanzaba varias veces el mismo evento).
+
+		var selectDuracion = document.getElementById("selectDuracion");
+		var duracionSeleccionada = selectDuracion.options[selectDuracion.selectedIndex].value;
+
+		misionesProgramadas[misionProgramada].duracion = duracionSeleccionada;
 
 		document.getElementById("ventanaParametros").style.display = "none";
 		document.getElementById("botonEnsamblarComponentes" + plataformaId).disabled = false;
@@ -2151,7 +2173,7 @@ function elegirComponentesMision(element){ //Se recibe el ID de la plataforma.
 
 		//Buscar carga: componente de tipo X que cumpla con los requisitos que pueda haber.
 		for (var j=0; j < programas.length; j++){
-			if ((programas[j].tipo == tipoCarga) & (programas[j].desarrollado == 1) & (programas[j].unidades > 0)) {
+			if ((programas[j].tipo == tipoCarga) & (programas[j].desarrollado == 1) & (programas[j].unidades > 0) & (programas[j].duracionMaxima >  misionesProgramadas[misionProgramada].duracion)) {
 				document.getElementById('selectCarga').insertAdjacentHTML('beforeend', "<option value='" + j + "'>" + programas[j].nombreJuego + "</option>")
 			}
 		}
@@ -2229,7 +2251,8 @@ function elegirComponentesMision(element){ //Se recibe el ID de la plataforma.
 		//Añadir seguridad definitiva de los componentes (aunque siga cambiando su seguridad en la partida, estos ya están ensamblados; la seguridad de la misión, sin embargo, sí puede seguir incrementándose). - PENDIENTE.
 
 		eventoPlataforma(element, "ensamblarMision");
-	};
+
+	}; //Fin función que se lanza con el botón de confirmar ensamblaje.
 }
 
 function mostrarDatosComponentes(misionId){
