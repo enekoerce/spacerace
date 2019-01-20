@@ -14,12 +14,17 @@
 0.8 - Astronautas.
   Pendiente: equipos de astronautas.
 
+0.9 - Parámetros misiones.
+  - Duración.
+  - Pendiente: test, EVA.
+  - Pendiente: con las duraciones y otros parámetros hay que pensar en modificar el sistema de hitos para recoger también hitos que no son una misión en sí.
+
 *****
 
 Funcionalidades mínimas pendientes:
   - Tests:
     - Se marca el modo test en la ventana de configuración de parámetros de la misión (desde la plataforma).
-    - Sólo para misiones no tripuladas.
+    - Sólo para misiones no tripuladas. ¿Seguro? ¿Apollo I?
     - No suman o restan prestigio, pero sí mejoran experiencia o seguridad.
     - Para cada componente ahora tiene que haber una lista de fallos. Las misiones test pueden eliminar esos fallos, pero el jugador no siempre se va a enterar (descubre los fallos conforme se hacen test que fallan o señalan el error a corregir, pero cuando las misiones de test tienen éxito los fallos se pueden haber corregido sin que el usuario se entere).
     - A partir de los test se eliminan posibles fallos. De este modo cuando se lanza una misión real, si tiene un error se obtiene uno de los posibles fallos, y si ese fallo ha sido corregido en los test entonces no pasa nada (pero sí se mostraría el problema que ha habido y que se ha corregido, de este modo el jugador es consciente de la importancia de los test y de los fallos que se han ido corrigiendo). Si el fallo no ha sido corregido en los test entonces podría hacerse una tirada de probabilidad, para ver si aparece y se corrige o si tiene lugar un error, y se pueden tener en cuenta otros parámetros que pueden figurar en el array de posibles fallos del componente.
