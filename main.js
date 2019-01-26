@@ -138,6 +138,7 @@
 var timer = "";
 var velocidad = 500;
 var modoDesarrollo = true;
+var indestructible = true;
 
 //Variables interfaz
 
@@ -371,9 +372,9 @@ var misiones = [
 		equiposTrabajo: 1,
 		tiempoCuentaAtras: 10,
 		fases: [
-			{nombre: "encendido", nombreJuego: "Encendido", componente: 1}, // Componente: 0-> No se ejecuta esta fase; 1-> Cohete; 2-> Carga.
-			{nombre: "despegue", nombreJuego: "Despegue", componente: 1},
-			{nombre: "espacio", nombreJuego: "Espacio", componente: 1}
+			{nombre: "encendido", nombreJuego: "Encendido", componente: 1, dia: 1}, // Componente: 0-> No se ejecuta esta fase; 1-> Cohete; 2-> Carga.
+			{nombre: "despegue", nombreJuego: "Despegue", componente: 1, dia: 1},
+			{nombre: "espacio", nombreJuego: "Espacio", componente: 1, dia: 1}
 		],
 		vecesProgramada: 0
 	},
@@ -401,12 +402,12 @@ var misiones = [
 		equiposTrabajo: 1,
 		tiempoCuentaAtras: 10,
 		fases: [
-			{nombre: "encendido", nombreJuego: "Encendido", componente: 1},
-			{nombre: "despegue", nombreJuego: "Despegue", componente: 1},
-			{nombre: "espacio", nombreJuego: "Espacio", componente: 1},
-			{nombre: "orbita", nombreJuego: "Órbita", componente: 1},
-			{nombre: "despliegueCarga", nombreJuego: "Despliegue carga",	componente: 1},
-			{nombre: "encendidoCarga", nombreJuego: "Encendido carga", componente: 2}
+			{nombre: "encendido", nombreJuego: "Encendido", componente: 1, dia: 1},
+			{nombre: "despegue", nombreJuego: "Despegue", componente: 1, dia: 1},
+			{nombre: "espacio", nombreJuego: "Espacio", componente: 1, dia: 1},
+			{nombre: "orbita", nombreJuego: "Órbita", componente: 1, dia: 1},
+			{nombre: "despliegueCarga", nombreJuego: "Despliegue carga",	componente: 1, dia: 1},
+			{nombre: "encendidoCarga", nombreJuego: "Encendido carga", componente: 2, dia: 1}
 		],
 		vecesProgramada: 0
 	},
@@ -434,12 +435,12 @@ var misiones = [
 		equiposTrabajo: 1,
 		tiempoCuentaAtras: 10,
 		fases: [
-			{nombre: "encendido", nombreJuego: "Encendido", componente: 1},
-			{nombre: "despegue", nombreJuego: "Despegue", componente: 1},
-			{nombre: "espacio", nombreJuego: "Espacio", componente: 1},
-			{nombre: "despliegueCarga", nombreJuego: "Despliegue carga",	componente: 1},
-			{nombre: "reentrada", nombreJuego: "Reentrada", componente: 2},
-			{nombre: "aterrizaje", nombreJuego: "Aterrizaje", componente: 2}
+			{nombre: "encendido", nombreJuego: "Encendido", componente: 1, dia: 1},
+			{nombre: "despegue", nombreJuego: "Despegue", componente: 1, dia: 1},
+			{nombre: "espacio", nombreJuego: "Espacio", componente: 1, dia: 1},
+			{nombre: "despliegueCarga", nombreJuego: "Despliegue carga",	componente: 1, dia: 1},
+			{nombre: "reentrada", nombreJuego: "Reentrada", componente: 2, dia: 1},
+			{nombre: "aterrizaje", nombreJuego: "Aterrizaje", componente: 2, dia: 1}
 		],
 		vecesProgramada: 0
 	},
@@ -467,12 +468,12 @@ var misiones = [
 		equiposTrabajo: 1,
 		tiempoCuentaAtras: 10,
 		fases: [
-			{nombre: "encendido", nombreJuego: "Encendido", componente: 1},
-			{nombre: "despegue", nombreJuego: "Despegue", componente: 1},
-			{nombre: "espacio", nombreJuego: "Espacio", componente: 1},
-			{nombre: "despliegueCarga", nombreJuego: "Despliegue carga",	componente: 1},
-			{nombre: "reentrada", nombreJuego: "Reentrada", componente: 2},
-			{nombre: "aterrizaje", nombreJuego: "Aterrizaje", componente: 2}
+			{nombre: "encendido", nombreJuego: "Encendido", componente: 1, dia: 1},
+			{nombre: "despegue", nombreJuego: "Despegue", componente: 1, dia: 1},
+			{nombre: "espacio", nombreJuego: "Espacio", componente: 1, dia: 1},
+			{nombre: "despliegueCarga", nombreJuego: "Despliegue carga",	componente: 1, dia: 1},
+			{nombre: "reentrada", nombreJuego: "Reentrada", componente: 2, dia: 1},
+			{nombre: "aterrizaje", nombreJuego: "Aterrizaje", componente: 2, dia: 1}
 		],
 		vecesProgramada: 0
 	},
@@ -500,15 +501,16 @@ var misiones = [
 		equiposTrabajo: 1,
 		tiempoCuentaAtras: 10,
 		fases: [
-			{nombre: "encendido", nombreJuego: "Encendido", componente: 1},
-			{nombre: "despegue", nombreJuego: "Despegue", componente: 1},
-			{nombre: "espacio", nombreJuego: "Espacio", componente: 1},
-			{nombre: "orbita", nombreJuego: "Órbita", componente: 1},
-			{nombre: "despliegueCarga", nombreJuego: "Despliegue carga",	componente: 1},
-			{nombre: "encendidoCarga", nombreJuego: "Encendido carga", componente: 2},
-			{nombre: "actividadesOrbita", nombreJuego: "Actividades órbita",	componente: 2},
-			{nombre: "reentrada", nombreJuego: "Reentrada", componente: 2},
-			{nombre: "aterrizaje", nombreJuego: "Aterrizaje", componente: 2}
+			{nombre: "encendido", nombreJuego: "Encendido", componente: 1, dia: 1},
+			{nombre: "despegue", nombreJuego: "Despegue", componente: 1, dia: 1},
+			{nombre: "espacio", nombreJuego: "Espacio", componente: 1, dia: 1},
+			{nombre: "orbita", nombreJuego: "Órbita", componente: 1, dia: 1},
+			{nombre: "despliegueCarga", nombreJuego: "Despliegue carga",	componente: 1, dia: 1},
+			{nombre: "encendidoCarga", nombreJuego: "Encendido carga", componente: 2, dia: 1},
+			{nombre: "actividadesOrbita", nombreJuego: "Actividades órbita",	componente: 2, dia: 1},
+			{nombre: "actividadesOrbita", nombreJuego: "Actividades órbita",	componente: 2, dia: 2},
+			{nombre: "reentrada", nombreJuego: "Reentrada", componente: 2, dia: 2},
+			{nombre: "aterrizaje", nombreJuego: "Aterrizaje", componente: 2, dia: 2}
 		],
 		vecesProgramada: 0
 	},
@@ -536,15 +538,16 @@ var misiones = [
 		equiposTrabajo: 1,
 		tiempoCuentaAtras: 10,
 		fases: [
-			{nombre: "encendido", nombreJuego: "Encendido", componente: 1},
-			{nombre: "despegue", nombreJuego: "Despegue", componente: 1},
-			{nombre: "espacio", nombreJuego: "Espacio", componente: 1},
-			{nombre: "orbita", nombreJuego: "Órbita", componente: 1},
-			{nombre: "despliegueCarga", nombreJuego: "Despliegue carga",	componente: 1},
-			{nombre: "encendidoCarga", nombreJuego: "Encendido carga", componente: 2},
-			{nombre: "actividadesOrbita", nombreJuego: "Actividades órbita",	componente: 2},
-			{nombre: "reentrada", nombreJuego: "Reentrada", componente: 2},
-			{nombre: "aterrizaje", nombreJuego: "Aterrizaje", componente: 2}
+			{nombre: "encendido", nombreJuego: "Encendido", componente: 1, dia: 1},
+			{nombre: "despegue", nombreJuego: "Despegue", componente: 1, dia: 1},
+			{nombre: "espacio", nombreJuego: "Espacio", componente: 1, dia: 1},
+			{nombre: "orbita", nombreJuego: "Órbita", componente: 1, dia: 1},
+			{nombre: "despliegueCarga", nombreJuego: "Despliegue carga",	componente: 1, dia: 1},
+			{nombre: "encendidoCarga", nombreJuego: "Encendido carga", componente: 2, dia: 1},
+			{nombre: "actividadesOrbita", nombreJuego: "Actividades órbita",	componente: 2, dia: 1},
+			{nombre: "actividadesOrbita", nombreJuego: "Actividades órbita",	componente: 2, dia: 2},
+			{nombre: "reentrada", nombreJuego: "Reentrada", componente: 2, dia: 2},
+			{nombre: "aterrizaje", nombreJuego: "Aterrizaje", componente: 2, dia: 2}
 		],
 		vecesProgramada: 0
 	}
@@ -1935,6 +1938,7 @@ function eventoMision(element, tipo){
 							tripulacion: -1, //Tiene que haber un array de tripulaciones en el que se crean equipos de astronautas, aunque sólo sea uno. En esta variable se guarda el equipo seleccionado para esta misión.
 							duracion: misiones[misionId].duracionMinima,
 							activa: 1,
+							ejecucion: 0,
 							fases: misiones[misionId].fases
 						};
 
@@ -2754,197 +2758,30 @@ function lanzamiento(id){
 		let resultadoFases = [];
 		let cargaUsada = false; //Aquí se guarda si la carga ha sido usada en la misión o no (si falla en las fases del cohete entonces no se ha usado), para que no se le asigne experiencia por uso al final de la misión si no se ha usado.
 
-		//Por cada fase de la misión.
-		for (let propiedad in misionesProgramadas[misionProgramada].fases) {
-
-			let resultado = ""; //Texto para resultado de cada fase.
-
-			//Sólo se comprueba por cada fase que utilice un componente.
-			if (misionesProgramadas[misionProgramada].fases[propiedad].componente > 0) {
-
-				//Según el tipo de componente para esta fase se buscan los datos correspondientes.
-				if(misionesProgramadas[misionProgramada].fases[propiedad].componente == 1) { //Cohete.
-					programaId = cohete;
-				}
-				else { //Carga.
-					programaId = carga;
-				}
-
-				let seguridadComponente = programas[programaId].seguridad;
-				let experienciaComponente = programas[programaId].experiencia;
-				//let experienciaFase = programas[programaId].experienciaFases[propiedad].experiencia;
-
-				//console.log(misionesProgramadas[misionProgramada].fases[propiedad].nombre);
-				//console.log(programas[programaId].experienciaFases.findIndex(i => i.nombre === misionesProgramadas[misionProgramada].fases[propiedad].nombre));
-
-				let experienciaFase = programas[programaId].experienciaFases[programas[programaId].experienciaFases.findIndex(i => i.nombre === misionesProgramadas[misionProgramada].fases[propiedad].nombre)].experiencia;
-
-				if (seguridadComponente < 0){
-					seguridadComponente = 0;
-				}
-
-				if (seguridadComponente > 50){
-					seguridadComponente = 50;
-				}
-
-				let textoFase = "<p>" + misionesProgramadas[misionProgramada].fases[propiedad].nombreJuego + " (" + programas[programaId].nombreJuego + " - " + experienciaFase + "): ";
-
-				//Si la misión sigue activa.
-				if (estado > 0){
-
-					if (misionesProgramadas[misionProgramada].fases[propiedad].componente > 1){
-						cargaUsada = true; //Si la carga se ha usado en alguna fase de la misión entonces cuenta como usada.
-					}
-
-					//let sumaSeguridades = (seguridadComponente + (experienciaComponente * 5) + experienciaFase + seguridadMision + experienciaMision) - penalizacion;
-					let sumaSeguridades = ((seguridadComponente + (experienciaComponente * 2) + (experienciaFase * 5)) + (seguridadMision + (experienciaMision * 5))) / 2;
-					if (sumaSeguridades > 85) {
-						sumaSeguridades = 85;
-					}
-					sumaSeguridades = sumaSeguridades - penalizacion;
-					let resultadoComparacion = sumaSeguridades - Math.floor((Math.random() * 100) + 1);
-
-					//Éxito.
-					if (resultadoComparacion > 0) {
-						resultado = "<span style='color: green;'>éxito (probabilidad: " + sumaSeguridades + "; resultado: " + resultadoComparacion + ") (penalizacion: " + penalizacion + ")</span>";
-						programas[programaId].experienciaFases[programas[programaId].experienciaFases.findIndex(i => i.nombre === misionesProgramadas[misionProgramada].fases[propiedad].nombre)].experiencia += 2;
-						if (penalizacion > 0) {
-							penalizacion -= 5;
-						}
-						if (estado == 1) {
-							resultadoFinal = "ÉXITO TOTAL";
-						}
-					}
-					else {
-						//Fallo parcial.
-						if (resultadoComparacion > -15) {
-							resultado = "<span style='color: yellow;'>fallo parcial (probabilidad: " + sumaSeguridades + "; resultado: " + resultadoComparacion + ") (penalizacion: " + penalizacion + ")</span>";
-							programas[programaId].experienciaFases[programas[programaId].experienciaFases.findIndex(i => i.nombre === misionesProgramadas[misionProgramada].fases[propiedad].nombre)].experiencia += 1;
-							programas[programaId].seguridad -= 5;
-							resultadoFinal = "ÉXITO PARCIAL";
-							penalizacion += 10;
-							estado = 2;
-						}
-						//Fallo total.
-						else {
-							resultado = "<span style='color: red;'>fallo (probabilidad: " + sumaSeguridades + "; resultado: " + resultadoComparacion + ") (penalizacion: " + penalizacion + ")</span>";
-							resultadoFinal = "FALLO TOTAL";
-							if(tripulacion != -1) {
-								astronautas[tripulacion].estado = 0;
-								resultadoFinal = "FALLO TOTAL - TRIPULACIÓN FALLECIDA";
-							}
-							estado = 0;
-						}
-					}
-
-					resultadoFases.push(textoFase + resultado + "</p>");
-
-				} //Fin si la misión sigue activa.
-
-				else {
-					resultado = "-";
-				}
-
-			} //Fin si no se utiliza un componente.
-
-		}
+		comprobarFasesMision();
 
 		resultadoFases.push("<p>" + resultadoFinal + "</p>");
 
-		var curNewsIndex = 0;
+		//Mostrar el resultado de las fases.
+		let elementoActual = 0;
+		let intervalID = setInterval(function() {
 
-		var intervalID = setInterval(function() {
+			document.getElementById("fasesMision").innerHTML += (resultadoFases[elementoActual]);
+			++elementoActual;
 
-			document.getElementById("fasesMision").innerHTML += (resultadoFases[curNewsIndex]);
-			++curNewsIndex;
-
-
-		    if (curNewsIndex >= resultadoFases.length) {
-		document.getElementById("botonCerrarVentanaModal").style.display = "block";
+		    if (elementoActual >= resultadoFases.length) {
+						document.getElementById("botonCerrarVentanaModal").style.display = "block";
 						clearInterval(intervalID);
 		    }
 
 		}, 1500);
-
-		//clearInterval(intervalID);
+		//Fin mostrar el resultado de las fases.
 
 		//Mostrar/ocultar botones.
-
 		if(!modoDesarrollo) {
 			document.getElementById("botonConfirmarLanzamiento").style.display = "none";
 		}
 		document.getElementById("botonCancelarLanzamiento").style.display = "none";
-
-		//EXPERIENCIA DESPUÉS DEL RESULTADO DE LA MISIÓN. - MEJOR PONER AQUÍ TODOS LOS EFECTOS DESPÚES DEL RESTULTADO DE LA MISIÓN, NO SÓLO EXPERIENCIA, TAMBIÉN TRIPULACIÓN, HITOS, ETC. - PENDIENTE.
-		if(estado > 0) {
-
-			if(tripulacion != -1) {
-				astronautas[tripulacion].estado = 1;
-			}
-
-			programas[cohete].seguridad += 5;
-			programas[cohete].experiencia += 2;
-
-			if(cargaUsada) { //Si se ha usado la carga en la misión entonces se modifica su seguridad y experiencia.
-				programas[carga].seguridad += 5;
-				programas[carga].experiencia += 2;
-			}
-
-			misiones[misionId].seguridad += 5;
-			misiones[misionId].experiencia += 2;
-
-		}
-
-		else {
-			programas[cohete].seguridad -= 5;
-			programas[cohete].experiencia += 1;
-
-			if(cargaUsada) { //Si se ha usado la carga en la misión entonces se modifica su seguridad y experiencia.
-				programas[carga].seguridad -= 5;
-				programas[carga].experiencia += 1;
-			}
-
-			misiones[misionId].seguridad -= 5;
-			misiones[misionId].experiencia += 1;
-		}
-
-		document.getElementById("seguridadPrograma" + programas[cohete].id).innerHTML = programas[cohete].seguridad;
-		document.getElementById("experienciaPrograma" + programas[cohete].id).innerHTML = programas[cohete].experiencia;
-
-		if(cargaUsada) {
-			document.getElementById("seguridadPrograma" + programas[carga].id).innerHTML = programas[carga].seguridad;
-			document.getElementById("experienciaPrograma" + programas[carga].id).innerHTML = programas[carga].experiencia;
-		}
-
-		document.getElementById("seguridadMision" + misionId).innerHTML = misiones[misionId].seguridad;
-		document.getElementById("experienciaMision" + misionId).innerHTML = misiones[misionId].experiencia;
-
-		//FIN EXPERIENCIA DESPUÉS DEL RESULTADO DE LA MISIÓN.
-
-		//PRESTIGIO. - MEJOR PONER ESTO COMO UNA FUNCIÓN QUE SE LLAME DESDE AQUÍ PERO TAMBIÉN CON LOS EVENTOS PROGRAMADOS DE LA URSS, PORQUE SI NO NO SE TIENEN EN CUENTA PARA EL PRESTIGIO - PENDIENTE.
-		if(estado > 0) {
-			if(hitos[misionId].primero == "-") {
-				hitos[misionId].primero = "USA";
-				hitos[misionId].fechaPrimero = diaActual + " " + mesActual + " " + anioActual;
-				prestigio += hitos[misionId].prestigioPrimero;
-			}
-			else if((hitos[misionId].segundo == "-") && (hitos[misionId].primero != "USA")) {
-				hitos[misionId].segundo = "USA";
-				hitos[misionId].fechaSegundo = diaActual + " " + mesActual + " " + anioActual;
-				prestigio += hitos[misionId].prestigioSegundo;
-			}
-			else {
-				prestigio += hitos[misionId].prestigioNormal;
-			}
-		}
-		else {
-			prestigio += misiones[misionId].prestigioFallo;
-		}
-
-		//Actualizar prestigio y astronautas.
-		document.getElementById("prestigio").innerHTML = prestigio;
-		updateHitos();
-		updateAstronautas();
 
 		//MODIFICADORES. - ALEATORIAMENTE PUEDEN SER CARGADOS EVENTOS DEL ARRAY DE MODIFICADORES (SON FUNCIONES QUE SE EJECUTAN Y MODIFICAN EL JUEGO EN FUNCIÓN DE LAS VARIABLES CORRESPONDIENTES). - PENDIENTE.
 		//Los modificadores se ponen en este lugar del juego porque las misiones son el componente principal del juego, los puntos de inflexión del mismo para bien o para mal. Así que se cargan modificadores que en función del resultado de la misión y de otras condiciones tienen consecuencias en el juego.
@@ -2965,17 +2802,13 @@ function lanzamiento(id){
 		plataformas[plataformaId].estado = 0;
 		plataformas[plataformaId].mision = -1;
 
-		//Modificar misión programada.
-		misionesProgramadas[misionProgramada].activa = 0;
-		updateMisionesProgramadas();
-
 		//Modificar cartel en misión.
 		document.getElementById("mision" + misionId).getElementsByTagName("h5")[0].innerHTML = "Misión lanzada";
 
 		//CREAR EVENTO PARA DESPEJAR PLATAFORMA - PENDIENTE.
 
 		document.getElementById("plataforma" + plataformaId).getElementsByTagName("h4")[0].innerHTML = plataformas[plataformaId].nombreJuego;
-		document.getElementById("plataforma" + plataformaId).getElementsByTagName("h5")[0].innerHTML = "No hay misión asignada";
+		document.getElementById("plataforma" + plataformaId).getElementsByTagName("h5")[0].innerHTML = "Despejando plataforma";
 		document.getElementById("plataforma" + plataformaId).style.backgroundColor = "#333";
 		document.getElementById("botonEnsamblarComponentes" + plataformaId).disabled = true;
 		document.getElementById("botonProgramarLanzamiento" + plataformaId).disabled = true;
@@ -2989,6 +2822,232 @@ function lanzamiento(id){
 	botonCancelarLanzamiento.addEventListener("click", function(){
 
 	})
+
+} //Fin función lanzamiento.
+
+function continuarMision(misionId, misionProgramada){
+
+	let cohete = misionesProgramadas[misionProgramada].cohete;
+	let carga = misionesProgramadas[misionProgramada].carga;
+	let tripulacion = misionesProgramadas[misionProgramada].tripulacion;
+
+	//comprobarFasesMision();
+
+
+
+
+
+}
+
+function comprobarFasesMision(misionId, misionProgramada){
+
+	let cohete = misionesProgramadas[misionProgramada].cohete;
+	let carga = misionesProgramadas[misionProgramada].carga;
+	let tripulacion = misionesProgramadas[misionProgramada].tripulacion;
+
+	//Por cada fase de la misión.
+	for (let propiedad in misionesProgramadas[misionProgramada].fases) {
+
+		//console.log(misionesProgramadas[misionProgramada].fases)
+
+		let resultado = ""; //Texto para resultado de cada fase.
+
+		//Sólo se comprueba por cada fase que utilice un componente y que se ejecute en el día 1 de misión.
+		if ((misionesProgramadas[misionProgramada].fases[propiedad].componente > 0) && (misionesProgramadas[misionProgramada].fases[propiedad].dia == 1)) {
+
+			//Según el tipo de componente para esta fase se buscan los datos correspondientes.
+			if(misionesProgramadas[misionProgramada].fases[propiedad].componente == 1) { //Cohete.
+				programaId = cohete;
+			}
+			else { //Carga.
+				programaId = carga;
+			}
+
+			let seguridadComponente = programas[programaId].seguridad;
+			let experienciaComponente = programas[programaId].experiencia;
+			//let experienciaFase = programas[programaId].experienciaFases[propiedad].experiencia;
+
+			//console.log(misionesProgramadas[misionProgramada].fases[propiedad].nombre);
+			//console.log(programas[programaId].experienciaFases.findIndex(i => i.nombre === misionesProgramadas[misionProgramada].fases[propiedad].nombre));
+
+			let experienciaFase = programas[programaId].experienciaFases[programas[programaId].experienciaFases.findIndex(i => i.nombre === misionesProgramadas[misionProgramada].fases[propiedad].nombre)].experiencia;
+
+			if (seguridadComponente < 0){
+				seguridadComponente = 0;
+			}
+
+			if (seguridadComponente > 50){
+				seguridadComponente = 50;
+			}
+
+			let textoFase = "<p>" + misionesProgramadas[misionProgramada].fases[propiedad].nombreJuego + " (" + programas[programaId].nombreJuego + " - " + experienciaFase + "): ";
+
+			//Si la misión sigue activa.
+			if (estado > 0){
+
+				if (misionesProgramadas[misionProgramada].fases[propiedad].componente > 1){
+					cargaUsada = true; //Si la carga se ha usado en alguna fase de la misión entonces cuenta como usada.
+				}
+
+				//let sumaSeguridades = (seguridadComponente + (experienciaComponente * 5) + experienciaFase + seguridadMision + experienciaMision) - penalizacion;
+				let sumaSeguridades = ((seguridadComponente + (experienciaComponente * 2) + (experienciaFase * 5)) + (seguridadMision + (experienciaMision * 5))) / 2;
+				if (sumaSeguridades > 85) {
+					sumaSeguridades = 85;
+				}
+				sumaSeguridades = sumaSeguridades - penalizacion;
+				let resultadoComparacion = sumaSeguridades - Math.floor((Math.random() * 100) + 1);
+
+				if (modoDesarrollo){
+					if (indestructible){
+						resultadoComparacion = 1;
+					}
+				}
+
+				//Éxito.
+				if (resultadoComparacion > 0) {
+					resultado = "<span style='color: green;'>éxito (probabilidad: " + sumaSeguridades + "; resultado: " + resultadoComparacion + ") (penalizacion: " + penalizacion + ")</span>";
+					programas[programaId].experienciaFases[programas[programaId].experienciaFases.findIndex(i => i.nombre === misionesProgramadas[misionProgramada].fases[propiedad].nombre)].experiencia += 2;
+					if (penalizacion > 0) {
+						penalizacion -= 5;
+					}
+					if (estado == 1) {
+						resultadoFinal = "ÉXITO TOTAL";
+					}
+				}
+				else {
+					//Fallo parcial.
+					if (resultadoComparacion > -15) {
+						resultado = "<span style='color: yellow;'>fallo parcial (probabilidad: " + sumaSeguridades + "; resultado: " + resultadoComparacion + ") (penalizacion: " + penalizacion + ")</span>";
+						programas[programaId].experienciaFases[programas[programaId].experienciaFases.findIndex(i => i.nombre === misionesProgramadas[misionProgramada].fases[propiedad].nombre)].experiencia += 1;
+						programas[programaId].seguridad -= 5;
+						resultadoFinal = "ÉXITO PARCIAL";
+						penalizacion += 10;
+						estado = 2;
+					}
+					//Fallo total.
+					else {
+						resultado = "<span style='color: red;'>fallo (probabilidad: " + sumaSeguridades + "; resultado: " + resultadoComparacion + ") (penalizacion: " + penalizacion + ")</span>";
+						resultadoFinal = "FALLO TOTAL";
+						if(tripulacion != -1) {
+							astronautas[tripulacion].estado = 0;
+							resultadoFinal = "FALLO TOTAL - TRIPULACIÓN FALLECIDA";
+						}
+						estado = 0;
+					}
+				}
+
+				resultadoFases.push(textoFase + resultado + "</p>");
+
+			} //Fin si la misión sigue activa.
+
+			else {
+				resultado = "-";
+			}
+
+		} //Fin si se utiliza un componente y el componente utilizado se utiliza en el día 1 de la misión.
+
+		//Una misión continúa en ejecución si tiene fases que no se cumplen en el día 1 y si su estado no recoge un fallo total.
+		else if ((misionesProgramadas[misionProgramada].fases[propiedad].dia) > 1 && (estado > 0)) {
+			misionesProgramadas[misionProgramada].ejecucion = 1;
+		}
+
+		//Si no se usa un componente en esta fase (0) o... ¿?
+		else {}
+
+		//Si la misión continúa se muestra el resultado parcial, no se modifica la seguridad ni experiencia, no se aplican hitos ni prestigio, sí se limpia la plataforma.
+		if (misionesProgramadas[misionProgramada].ejecucion == 1){
+
+		}
+
+		//Si la misión no continúa es que ha acabado: resultado final, seguridad, experiencia, hitos, prestigio, limpieza de plataforma y datos de la misión.
+		else {
+
+			resultadosMision(estado, tripulacion, cohete, cargaUsada, carga, misionId, prestigio);
+
+			//Modificar misión programada.
+			misionesProgramadas[misionProgramada].activa = 0;
+			updateMisionesProgramadas();
+
+		}
+
+	} //Fin bucle fases de la misión (llegados a este punto la misión se ha lanzado y ha concluído (con fallo o acierto, da igual) o se ha lanzado sin fallo y quedan fases para ejecutar que dejan la misión en marcha para los siguientes días.
+
+	return resultadoFases;
+
+}
+
+function resultadosMision(estado, tripulacion, cohete, cargaUsada, carga, misionId, prestigio){
+
+	//EXPERIENCIA DESPUÉS DEL RESULTADO DE LA MISIÓN. - MEJOR PONER AQUÍ TODOS LOS EFECTOS DESPÚES DEL RESTULTADO DE LA MISIÓN, NO SÓLO EXPERIENCIA, TAMBIÉN TRIPULACIÓN, HITOS, ETC. - PENDIENTE.
+	if(estado > 0) {
+
+		if(tripulacion != -1) {
+			astronautas[tripulacion].estado = 1;
+		}
+
+		programas[cohete].seguridad += 5;
+		programas[cohete].experiencia += 2;
+
+		if(cargaUsada) { //Si se ha usado la carga en la misión entonces se modifica su seguridad y experiencia.
+			programas[carga].seguridad += 5;
+			programas[carga].experiencia += 2;
+		}
+
+		misiones[misionId].seguridad += 5;
+		misiones[misionId].experiencia += 2;
+
+	}
+
+	else {
+		programas[cohete].seguridad -= 5;
+		programas[cohete].experiencia += 1;
+
+		if(cargaUsada) { //Si se ha usado la carga en la misión entonces se modifica su seguridad y experiencia.
+			programas[carga].seguridad -= 5;
+			programas[carga].experiencia += 1;
+		}
+
+		misiones[misionId].seguridad -= 5;
+		misiones[misionId].experiencia += 1;
+	}
+
+	document.getElementById("seguridadPrograma" + programas[cohete].id).innerHTML = programas[cohete].seguridad;
+	document.getElementById("experienciaPrograma" + programas[cohete].id).innerHTML = programas[cohete].experiencia;
+
+	if(cargaUsada) {
+		document.getElementById("seguridadPrograma" + programas[carga].id).innerHTML = programas[carga].seguridad;
+		document.getElementById("experienciaPrograma" + programas[carga].id).innerHTML = programas[carga].experiencia;
+	}
+
+	document.getElementById("seguridadMision" + misionId).innerHTML = misiones[misionId].seguridad;
+	document.getElementById("experienciaMision" + misionId).innerHTML = misiones[misionId].experiencia;
+
+	//FIN EXPERIENCIA DESPUÉS DEL RESULTADO DE LA MISIÓN.
+
+	//PRESTIGIO. - MEJOR PONER ESTO COMO UNA FUNCIÓN QUE SE LLAME DESDE AQUÍ PERO TAMBIÉN CON LOS EVENTOS PROGRAMADOS DE LA URSS, PORQUE SI NO NO SE TIENEN EN CUENTA PARA EL PRESTIGIO - PENDIENTE.
+	if(estado > 0) {
+		if(hitos[misionId].primero == "-") {
+			hitos[misionId].primero = "USA";
+			hitos[misionId].fechaPrimero = diaActual + " " + mesActual + " " + anioActual;
+			prestigio += hitos[misionId].prestigioPrimero;
+		}
+		else if((hitos[misionId].segundo == "-") && (hitos[misionId].primero != "USA")) {
+			hitos[misionId].segundo = "USA";
+			hitos[misionId].fechaSegundo = diaActual + " " + mesActual + " " + anioActual;
+			prestigio += hitos[misionId].prestigioSegundo;
+		}
+		else {
+			prestigio += hitos[misionId].prestigioNormal;
+		}
+	}
+	else {
+		prestigio += misiones[misionId].prestigioFallo;
+	}
+
+	//Actualizar prestigio y astronautas.
+	document.getElementById("prestigio").innerHTML = prestigio;
+	updateHitos();
+	updateAstronautas();
 
 }
 
@@ -3051,6 +3110,45 @@ function interval() {
 	}
 
 	//FIN SCRIPT FECHA
+
+	//-------------------------------------------------------------
+
+	//SCRIPT MISIONES EN EJECUCIÓN
+
+	if (misionesProgramadas.length != 0){
+
+		let longitudArrayMisionesProgramadas = misionesProgramadas.length;
+
+		//Se recorre el array de misiones programadas.
+		for (let j = 0; j < longitudArrayMisionesProgramadas; j++){
+
+			//Sólo si la misión está en ejecución se recorren sus fases modificando los tiempos de la misión.
+			if (misionesProgramadas[j].ejecucion == 1){
+				//console.log("Hay una misión en ejecución");
+
+				//Se recorre el array de fases en cada misión programada.
+				for (let propiedad in misionesProgramadas[j].fases) {
+					misionesProgramadas[j].fases[propiedad].dia -= 1;
+
+					//console.log(misionesProgramadas[j].fases[propiedad].nombre + " " + misionesProgramadas[j].fases[propiedad].dia);
+
+					if (misionesProgramadas[j].fases[propiedad].dia == 1){
+						//console.log("PRUEBA");
+
+						continuarMision(j);
+
+					}
+
+				}
+
+			}
+
+		}
+
+	}
+
+
+	//FIN SCRIPT MISIONES EN EJECUCIÓN
 
 	//-------------------------------------------------------------
 
