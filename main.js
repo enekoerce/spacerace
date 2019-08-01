@@ -1935,6 +1935,7 @@ function eventoMision(element, tipo){
 							fechaPrograma: diaActual + " " + mesActual + " " + anioActual,
 							cohete: -1,
 							carga: -1,
+							cargaUsada: false,
 							tripulacion: -1, //Tiene que haber un array de tripulaciones en el que se crean equipos de astronautas, aunque sólo sea uno. En esta variable se guarda el equipo seleccionado para esta misión.
 							duracion: misiones[misionId].duracionMinima,
 							activa: 1,
@@ -2632,7 +2633,7 @@ function programarLanzamiento(id) {
 	document.getElementById("botonProgramarLanzamiento" + plataformaId).disabled = true;
 	document.getElementById("botonCancelarMision" + plataformaId).disabled = true;
 
-	lanzamiento(plataformaId);
+	ejecutarMision(plataformaId);
 
 }
 
@@ -2655,9 +2656,33 @@ function cancelarMision(id) {
 
 //Fin funciones plataformas.
 
+//------------------------------------------------------------------------------
+
 //Misiones activas.
 
-function lanzamiento(id){
+//ejecutarMision - Tanto para las misiones de un sólo día (se lanza al efectuarse el lanzamiento) como para la de varios días (se lanzará una y otra vez cuando corresponda).
+function ejecutarMision(id){
+
+	//REHACER TODO EL SISTEMA DE MISIONES
+	//
+	//La función ejecutarMision sirve tanto para el lanzamiento como para misiones que tienen varios días de duración.
+	//Tiene que aparecer una información base para ambos tipos, y otra información propia de cada tipo.
+	//También tienen que aparecer distintos botones para cada tipo: para el lanzamiento se podrá poner un botón de cancelar, pero no para las misiones que continúan (aunque habrá que poner un sistema de cancelación de partes de la misión, para que se pueda abortar en un momento dado (habría que indicar en las fases de las misiones si son "abortables", se puede abortar un EVA, por ejemplo, pero no las fases de la misión que tienen que continuar para que los astronautas puedan volver)).
+	//Cuando se lanza una misión de varios días hay que actualizar y guardar parámetros que recojan lo que ya ha hecho la misión (incluidos los textos de resultados de las distintas fases, para ser mostrados al continuar la misión).
+	//Hay que añadir nuevos parámetros a las misiones para recoger esa información, como un array de resultados de fases.
+	//
+	//Esta función debería ser sólo de lanzamiento. Y llamar a una misión posterior de ejecutarMision.
+	//La de lanzamiento recoge los datos de la plataforma. De ahí saca el tipo de misión y los detalles de la misión programada. Y llama a ejecutarMision para seguir.
+	//La de ejecutarMision se lanza después del lanzamiento, pero también cuando el contador llegue a la siguiente fase de la misión (de hecho debería existir un contador de "día actual" en la misión programada para contar los días que lleva, y llamar a ejecutarMision cuando el día actual coincida con el día previsto para la siguiente fase a ejecutar).
+	//la función de ejecutarMision recoge siempre el tipo y los detalles de la mision, y tiene que leer los parámetros de estado, carga usada, día, resultado de las fases anteriores (para mostrar en pantalla), etc.
+
+
+
+
+
+
+	
+
 
 	let plataformaId = id;
 	let misionId = plataformas[plataformaId].mision;
@@ -2666,10 +2691,10 @@ function lanzamiento(id){
 	let carga = misionesProgramadas[misionProgramada].carga;
 	let tripulacion = misionesProgramadas[misionProgramada].tripulacion;
 
-	//Ventana modal con el resultado del lanzamiento.
+	//Ventana modal con el resultado de la misión.
 
 	//Preparar información para mostrar en la ventana.
-	let textoVentanaModal = "<h4>Resultado lanzamiento</h4>";
+	let textoVentanaModal = "<h4>Resultado misión</h4>";
 	textoVentanaModal += "<h5>Misión " + misionesProgramadas[misionProgramada].nombre + " | Plataforma: " + plataformas[plataformaId].nombreJuego + "</h5>";
 
 	let seguridadMision = misiones[misionId].seguridad;
@@ -2734,6 +2759,8 @@ function lanzamiento(id){
 	}
 	textoVentanaModal += "<h6>Probabilidad aproximada: " + probabilidadAproximada + "</h6>";
 
+	//FIN - Preparar información para mostrar en la ventana.
+
 	//Abrir ventana modal parando el timer.
 	abrirVentanaModal(textoVentanaModal);
 	document.getElementById("botonCerrarVentanaModal").style.display = "none"; //El botón de cerrar ventana no aparece, sólo existen los botones de aceptar o cancelar lanzamiento.
@@ -2756,9 +2783,9 @@ function lanzamiento(id){
 		let penalizacion = 0; //Tras un éxito parcial se añade una penalización.
 
 		let resultadoFases = [];
-		let cargaUsada = false; //Aquí se guarda si la carga ha sido usada en la misión o no (si falla en las fases del cohete entonces no se ha usado), para que no se le asigne experiencia por uso al final de la misión si no se ha usado.
+		let cargaUsada = misionesProgramadas[misionProgramada].cargaUsada; //Aquí se guarda si la carga ha sido usada en la misión o no (si falla en las fases del cohete entonces no se ha usado), para que no se le asigne experiencia por uso al final de la misión si no se ha usado.
 
-		comprobarFasesMision();
+		comprobarFasesMision(misionId, misionProgramada);
 
 		resultadoFases.push("<p>" + resultadoFinal + "</p>");
 
@@ -2825,6 +2852,8 @@ function lanzamiento(id){
 
 } //Fin función lanzamiento.
 
+//------------------------------------------------------------------------------
+
 function continuarMision(misionId, misionProgramada){
 
 	let cohete = misionesProgramadas[misionProgramada].cohete;
@@ -2839,11 +2868,18 @@ function continuarMision(misionId, misionProgramada){
 
 }
 
+//------------------------------------------------------------------------------
+
 function comprobarFasesMision(misionId, misionProgramada){
+
+	//console.log(misionId);
+	//console.log(misionProgramada);
 
 	let cohete = misionesProgramadas[misionProgramada].cohete;
 	let carga = misionesProgramadas[misionProgramada].carga;
 	let tripulacion = misionesProgramadas[misionProgramada].tripulacion;
+	let estado = misionesProgramadas[misionProgramada].estado;
+	let cargaUsada = misionesProgramadas[misionProgramada].cargaUsada;
 
 	//Por cada fase de la misión.
 	for (let propiedad in misionesProgramadas[misionProgramada].fases) {
@@ -2887,6 +2923,7 @@ function comprobarFasesMision(misionId, misionProgramada){
 
 				if (misionesProgramadas[misionProgramada].fases[propiedad].componente > 1){
 					cargaUsada = true; //Si la carga se ha usado en alguna fase de la misión entonces cuenta como usada.
+					misionesProgramadas[misionProgramada].cargaUsada = cargaUsada;
 				}
 
 				//let sumaSeguridades = (seguridadComponente + (experienciaComponente * 5) + experienciaFase + seguridadMision + experienciaMision) - penalizacion;
